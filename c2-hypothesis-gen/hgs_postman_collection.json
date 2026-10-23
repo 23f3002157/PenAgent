@@ -1,0 +1,441 @@
+{
+  "info": {
+    "_postman_id": "7f8b92c4-3d12-4e67-8910-bc56a29e4182",
+    "name": "PenAgent - Component 2 (Hypothesis Generation Service)",
+    "description": "Postman Collection for Component 2: Hypothesis Generation Service (HGS). Contains dedicated requests for all 3 targets: SREBench-API, OWASP Juice Shop, and DVWS-Node.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0. System & Shared Controls",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Verifies that the Hypothesis Generation Service is up and responsive."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Batch by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/:batch_id",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", ":batch_id"],
+              "variable": [
+                {
+                  "key": "batch_id",
+                  "value": "batch_example_id",
+                  "description": "Batch ID returned from any POST /v1/hypotheses/generate"
+                }
+              ]
+            },
+            "description": "Retrieves the full ranked batch of hypotheses for a given batch ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Report Feedback (Confirmed Finding -> Trigger Replan)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"outcome\": \"confirmed_vulnerability\",\n  \"status_code\": 200,\n  \"evidence\": \"Successfully accessed unauthorized object without tenant verification\",\n  \"discovered_state\": {\n    \"leaked_id\": \"usr_102\",\n    \"auth_token\": \"eyJhbGciOi...\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/:hypothesis_id/feedback",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", ":hypothesis_id", "feedback"],
+              "variable": [
+                {
+                  "key": "hypothesis_id",
+                  "value": "hyp_example_id",
+                  "description": "ID of the probed hypothesis"
+                }
+              ]
+            },
+            "description": "Reports confirmed vulnerability outcome. Sets status to 'confirmed', boosts dependent hypotheses, and triggers an automatic replan."
+          },
+          "response": []
+        },
+        {
+          "name": "Report Feedback (Negative Finding)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"outcome\": \"negative\",\n  \"status_code\": 403,\n  \"evidence\": \"Access forbidden: Tenant isolation check passed\",\n  \"discovered_state\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/:hypothesis_id/feedback",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", ":hypothesis_id", "feedback"],
+              "variable": [
+                {
+                  "key": "hypothesis_id",
+                  "value": "hyp_example_id",
+                  "description": "ID of the probed hypothesis"
+                }
+              ]
+            },
+            "description": "Marks a hypothesis as done/negative, adjusting score priors without triggering a replan."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "1. SREBench-API (Target: srebench)",
+      "item": [
+        {
+          "name": "1.1 Generate Initial Hypotheses (srebench)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"srebench\",\n  \"mode\": \"initial\",\n  \"knowledge_state_delta\": {},\n  \"prior_findings\": [],\n  \"max_hypotheses\": 15\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/generate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", "generate"]
+            },
+            "description": "Generates prioritized hypotheses for SREBench-API, synthesizing cross-service exploit chains (Auth -> Users -> Vault)."
+          },
+          "response": []
+        },
+        {
+          "name": "1.2 Generate Replan Hypotheses (srebench - SRE-01)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"srebench\",\n  \"mode\": \"replan\",\n  \"knowledge_state_delta\": {\n    \"user_id\": \"usr_102\",\n    \"service_token\": \"st_auth_service_internal_xyz\"\n  },\n  \"prior_findings\": [\n    {\n      \"scenario\": \"SRE-01\",\n      \"title\": \"User Tenant Leaked\",\n      \"evidence\": \"GET /users/v1/profile/usr_102 leaked Bob's tenant ID and doc_id\"\n    }\n  ],\n  \"max_hypotheses\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/generate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", "generate"]
+            },
+            "description": "Synthesizes chained follow-up hypotheses exploiting leaked usr_102 and service_token to access /vault/v1/documents."
+          },
+          "response": []
+        },
+        {
+          "name": "1.3 Pop Next Hypothesis (srebench)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/queue/srebench/next",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "queue", "srebench", "next"]
+            },
+            "description": "Pops the highest-priority pending hypothesis for SREBench. Transitions status to 'in_progress'."
+          },
+          "response": []
+        },
+        {
+          "name": "1.4 Peek Queue (srebench)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/queue/srebench?limit=25",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "queue", "srebench"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                }
+              ]
+            },
+            "description": "Peeks at the current queued hypotheses for SREBench ordered by priority score descending."
+          },
+          "response": []
+        },
+        {
+          "name": "1.5 Trigger Replan Event (srebench)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"srebench\",\n  \"finding_id\": \"FINDING-SRE01\",\n  \"owasp_category\": \"API1:BOLA\",\n  \"knowledge_delta\": {\n    \"service_token\": \"eyJhbGciOi...\",\n    \"doc_id\": \"doc_002\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/events/replan",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "events", "replan"]
+            },
+            "description": "Triggers dynamic replanning for SREBench upon receiving a finding.significant event."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. OWASP Juice Shop (Target: juice_shop)",
+      "item": [
+        {
+          "name": "2.1 Generate Initial Hypotheses (juice_shop)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"juice_shop\",\n  \"mode\": \"initial\",\n  \"knowledge_state_delta\": {},\n  \"prior_findings\": [],\n  \"max_hypotheses\": 15\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/generate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", "generate"]
+            },
+            "description": "Generates hypotheses targeting BOLA on /api/Users/{id}, Broken Authentication on /rest/user/login, and administrative endpoints."
+          },
+          "response": []
+        },
+        {
+          "name": "2.2 Generate Replan Hypotheses (juice_shop - JS-02)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"juice_shop\",\n  \"mode\": \"replan\",\n  \"knowledge_state_delta\": {\n    \"authenticated_user_id\": 1,\n    \"target_victim_id\": 2,\n    \"bearer_token\": \"eyJhbGciOi...\"\n  },\n  \"prior_findings\": [\n    {\n      \"vuln_id\": \"JS-01\",\n      \"title\": \"Authentication Successful\",\n      \"evidence\": \"Logged into test user on /rest/user/login\"\n    }\n  ],\n  \"max_hypotheses\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/generate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", "generate"]
+            },
+            "description": "Synthesizes BOLA / IDOR hypotheses on /api/Users/{id} probing for victim user ID 2."
+          },
+          "response": []
+        },
+        {
+          "name": "2.3 Pop Next Hypothesis (juice_shop)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/queue/juice_shop/next",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "queue", "juice_shop", "next"]
+            },
+            "description": "Pops the highest-priority pending hypothesis for OWASP Juice Shop."
+          },
+          "response": []
+        },
+        {
+          "name": "2.4 Peek Queue (juice_shop)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/queue/juice_shop?limit=25",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "queue", "juice_shop"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                }
+              ]
+            },
+            "description": "Peeks at the current queued hypotheses for OWASP Juice Shop."
+          },
+          "response": []
+        },
+        {
+          "name": "2.5 Trigger Replan Event (juice_shop)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"juice_shop\",\n  \"finding_id\": \"FINDING-JS02\",\n  \"owasp_category\": \"API1:BOLA\",\n  \"knowledge_delta\": {\n    \"victim_email\": \"admin@juice-sh.op\",\n    \"admin_id\": 1\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/events/replan",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "events", "replan"]
+            },
+            "description": "Triggers dynamic replanning for Juice Shop following an IDOR data leak."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. DVWS-Node (Target: dvws)",
+      "item": [
+        {
+          "name": "3.1 Generate Initial Hypotheses (dvws)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"dvws\",\n  \"mode\": \"initial\",\n  \"knowledge_state_delta\": {},\n  \"prior_findings\": [],\n  \"max_hypotheses\": 20\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/generate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", "generate"]
+            },
+            "description": "Generates hypotheses targeting DVWS OWASP API Top 10 vulnerabilities (BOLA, SQLi Auth, Mass Assignment, BFLA cache purge, Debug Env leak)."
+          },
+          "response": []
+        },
+        {
+          "name": "3.2 Generate Replan Hypotheses (dvws - Privilege Escalation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"dvws\",\n  \"mode\": \"replan\",\n  \"knowledge_state_delta\": {\n    \"account_id\": \"2\",\n    \"role\": \"admin\",\n    \"jwt\": \"eyJhbGciOi...\"\n  },\n  \"prior_findings\": [\n    {\n      \"vuln_id\": \"DVWS-API3\",\n      \"title\": \"Mass Assignment Role Escalation\",\n      \"evidence\": \"PUT /api/v1/accounts/1/profile successfully accepted role=admin\"\n    }\n  ],\n  \"max_hypotheses\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/hypotheses/generate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "hypotheses", "generate"]
+            },
+            "description": "Synthesizes follow-up hypotheses using newly escalated admin privilege to access restricted maintenance and purge endpoints."
+          },
+          "response": []
+        },
+        {
+          "name": "3.3 Pop Next Hypothesis (dvws)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/queue/dvws/next",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "queue", "dvws", "next"]
+            },
+            "description": "Pops the highest-priority pending hypothesis for DVWS-Node."
+          },
+          "response": []
+        },
+        {
+          "name": "3.4 Peek Queue (dvws)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/queue/dvws?limit=25",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "queue", "dvws"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                }
+              ]
+            },
+            "description": "Peeks at the current queued hypotheses for DVWS-Node ordered by priority."
+          },
+          "response": []
+        },
+        {
+          "name": "3.5 Trigger Replan Event (dvws)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_id\": \"dvws\",\n  \"finding_id\": \"FINDING-DVWS-API1\",\n  \"owasp_category\": \"API1:BOLA\",\n  \"knowledge_delta\": {\n    \"discovered_accounts\": [\"1\", \"2\", \"99\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/events/replan",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "events", "replan"]
+            },
+            "description": "Triggers dynamic replanning for DVWS following BOLA account discovery."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:9002",
+      "type": "string"
+    }
+  ]
+}
