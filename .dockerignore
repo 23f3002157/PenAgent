@@ -1,0 +1,13 @@
+.git
+**/__pycache__
+**/*.pyc
+**/*.db
+**/*.db-wal
+**/*.db-shm
+.env
+.env.*
+!.env.example
+runtime
+reports
+.venv
+.pytest_cache

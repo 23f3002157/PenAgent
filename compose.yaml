@@ -1,0 +1,117 @@
+name: penagent-local
+
+x-health: &health
+  interval: 5s
+  timeout: 4s
+  retries: 12
+  start_period: 15s
+
+x-runtime: &runtime
+  init: true
+  restart: unless-stopped
+  stop_grace_period: 20s
+  networks: [control, provider_egress]
+
+services:
+  sis:
+    <<: *runtime
+    image: penagent-sis:local
+    build: ./c1-spec-ingestion
+    environment:
+      DATABASE_URL: sqlite:////data/sis.db
+      USE_REDIS: 'false'
+      PYTHONDONTWRITEBYTECODE: '1'
+    volumes: [./runtime/docker-sis:/data]
+    ports: ['127.0.0.1:${SIS_HOST_PORT:-9001}:9001']
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9001/health',timeout=2)"]
+
+  hgs:
+    <<: *runtime
+    image: penagent-hgs:local
+    build: ./c2-hypothesis-gen
+    environment:
+      SIS_URL: http://sis:9001
+      HGS_DATABASE_URL: sqlite:////data/hgs.db
+      USE_REDIS: 'false'
+      OPENAI_API_KEY: ''
+      ANTHROPIC_API_KEY: ''
+      PYTHONDONTWRITEBYTECODE: '1'
+    volumes: [./runtime/docker-hgs:/data]
+    ports: ['127.0.0.1:${HGS_HOST_PORT:-9002}:9002']
+    depends_on:
+      sis: {condition: service_healthy}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9002/health',timeout=2)"]
+
+  executor:
+    <<: *runtime
+    image: penagent-executor:local
+    build:
+      context: .
+      dockerfile: c3-executor/Dockerfile
+    environment:
+      PENAGENT_CONFIG: /app/config.json
+      PENAGENT_STATE_KEY: ${PENAGENT_STATE_KEY:?Run python -m demo.prepare_docker first}
+      PENAGENT_SERVICE_TOKEN: ${PENAGENT_SERVICE_TOKEN:?Required}
+      PENAGENT_API_TOKENS: ${PENAGENT_API_TOKENS:?Required}
+      PENAGENT_LLM_PROVIDER: none
+      PYTHONDONTWRITEBYTECODE: '1'
+    volumes:
+      - ./runtime/docker-state:/data
+      - ./runtime/docker.json:/app/config.json:ro
+    ports: ['127.0.0.1:${EXECUTOR_HOST_PORT:-9003}:9003']
+    depends_on:
+      sis: {condition: service_healthy}
+      hgs: {condition: service_healthy}
+      interpreter: {condition: service_healthy}
+      fixture: {condition: service_healthy}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9003/ready',timeout=3)"]
+
+  interpreter:
+    <<: *runtime
+    image: penagent-interpreter:local
+    build:
+      context: .
+      dockerfile: c4-interpreter/Dockerfile
+    networks: [control, provider_egress]
+    environment:
+      PENAGENT_CONFIG: /app/config.json
+      PENAGENT_STATE_KEY: ${PENAGENT_STATE_KEY:?Required}
+      PENAGENT_SERVICE_TOKEN: ${PENAGENT_SERVICE_TOKEN:?Required}
+      PENAGENT_LLM_PROVIDER: ${PENAGENT_LLM_PROVIDER:-none}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-}
+      LANGSMITH_TRACING: 'false'
+      PYTHONDONTWRITEBYTECODE: '1'
+    volumes:
+      - ./runtime/docker-state:/data
+      - ./runtime/docker.json:/app/config.json:ro
+    ports: ['127.0.0.1:${INTERPRETER_HOST_PORT:-9004}:9004']
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9004/ready',timeout=2)"]
+
+  fixture:
+    <<: *runtime
+    image: penagent-executor:local
+    command: [python, -B, -m, uvicorn, demo.fixture_app:app, --host, 0.0.0.0, --port, '9010', --no-access-log]
+    networks:
+      control:
+        ipv4_address: ${PENAGENT_FIXTURE_IP:?Run preparation first}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9010/openapi.json',timeout=2)"]
+
+networks:
+  control:
+    internal: true
+    ipam:
+      config:
+        - subnet: ${PENAGENT_TEST_SUBNET:?Run preparation first}
+  provider_egress: {}

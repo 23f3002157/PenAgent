@@ -1,0 +1,96 @@
+from fastapi import Depends, FastAPI, Header
+
+from penagent_common.api import BodyLimit, correlation, install_errors, owner_dependency
+from penagent_common.config import Settings
+from penagent_common.models import AuditCreate, ExecuteInput, RunInput, StateWrite, ExecutionResult, SessionState
+from penagent_common.policy import Rejected
+from penagent_common.store import Store
+from executor.service import Executor, public_result
+from executor.tools import Tools
+from executor.workflow import Workflow
+
+
+def create_app(settings: Settings) -> FastAPI:
+    if not settings.api_tokens or not settings.service_token:
+        raise ValueError("api_tokens and PENAGENT_SERVICE_TOKEN are required")
+    app = FastAPI(title="PenAgent Component 3: Live Probe Executor", version="0.1.0")
+    app.add_middleware(BodyLimit, limit=settings.max_request_size)
+    store = Store(settings)
+    executor = Executor(settings, store)
+    app.state.executor = executor
+    owner = owner_dependency(settings)
+    install_errors(app)
+
+    @app.get("/health")
+    async def health():
+        return {"status": "healthy", "component": 3}
+
+    @app.get("/ready")
+    async def ready():
+        from penagent_common.http import service_call
+        with store.connection() as db:
+            db.execute("SELECT 1")
+        for base in (settings.sis_url, settings.hgs_url, settings.interpreter_url):
+            await service_call(settings, "GET", base, "/health")
+        return {"status": "ready"}
+
+    @app.post("/v1/audits", status_code=201)
+    async def create(request: AuditCreate, subject: str = Depends(owner)):
+        if request.target_id not in settings.targets:
+            raise Rejected("target_not_authorized")
+        store.create(request.audit_id, subject, request.target_id)
+        return {"audit_id": request.audit_id, "status": "PLANNING"}
+
+    @app.get("/v1/audits/{audit}")
+    async def status(audit: str, subject: str = Depends(owner)):
+        return {k: v for k, v in store.audit(audit, subject).items() if k != "owner"}
+
+    @app.post("/v1/audits/{audit}/cancel")
+    async def cancel(audit: str, subject: str = Depends(owner)):
+        store.cancel(audit, subject)
+        return {"status": "cancelled"}
+
+    @app.post("/v1/audits/{audit}/probes", response_model=ExecutionResult)
+    async def execute(audit: str, request: ExecuteInput, subject: str = Depends(owner), x_correlation_id: str | None = Header(default=None)):
+        store.audit(audit, subject)
+        result = await executor.execute(audit, subject, request.hypothesis, request.probe, correlation(x_correlation_id))
+        return public_result(result)
+
+    @app.get("/v1/audits/{audit}/probes/{probe}")
+    async def get_probe(audit: str, probe: str, subject: str = Depends(owner)):
+        item = store.get_probe(audit, subject, probe)
+        return {"result": public_result(item["result"]) if item["result"] else None, "interpretation": item["interpretation"], "status": "recorded" if item["result"] else "outcome_unknown_do_not_replay"}
+
+    @app.get("/v1/audits/{audit}/state", response_model=SessionState)
+    async def state(audit: str, subject: str = Depends(owner)):
+        return store.read(audit, subject)
+
+    @app.put("/v1/audits/{audit}/state", response_model=SessionState)
+    async def write_state(audit: str, request: StateWrite, subject: str = Depends(owner)):
+        if request.key.startswith("__"):
+            raise Rejected("reserved_state_key")
+        return store.write(audit, subject, request)
+
+    @app.get("/v1/audits/{audit}/evidence")
+    async def evidence(audit: str, subject: str = Depends(owner)):
+        trace = store.trace(audit, subject)
+        # Never return raw request bindings, target text, session secrets, or
+        # opaque observation values to the public evidence endpoint.
+        return {"audit": trace["audit"], "probes": [{"probe_id": p["probe_id"],
+                "result": public_result(p["result"]) if p["result"] else None,
+                "interpretation": p["interpretation"]} for p in trace["probes"]],
+                "transitions": [e for e in trace["events"] if e["kind"] == "transition"]}
+
+    @app.post("/v1/audits/{audit}/run")
+    async def run(audit: str, request: RunInput, subject: str = Depends(owner), x_correlation_id: str | None = Header(default=None)):
+        return await Workflow(executor).run(audit, subject, request.bindings, correlation(x_correlation_id))
+
+    @app.get("/v1/tools")
+    async def tools(subject: str = Depends(owner)):
+        return Tools.definitions()
+
+    return app
+
+
+def app():
+    return create_app(Settings.from_env())
