@@ -1,7 +1,7 @@
 # Research paper compliance
 
-The supplied paper's Sections 5.4–5.5 and Table 4 govern component numbering.
-This map distinguishes implemented C3/C4 behavior from future system components.
+The supplied paper's Sections 5.4–5.7 and Table 4 govern component numbering.
+This map distinguishes implemented C3-C6 behavior from remaining open items.
 
 | Requirement | Implementation | Executed verification |
 |---|---|---|
@@ -13,7 +13,7 @@ This map distinguishes implemented C3/C4 behavior from future system components.
 | Execute actual C2 hypotheses | executor/workflow.py; existing AttackHypothesis model | test_live_closed_loop; test_contracts_sessions_and_endpoints |
 | Resolve actual C1 operation graph | Executor.graph and build_arguments; existing EndpointGraph model | live ingestion/planning contract test; hallucinated_endpoint, schema_validation_blocks_remote_refs_and_bad_parameters |
 | Explicit ordered dependencies, no guessed IDs | Binding.depends_on and $state object-ID references | live session-chain test, missing_context |
-| Authorized targets and risk boundary | common/policy.py, operator config, DenyApprovalGate | invalid_url, unauthorized_destination, approval_denied_by_semantics, untrusted_body_cannot_extend_policy |
+| Authorized targets and risk boundary | common/policy.py, operator config, Component 5 approval gate | invalid_url, unauthorized_destination, test_approval_denied_by_semantics, untrusted_body_cannot_extend_policy |
 | 5.5 five Table 4 categories | interpreter/evidence.py | test_five_classifications parametrization and timeout_not_crash |
 | Confirmed: exploit success in authorized context | operator-defined forbidden-value and protected-field predicates | replanning_trigger; actual simulated positive in live_closed_loop |
 | Strong: suggestive, unconfirmed | evidence fields plus operator expectation | strong-signal case; valid_mutation_and_duplicate |
@@ -31,13 +31,28 @@ This map distinguishes implemented C3/C4 behavior from future system components.
 | Independent mutation branches | interpreter/service.py | test_mutation_branches.py: parameter boundaries, auth context, observed ID reuse, depth and no-progress checks |
 | Confirmed stop retains planner handoff | executor/workflow.py | test_confirmed_stop_still_records_planner_handoff |
 | Legacy resource compatibility | sis/storage.py, hgs/queue.py | test_legacy_connections.py; 6 C1 and 8 C2 available regressions |
+| 5.6 Human gate pauses non-safe actions | executor/service.py (reserve+request_approval), penagent_common/store.py approvals table | test_approvals.py: test_destructive_op_becomes_pending |
+| 5.6 Operator approve/deny/timeout decision | executor/main.py approvals routes, Store.decide_approval, _expire_approvals | test_approve_executes_for_real, test_deny_blocks_permanently, test_timeout_auto_skips, test_approvals_http_endpoints |
+| 5.6 Approval bypass scoped to one probe, not promotable by a model | validation.build_arguments(approved=...), policy.enforce_operation(approved=...) | test_approved_bypass_scoped_to_one_probe, test_double_decide_rejected, test_approve_rejects_wrong_probe_state |
+| 5.6 Budget interplay with pending approvals | Store.reserve reused for pending probes | test_budget_exhaustion_not_mistaken_for_approval |
+| 5.7 CVSS-scored, reproducible findings | c6-report/report/synth.py, cvss.py (deterministic FIRST.org formula, never LLM-assigned) | test_report.py: test_confirmed_finding_chain_and_cvss, test_cvss_reference_vectors |
+| 5.7 Findings/observations/operational-issues buckets by classification | report/synth.py build_report | test_report_buckets_each_classification |
+| 5.7 Remediation and report API | report/synth.py remediation lookup; report/main.py GET /v1/audits/{audit}/report | test_remediation_lookup_hits_known_category_and_falls_back, test_report_http_endpoint |
 
 ## Explicit boundaries and unverified areas
 
 - No existing LangGraph runtime/checkpointer existed. This adds a durable minimal
   orchestration seam, not a complete LangGraph application.
-- Component 5 remains unavailable. Risky actions are denied, not approved through
-  a pretend human gate. Component 6's CVSS/report synthesis is outside this work.
+- Component 5 lives inside C3 as a control-flow gate, not a separate network
+  service -- it was not deployed as its own Table 3 "component" process.
+  Resuming a hypothesis chain automatically after an approval is not implemented;
+  the operator decides how to continue manually, matching how this codebase
+  already refuses to auto-replay other interrupted/uncertain outcomes.
+- Component 6's CVSS v3.1 scoring is deterministic from operator-configured
+  policy fields (OperationPolicy.risk, Expectation.protected_fields) and probe
+  mutation depth, not derived from response content or an LLM. Scope is fixed
+  at Unchanged (S:U) and availability impact at None (A:N) as documented
+  conservative defaults; this is not a claim of exhaustive CVSS fidelity.
 - Mutation strategies have deterministic policy validation and independent tests
   for header, body, parameter boundaries, auth context and observed ID reuse.
   Combined statement/branch interpreter coverage is 88%, not exhaustive coverage.

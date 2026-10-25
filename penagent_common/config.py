@@ -68,6 +68,7 @@ class Settings(StrictModel):
     max_depth: int = Field(default=6, ge=1, le=100)
     max_llm_calls: int = Field(default=4, ge=0, le=100)
     max_duration: float = Field(default=300, gt=0, le=86400)
+    approval_timeout: float = Field(default=1800, gt=0, le=86400)
     concurrency: int = Field(default=2, ge=1, le=50)
     requests_per_second: float = Field(default=2, gt=0, le=100)
     retries: int = Field(default=1, ge=0, le=3)

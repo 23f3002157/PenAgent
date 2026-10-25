@@ -1,19 +1,35 @@
-# Components 3 and 4
+# Components 3, 4, 5 and 6
 
 ## Architecture
 
 C1 (`sis.main:app`, 9001) → C2 (`hgs.main:app`, 9002) → C3
 (`executor.main:app --factory`, 9003) ↔ C4 (`interpreter.main:app --factory`,
-9004). All service arrows use actual HTTP. C3/C4 share an encrypted SQLite
-audit/evidence journal; configure the same database path and Fernet key.
-C1/C2 storage schemas and contracts are unchanged; connection helpers explicitly
-close SQLite handles. C4 loads persisted evidence by probe
+9004) → C6 (`report.main:app --factory`, 9005). All service arrows use actual
+HTTP. C3/C4 share an encrypted SQLite audit/evidence journal; C6 reads that
+same journal read-only. Configure the same database path and Fernet key across
+C3, C4 and C6. C1/C2 storage schemas and contracts are unchanged; connection
+helpers explicitly close SQLite handles. C4 loads persisted evidence by probe
 ID rather than accepting caller-invented responses.
+
+Component 5 (the human approval gate) is implemented inside C3, not as a
+separate service: it directly gates `POST /v1/audits/{audit}/probes` and the
+`Workflow`, so it needs no network hop of its own. A non-safe operation (any
+`risk` other than `safe`, a `DELETE`, a semantically dangerous path, or a
+risky payload field) is no longer hard-rejected; it is reserved as
+`awaiting_approval` and surfaced through `GET/POST /v1/audits/{audit}/approvals`
+for an authenticated operator to approve, deny, or let time out (default 30
+minutes, `approval_timeout`). An approval replays exactly the stored, already
+validated request; nothing about it can change at decision time, and the
+bypass never applies to any other probe.
 
 `POST /run` processes one HGS hypothesis, its ordered steps and bounded mutations.
 It sends feedback and an explicit HGS replanning event on significant findings.
-Call again for the next hypothesis. Empty queue enters REPORTING and exposes
-the execution trace. Component 6 report generation and COMPLETE are not claimed.
+Call again for the next hypothesis. A probe that enters `awaiting_approval`
+stops the chain the same way `blocked` does; the operator resolves it through
+the approvals endpoint and decides whether/how to continue manually -- the
+workflow does not auto-resume a chain after approval. Empty queue enters
+REPORTING; C6's `GET /v1/audits/{audit}/report` can be called at any point
+(not only then) and reflects whatever evidence has been collected so far.
 
 There was no existing LangGraph runtime. The minimal Workflow persists execution,
 interpretation, mutation, replanning and approval-boundary transitions in SQLite.
@@ -46,16 +62,18 @@ key for existing encrypted audits. Run each command in a separate terminal:
 .\.venv\Scripts\python.exe -B -m uvicorn hgs.main:app --host 127.0.0.1 --port 9002 --no-access-log
 .\.venv\Scripts\python.exe -B -m uvicorn interpreter.main:app --factory --host 127.0.0.1 --port 9004 --no-access-log
 .\.venv\Scripts\python.exe -B -m uvicorn executor.main:app --factory --host 127.0.0.1 --port 9003 --no-access-log
+.\.venv\Scripts\python.exe -B -m uvicorn report.main:app --factory --host 127.0.0.1 --port 9005 --no-access-log
 ```
 
-The four Docker images were built and the actual Compose deployment exercised.
+The five Docker images were built and the actual Compose deployment exercised.
 Dockerfiles use repository root as context. `demo.prepare_docker` generates only
 ignored local service credentials/configuration, selects a nonoverlapping subnet
-and preserves existing keys. Compose publishes C1-C4 on 127.0.0.1:9001-9004;
+and preserves existing keys. Compose publishes C1-C4 and C6 on 127.0.0.1:9001-9005;
 the synthetic fixture has no published port. Shared bind-mounted encrypted SQLite
 state survives service restart. Existing C1/C2 remain unauthenticated; retain the
 trusted local boundary. Application services use the internal control network
-and a bridge network; the fixture uses only the internal network.
+and a bridge network; the fixture and C6 (read-only, no outbound calls) use
+only the internal network.
 
 Dependencies reuse FastAPI/Pydantic/httpx; jsonschema validates endpoint schemas,
 cryptography encrypts state, python-dotenv loads local settings and
@@ -112,15 +130,19 @@ Container localhost is not host localhost; use a reachable explicitly reviewed I
 Every operation must match the configured ID, method and path and the C1 graph.
 Operator rules attest semantic safety. Dangerous path/summary/description terms
 override a safe label; reversible/destructive/requires_approval actions enter
-AWAITING_APPROVAL and are denied by the Component 5 boundary. No approval API,
-30-minute approval UI or human review workflow is implemented. A model cannot
-override the boundary. Safe POST/search needs an explicit safe rule too.
+AWAITING_APPROVAL and are held for Component 5's approval gate rather than
+denied outright. A model cannot grant its own approval or widen the bypass to a
+different probe; only an authenticated operator decides, through
+`GET/POST /v1/audits/{audit}/approvals/{probe}`, and an unresolved request
+auto-skips after `approval_timeout` (default 1800s). Safe POST/search needs an
+explicit safe rule too.
 
 ## APIs
 
-Both services publish `/docs` and `/openapi.json`. C3 requires the principal's
-Bearer token; C4 internal routes require the machine token. Health/readiness are
-public and contain no evidence or credentials.
+C3, C4 and C6 all publish `/docs` and `/openapi.json`. C3 and C6's business
+routes require the principal's Bearer token (the human operator); C4's
+internal routes require the machine token. Health/readiness are public and
+contain no evidence or credentials.
 
 | Service | Method / route | Request | Response |
 |---|---|---|---|
@@ -134,11 +156,14 @@ public and contain no evidence or credentials.
 | C3 | POST /v1/audits/{audit}/run | RunInput(bindings) | workflow outcome |
 | C3 | POST /v1/audits/{audit}/cancel | — | cancelled |
 | C3 | GET /v1/tools | — | four tool schemas |
+| C3 | GET /v1/audits/{audit}/approvals | — | pending/decided approval records |
+| C3 | POST /v1/audits/{audit}/approvals/{probe} | ApprovalDecision(decision,reason?) | sanitized ExecutionResult |
 | C4 | POST /v1/audits/{audit}/interpret | owner,probe_id | Interpretation |
 | C4 | POST /v1/audits/{audit}/mutations | owner,probe_id | Mutation or null |
-| both | GET /health | — | healthy,component |
+| C6 | GET /v1/audits/{audit}/report | — | AuditReport (findings/observations/operational_issues) |
+| all | GET /health | — | healthy,component |
 | C3 | GET /ready | — | DB and C1/C2/C4 health or 503 |
-| C4 | GET /ready | — | DB health |
+| C4, C6 | GET /ready | — | DB health |
 
 Create request:
 
@@ -181,6 +206,28 @@ rejection evidence is referenced. Confidence is rule-based, not calibrated.
 schema validation; 503 is upstream unavailable; 409 is a policy conflict.
 Probe errors are structured results. Correlation IDs are preserved when valid,
 otherwise generated. Upstream error strings are not exposed.
+
+## Component 6: audit report
+
+`AuditReport` is assembled by `report/synth.py` from the same stored, already
+redacted probe/interpretation evidence C3's `/evidence` endpoint returns --
+nothing new is written, and no LLM is involved, so it works identically with
+`PENAGENT_LLM_PROVIDER=none`. `CONFIRMED_VULNERABILITY` and `STRONG_SIGNAL`
+probes become scored `findings`; `WEAK_SIGNAL` becomes an unscored
+`observations` entry; `ERROR_CRASH` (5xx/transport failure) becomes an
+unscored `operational_issues` entry, since a crash is a potential logic or
+availability bug, never proof of a vulnerability; `NEGATIVE` contributes only
+to the summary counts. Each finding's `probe_chain` walks `parent_probe_id`
+back to the root mutation, in order, and `request_summary` is the same
+redacted per-step evidence `public_result()` already produces. Severity is a
+deterministic CVSS v3.1 base score (`report/cvss.py`, the public FIRST.org
+formula): `AV:N`/`UI:N` always (an automated HTTP probe), `AC:H` only when a
+mutation was required to confirm, `PR:L` only when the confirming probe used a
+session reference, `S:U` as a documented conservative default, and
+confidentiality/integrity impact derived only from the operator's own
+`Expectation.protected_fields` count and `OperationPolicy.risk` -- never from
+response text. Remediation text is a static lookup by OWASP API Top-10 2023
+category prefix with a generic fallback.
 
 ## Tools, sessions and privacy
 
@@ -264,6 +311,24 @@ docker compose restart executor interpreter
 python -B -m demo.docker_verify --restart-check --output reports/docker-gemini.json
 ```
 
+`demo.docker_verify` also exercises Component 5's approve and deny paths against
+the live `executor` container (the synthetic fixture's `op_fixture_denied`
+operation is configured destructive in `demo.prepare_docker` for this purpose
+only) and confirms Component 6's `report` container returns a well-formed
+report containing the run's `CONFIRMED_VULNERABILITY` finding.
+
+`demo.testenv_verify --output reports/testenv-verify.json` runs the same
+C3→C5→C4→C6 pipeline, in-process (no live C1/C2/HGS or C3/C4/C6 HTTP servers
+needed, the same pattern `demo.juice_check` uses), against the real
+`monisha117/penagent-target-env` container described in `images/README.md`
+(run it first per that document, substituting the corrected image name noted
+there). It is a reachability/pipeline smoke check, not a benchmark run: it
+authorizes one read-only op per target and one real destructive op on DVWS
+(`DELETE /api/v1/admin/maintenance/purge-cache`, confirmed to actually purge
+something) to exercise Component 5's approve and deny paths against a genuine
+live action -- it does not attempt SREBench-API's 20 scenarios or DVWS's full
+OWASP API Top 10 coverage.
+
 For an offline deployment leave PENAGENT_LLM_PROVIDER=none and omit
 --require-gemini. Real provider checks consume the configured account's quota.
 `demo.gemini_application` verifies ephemeral TCP services with Gemini;
@@ -281,6 +346,7 @@ No benchmark inputs are generated by these commands.
 .\.venv\Scripts\python.exe -B -m pytest c2-hypothesis-gen/tests -q
 ```
 
+`tests/test_approvals.py` and `tests/test_report.py` cover Components 5 and 6.
 Historical suites must run separately because both use package `tests`. Their
 missing benchmark inputs are recorded in AUDIT.md; do not fabricate replacements
 to turn them green. The demo starts actual HTTP servers with ephemeral ports and

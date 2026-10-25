@@ -29,7 +29,7 @@ def prepare():
     current = dotenv_values(env)
     defaults = {"PENAGENT_STATE_KEY": Fernet.generate_key().decode(), "PENAGENT_SERVICE_TOKEN": secrets.token_urlsafe(32),
         "PENAGENT_API_TOKENS": json.dumps({"operator": secrets.token_urlsafe(32)}), "PENAGENT_LLM_PROVIDER": "none",
-        "SIS_HOST_PORT": "9001", "HGS_HOST_PORT": "9002", "EXECUTOR_HOST_PORT": "9003", "INTERPRETER_HOST_PORT": "9004"}
+        "SIS_HOST_PORT": "9001", "HGS_HOST_PORT": "9002", "EXECUTOR_HOST_PORT": "9003", "INTERPRETER_HOST_PORT": "9004", "REPORT_HOST_PORT": "9005"}
     if not current.get("PENAGENT_TEST_SUBNET"):
         network = choose_subnet()
         defaults.update(PENAGENT_TEST_SUBNET=str(network), PENAGENT_FIXTURE_IP=str(network.network_address + 10))
@@ -46,7 +46,9 @@ def prepare():
             "op_fixture_object": {"method": "GET", "path": "/admin/object", "allowed_headers": ["X-Test-Context"],
                 "header_variations": {"X-Test-Context": ["fixture-only"]}, "expectation": {"expected_behavior": "Anonymous clients must not receive tenant-b private data",
                     "protected_fields": ["private_data"], "signal_fields": ["signal"], "forbidden_values": {"owner": "tenant-b"}}},
-            "op_fixture_denied": {"method": "GET", "path": "/admin/denied"},
+            # Marked destructive so the Docker verification flow can exercise the
+            # Component 5 approval gate against a real running container.
+            "op_fixture_denied": {"method": "GET", "path": "/admin/denied", "risk": "destructive"},
             "op_fixture_error": {"method": "GET", "path": "/admin/error"},
             "op_fixture_session": {"method": "GET", "path": "/session", "response_credentials": ["access_token"]},
             "op_fixture_dependent": {"method": "GET", "path": "/objects/{object_id}"}}}}}

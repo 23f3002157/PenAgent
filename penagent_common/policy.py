@@ -34,13 +34,16 @@ def enforce_url(url: str, target) -> None:
         raise Rejected("unsafe_path")
 
 
-def enforce_operation(node, rule, requires_approval: bool = False) -> None:
+def enforce_operation(node, rule, requires_approval: bool = False, approved: bool = False) -> None:
     if not rule or node.method != rule.method or node.path != rule.path:
         raise Rejected("operation_not_authorized_or_schema_drift")
     semantic = " ".join([node.path, node.summary or "", node.description or ""]).lower()
     dangerous = re.search(r"delete|purge|reset|destroy|truncate|transfer|payment|charge|purchase|withdraw|shutdown|reboot|drop\b|corrupt", semantic)
-    if requires_approval or dangerous or rule.risk != "safe" or node.method == "DELETE":
-        raise Rejected("approval_required_component5_unavailable")
+    # `approved` is set only when replaying a single, already-reserved probe that a
+    # human operator explicitly approved through Component 5's approval endpoint.
+    # It never widens authorization for a fresh probe.
+    if (requires_approval or dangerous or rule.risk != "safe" or node.method == "DELETE") and not approved:
+        raise Rejected("approval_required")
     # Safe POST/search etc. requires explicit operator rule; all other ops also
     # require a matching rule. Verb alone is never evidence of authorization.
 

@@ -93,9 +93,78 @@ remain absent. They were not fabricated or silently counted as passes.
 | Real Gemini native structured output | VERIFIED | provider, application and Docker checks |
 | Docker persistence | VERIFIED | actual restart and exact state/hash comparison |
 | Authorized positive/negative E2E | VERIFIED | explicitly synthetic positive, negative scenario |
-| Components 5/6 and full LangGraph | OUT OF SCOPE | default-deny gate and durable minimal orchestration interfaces |
+| Components 5/6 | VERIFIED (2026-10-25) | approvals suite, report suite, Docker and real-benchmark-image checks above |
+| Full LangGraph runtime/checkpointer | OUT OF SCOPE | durable minimal orchestration interface (SQLite checkpoints) instead |
 
 No real-world vulnerability discovery, calibrated confidence, full human approval
 UI, multi-host SQLite deployment or automatic replay of uncertain requests is
 claimed. All five mutation strategies have independent tests; model failure
 branches use test doubles in addition to separate real-provider verification.
+
+## Follow-up: Components 5 and 6, and real benchmark-image verification (2026-10-25)
+
+Status: **Components 5 and 6 now VERIFIED**, in Docker and against the real
+benchmark container. The "OUT OF SCOPE" row above for Components 5/6 is
+superseded by this entry; full LangGraph adoption remains out of scope (see
+docs/EXECUTION.md, "there was no existing LangGraph runtime").
+
+Commands executed and results, from repository root:
+
+```powershell
+.\.venv\Scripts\python.exe -B -m pytest tests -q
+.\.venv\Scripts\python.exe -B -m demo.run --output reports/demo.json
+.\.venv\Scripts\python.exe -B -m demo.prepare_docker
+docker compose build
+docker compose up -d --wait --wait-timeout 120
+.\.venv\Scripts\python.exe -B -m demo.docker_verify --output reports/docker-verify.json
+docker compose restart executor interpreter report
+.\.venv\Scripts\python.exe -B -m demo.docker_verify --restart-check --output reports/docker-verify.json
+docker pull monisha117/penagent-target-env:latest
+docker run -d --name penagent-testbed -p 18001:3000 -p 18002:8000 -p 18003:8080 monisha117/penagent-target-env:latest
+.\.venv\Scripts\python.exe -B -m demo.testenv_verify --output reports/testenv-verify.json
+```
+
+- New suite including `tests/test_approvals.py` (10 cases) and
+  `tests/test_report.py` (5 cases): **127 passed**. `demo.run` unchanged: 3
+  probes, CONFIRMED_VULNERABILITY/STRONG_SIGNAL/NEGATIVE.
+- Five Docker images built (`sis`, `hgs`, `executor`, `interpreter`, `report`);
+  six containers healthy (`fixture` makes six). A real `compose.yaml` bug was
+  found and fixed: a service on only the `internal: true` `control` network
+  never gets its published host port bound by this Docker Engine, even with an
+  explicit `ports:` entry -- `report` needed `provider_egress` too, like
+  `executor`/`interpreter`, despite making no outbound calls itself.
+- `demo.docker_verify`: **PASSED**. Component 5's approve path was exercised
+  inside the main exploratory audit (`op_fixture_denied` is marked destructive
+  for this run only); the chain reliably completes because the now-approved,
+  really-executed 403 supplies its own NEGATIVE evidence. Component 5's deny
+  path and Component 6's report (2 findings, valid CVSS v3.1 vectors,
+  `GET /v1/audits/{audit}/report`) were exercised separately. `--restart-check`
+  after restarting executor/interpreter/report: **PASSED**, identical state.
+- A real, pre-existing HGS/C2 characteristic was found while debugging this:
+  `GET /v1/queue/{target}` lists the whole generated hypothesis batch, not the
+  remaining queue, so it cannot predict what `/next` (used internally by
+  `/run`) pops next. `demo.docker_verify`'s main loop no longer relies on it
+  for anything beyond a best-effort skip of the deliberate-500 hypothesis.
+- `images/README.md` names `monisha117/penagent-test-env`; the image actually
+  published under that account is `monisha117/penagent-target-env` (the
+  documented name fails to pull -- "repository does not exist"). Corrected in
+  place, along with DVWS's documented stack/paths (it is FastAPI with
+  `/openapi.json`/`/health`, not Express/Svelte with `/api-docs`).
+- `demo.testenv_verify` against the real, running container: **PASSED**. Juice
+  Shop root and SREBench-API `/health` both reachable (HTTP 200, WEAK_SIGNAL --
+  no operator expectation configured for either; this is a reachability check,
+  not vulnerability discovery). DVWS's real, live, unauthenticated
+  `/api/v1/debug/env` returns a database connection string and a JWT signing
+  secret; with a configured `Expectation.protected_fields`, C4 correctly
+  classified it STRONG_SIGNAL, and C6's `request_summary` for it was confirmed
+  to carry only a body hash, never the raw secret values. Component 5's gate
+  was exercised against a real, confirmed-destructive live action (`DELETE
+  /api/v1/admin/maintenance/purge-cache`, response `{"status":"cache_purged"}`,
+  not a mock): approved once (replayed and executed for real) and denied once
+  (blocked, never sent).
+- This did not ingest SREBench-API's or DVWS's full OpenAPI surface through C1,
+  did not drive HGS's autonomous hypothesis generation against the real
+  images (it used a hand-built graph/hypothesis per target, the same pattern
+  `demo.juice_check` already uses), and did not attempt SREBench-API's 20
+  scenarios or DVWS's documented OWASP API Top 10 coverage. That remains
+  deferred evaluation/benchmark work, not part of this follow-up.

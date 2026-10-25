@@ -25,3 +25,4 @@ dist/
 *.sqlite3
 reports/*.xml
 reports/*.json
+reports/*.pdf
