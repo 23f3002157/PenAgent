@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI, Header
 
 from penagent_common.api import BodyLimit, correlation, install_errors, owner_dependency
 from penagent_common.config import Settings
-from penagent_common.models import AuditCreate, ExecuteInput, RunInput, StateWrite, ExecutionResult, SessionState
+from penagent_common.models import ApprovalDecision, AuditCreate, ExecuteInput, RunInput, StateWrite, ExecutionResult, SessionState
 from penagent_common.policy import Rejected
 from penagent_common.store import Store
 from executor.service import Executor, public_result
@@ -80,6 +80,21 @@ def create_app(settings: Settings) -> FastAPI:
                 "result": public_result(p["result"]) if p["result"] else None,
                 "interpretation": p["interpretation"]} for p in trace["probes"]],
                 "transitions": [e for e in trace["events"] if e["kind"] == "transition"]}
+
+    @app.get("/v1/audits/{audit}/approvals")
+    async def approvals(audit: str, subject: str = Depends(owner)):
+        return {"approvals": store.approvals(audit, subject)}
+
+    @app.post("/v1/audits/{audit}/approvals/{probe}")
+    async def decide_approval(audit: str, probe: str, request: ApprovalDecision, subject: str = Depends(owner), x_correlation_id: str | None = Header(default=None)):
+        # Component 5: a human operator token holder is the reviewer. The decision
+        # (approve/deny) is recorded atomically before the request is ever replayed.
+        store.decide_approval(audit, subject, probe, "approved" if request.decision == "approve" else "denied", request.reason, subject)
+        if request.decision == "approve":
+            result = await executor.execute_approved(audit, subject, probe, correlation(x_correlation_id))
+        else:
+            result = executor.execute_denied(audit, subject, probe, request.reason)
+        return public_result(result)
 
     @app.post("/v1/audits/{audit}/run")
     async def run(audit: str, request: RunInput, subject: str = Depends(owner), x_correlation_id: str | None = Header(default=None)):

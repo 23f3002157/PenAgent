@@ -18,7 +18,8 @@ def environment():
         "machine_headers": {"Authorization": "Bearer " + values["PENAGENT_SERVICE_TOKEN"]},
         **{name: "http://127.0.0.1:" + values.get(var, default) for name, var, default in [
             ("sis", "SIS_HOST_PORT", "9001"), ("hgs", "HGS_HOST_PORT", "9002"),
-            ("executor", "EXECUTOR_HOST_PORT", "9003"), ("interpreter", "INTERPRETER_HOST_PORT", "9004")]}}
+            ("executor", "EXECUTOR_HOST_PORT", "9003"), ("interpreter", "INTERPRETER_HOST_PORT", "9004"),
+            ("report", "REPORT_HOST_PORT", "9005")]}}
 
 
 def verify(require_gemini=False):
@@ -32,8 +33,8 @@ def verify(require_gemini=False):
                 headers=env["machine_headers"] if machine else None)
             response.raise_for_status()
             return response.json() if response.status_code != 204 else None
-        health = {name: call(name, "GET", "/health") for name in ("sis", "hgs", "executor", "interpreter")}
-        readiness = {name: call(name, "GET", "/ready") for name in ("executor", "interpreter")}
+        health = {name: call(name, "GET", "/health") for name in ("sis", "hgs", "executor", "interpreter", "report")}
+        readiness = {name: call(name, "GET", "/ready") for name in ("executor", "interpreter", "report")}
         assert client.get(env["interpreter"] + "/v1/audits/missing/interpret").status_code == 405
         assert client.post(env["interpreter"] + "/v1/audits/missing/interpret", json={"owner": env["owner"], "probe_id": "fake"}).status_code == 401
         job = call("sis", "POST", "/v1/ingest", {"target_id": "fixture", "base_url": target, "spec_source": target + "/openapi.json"})
@@ -53,17 +54,35 @@ def verify(require_gemini=False):
         for _ in range(batch["count"] + 5):
             # The intentional 500 belongs to its own audit: mixing it into the
             # positive/negative chain would correctly halt that entire audit.
+            # GET /v1/queue/{target} lists the whole generated batch, not the
+            # remaining queue, so it cannot reliably predict what /next (used
+            # internally by /run) pops; op_fixture_error is excluded on a
+            # best-effort basis only, as before this change.
             pending = call("hgs", "GET", "/v1/queue/fixture")
             while pending and any(s["op"] == "op_fixture_error" for s in pending[0]["attack_sequence"]):
                 call("hgs", "GET", "/v1/queue/fixture/next")
                 pending = call("hgs", "GET", "/v1/queue/fixture")
             output = call("executor", "POST", f"/v1/audits/{audit}/run", {"bindings": {"1": {}}})
             outcomes.append(output)
+            acceptable_statuses = {"hypothesis_finished", "duplicate", "chain_halted"}
+            if output["status"] == "awaiting_approval":
+                # op_fixture_denied is marked destructive for this verification run
+                # (Component 5) and HGS's own exploration surfaces it as readily as
+                # any other hypothesis. Approving it here -- a real operator decision
+                # -- lets this same exploratory chain also supply its NEGATIVE
+                # evidence (a clean 403, no configured violation predicate), so the
+                # loop reliably finishes before ever reaching the deliberate 500.
+                # The deny path is exercised explicitly, on its own audit, below.
+                approved = call("executor", "POST", f"/v1/audits/{audit}/approvals/{output['probe_id']}", {"decision": "approve"})
+                assert approved["status"] == "executed" and approved["status_code"] == 403, approved
+                # /run only interprets probes it executes itself; interpret this
+                # operator-approved one explicitly, the same way the executor would.
+                call("interpreter", "POST", f"/v1/audits/{audit}/interpret", {"owner": env["owner"], "probe_id": approved["probe_id"]}, machine=True)
             trace = call("executor", "GET", f"/v1/audits/{audit}/evidence")
             categories = {p["interpretation"]["classification"] for p in trace["probes"] if p["interpretation"]}
             if {"CONFIRMED_VULNERABILITY", "NEGATIVE"}.issubset(categories):
                 break
-            if output["status"] not in {"hypothesis_finished", "duplicate", "chain_halted"}:
+            if output["status"] not in acceptable_statuses and output["status"] != "awaiting_approval":
                 raise RuntimeError("workflow did not complete: " + json.dumps(output))
         assert {"STRONG_SIGNAL", "CONFIRMED_VULNERABILITY", "NEGATIVE"}.issubset(categories), categories
         assessments = [p["interpretation"].get("model_assessment") for p in trace["probes"] if p["interpretation"]]
@@ -74,6 +93,30 @@ def verify(require_gemini=False):
         with closing(sqlite3.connect("runtime/docker-state/execution.db", timeout=10)) as database:
             handoffs = database.execute("SELECT kind,status FROM handoffs WHERE audit=?", (audit,)).fetchall()
         assert {("feedback", "done"), ("replan", "done")}.issubset(set(handoffs))
+        # Component 5: op_fixture_denied is marked destructive in runtime/docker.json
+        # for this verification run, so exercise the real approve and deny paths
+        # against the live container.
+        denied_hyp = {"id": "denied-approval-check", "target_endpoints": ["op_fixture_denied"],
+            "owasp_category": "API8:Security_Misconfiguration", "attack_sequence": [{"step": 1, "op": "op_fixture_denied"}]}
+        denied_request = {"hypothesis": denied_hyp, "probe": {"hypothesis_id": denied_hyp["id"], "op": "op_fixture_denied"}}
+        approval_audit = audit + "-approval"
+        call("executor", "POST", "/v1/audits", {"audit_id": approval_audit, "target_id": "fixture", "acknowledged_authorization": True})
+        pending = call("executor", "POST", f"/v1/audits/{approval_audit}/probes", denied_request)
+        assert pending["status"] == "awaiting_approval", pending
+        pending_list = call("executor", "GET", f"/v1/audits/{approval_audit}/approvals")
+        assert len(pending_list["approvals"]) == 1 and pending_list["approvals"][0]["status"] == "pending"
+        approved = call("executor", "POST", f"/v1/audits/{approval_audit}/approvals/{pending['probe_id']}", {"decision": "approve"})
+        assert approved["status"] == "executed" and approved["status_code"] == 403, approved
+        deny_audit = audit + "-deny"
+        call("executor", "POST", "/v1/audits", {"audit_id": deny_audit, "target_id": "fixture", "acknowledged_authorization": True})
+        pending2 = call("executor", "POST", f"/v1/audits/{deny_audit}/probes", denied_request)
+        denied = call("executor", "POST", f"/v1/audits/{deny_audit}/approvals/{pending2['probe_id']}", {"decision": "deny", "reason": "verification: exercising deny path"})
+        assert denied["status"] == "blocked" and denied["error"] == "verification: exercising deny path", denied
+        # Component 6: the main audit's confirmed finding should appear in its report.
+        report = call("report", "GET", f"/v1/audits/{audit}/report")
+        assert report["probes_executed"] >= 1
+        assert any(f["classification"] == "CONFIRMED_VULNERABILITY" for f in report["findings"]), report
+        assert all(0 <= f["cvss_score"] <= 10 and f["cvss_vector"].startswith("CVSS:3.1/") for f in report["findings"])
         error_audit = audit + "-error"
         call("executor", "POST", "/v1/audits", {"audit_id": error_audit, "target_id": "fixture", "acknowledged_authorization": True})
         error_hyp = next(h for h in batch["hypotheses"] if any(s["op"] == "op_fixture_error" for s in h["attack_sequence"]))
@@ -90,7 +133,8 @@ def verify(require_gemini=False):
         return {"status": "PASSED", "environment": "Docker synthetic fixture; no benchmark created", "audit_id": audit,
             "health": health, "readiness": readiness, "node_count": len(graph["nodes"]), "hypothesis_count": batch["count"],
             "outcomes": outcomes, "trace": trace, "state": state, "gemini_assessments": assessments,
-            "controlled_error": error_interpretation, "repeat_after_error": halted, "cancellation": cancelled}
+            "controlled_error": error_interpretation, "repeat_after_error": halted, "cancellation": cancelled,
+            "approval_gate": {"approved": approved, "denied": denied}, "report": report}
 
 
 def restart_check(path):
@@ -131,7 +175,8 @@ def main():
     destination = Path(args.output)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(result, indent=2), encoding="utf-8")
-    print(json.dumps({"status": result["status"], "audit_id": result["audit_id"], "probes": len(result["trace"]["probes"]), "gemini_verified": args.require_gemini, "controlled_error": result["controlled_error"]["classification"]}))
+    print(json.dumps({"status": result["status"], "audit_id": result["audit_id"], "probes": len(result["trace"]["probes"]), "gemini_verified": args.require_gemini,
+        "controlled_error": result["controlled_error"]["classification"], "approval_gate_exercised": True, "report_findings": len(result["report"]["findings"])}))
 
 
 if __name__ == "__main__":

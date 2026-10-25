@@ -19,12 +19,6 @@ from executor.validation import build_arguments
 logger = logging.getLogger(__name__)
 
 
-class DenyApprovalGate:
-    """Component 5 integration boundary. There is intentionally no approval API."""
-    async def approve(self, **context) -> bool:
-        return False
-
-
 class Executor:
     def __init__(self, settings, store, transport=None):
         self.settings, self.store = settings, store
@@ -32,7 +26,6 @@ class Executor:
         self.semaphore = asyncio.Semaphore(settings.concurrency)
         self.rate_lock = asyncio.Lock()
         self.next_request = 0.0
-        self.gate = DenyApprovalGate()
 
     async def graph(self, target: str, correlation: str) -> EndpointGraph:
         from urllib.parse import quote
@@ -96,25 +89,7 @@ class Executor:
             result.request_fingerprint = hashlib.sha256(encoded.encode()).hexdigest()
             self.store.reserve(audit, owner, result, probe, hypothesis, graph)
             reserved = True
-            async with self.semaphore:
-                async with asyncio.timeout(min(self.settings.request_timeout, max(.001, a["created"] + self.settings.max_duration - time.time()))):
-                    await self.http_request(args, target, node, rule, audit, owner, result)
-            if result.parsed and result.status_code in range(200, 300):
-                for key, value in result.parsed.artifacts.items():
-                    category = "tokens" if key in result.parsed.credential_fields else "object_ids"
-                    state_key = f"{node.id}.{key}"
-                    self.store.write(audit, owner, StateWrite(category=category, key=state_key, value=value))
-                    result.state_changes.append(f"{category}.{state_key}")
-                # Credentials are never returned to C4 or clients. Stored only as
-                # encrypted session artifacts and referenced by name thereafter.
-                for key in result.parsed.credential_fields:
-                    parts = key.split(".")
-                    item = result.parsed.data
-                    for part in parts[:-1]:
-                        item = item[part]
-                    item[parts[-1]] = "[REDACTED]"
-                    result.parsed.artifacts[key] = "[REDACTED]"
-            self.store.transition(audit, "INTERPRETING")
+            await self._perform(audit, owner, result, args, target, node, rule, a)
         except Rejected as exc:
             result.error = str(exc)
             result.approval_required = "approval_required" in result.error
@@ -122,8 +97,32 @@ class Executor:
                 result.risk_classification = "destructive"
                 if target and target.operations.get(probe.op) and target.operations[probe.op].risk != "safe":
                     result.risk_classification = target.operations[probe.op].risk
-                await self.gate.approve(audit_id=audit, probe=probe)
-                self.store.transition(audit, "AWAITING_APPROVAL")
+                try:
+                    # Component 5: pause instead of hard-denying. Reserve the probe
+                    # (if not already) so there is a durable record to approve/deny,
+                    # and create the pending approval request. build_arguments never
+                    # reached HTTPArguments for this raise, so there is no resolved-
+                    # request fingerprint yet; derive one from the probe itself so
+                    # reserve()'s NOT NULL/duplicate-detection columns still work and
+                    # an identical pending probe is still recognized as a duplicate.
+                    if not reserved:
+                        result.request_fingerprint = hashlib.sha256(json.dumps(
+                            {"op": probe.op, "binding": probe.binding.model_dump(mode="json")},
+                            sort_keys=True, allow_nan=False).encode()).hexdigest()
+                        self.store.reserve(audit, owner, result, probe, hypothesis, graph)
+                        reserved = True
+                    result.status = "awaiting_approval"
+                    description = self._approval_description(audit, owner, hypothesis, probe, graph, result)
+                    self.store.request_approval(audit, result.probe_id, description)
+                    self.store.transition(audit, "AWAITING_APPROVAL")
+                except Rejected as budget_exc:
+                    result.status, result.error, result.approval_required = "blocked", str(budget_exc), False
+                    if "budget" in result.error:
+                        result.status = "budget_exhausted"
+                    elif "duplicate" in result.error:
+                        result.status = "duplicate"
+                    elif "cancelled" in result.error:
+                        result.status = "cancelled"
             elif "budget" in result.error:
                 result.status = "budget_exhausted"
             elif "duplicate" in result.error:
@@ -144,6 +143,106 @@ class Executor:
             else:
                 self.store.event(audit, "rejection", result.model_dump(mode="json"))
             logger.info("probe_result", extra={"audit_id": audit, "probe_id": result.probe_id, "correlation_id": correlation, "outcome": result.status, "error_code": result.error})
+        return result
+
+    async def _perform(self, audit, owner, result, args, target, node, rule, a):
+        """Fire the request and extract state artifacts. Shared by a normal execution
+        and an operator-approved replay of a pending probe (execute_approved)."""
+        async with self.semaphore:
+            async with asyncio.timeout(min(self.settings.request_timeout, max(.001, a["created"] + self.settings.max_duration - time.time()))):
+                await self.http_request(args, target, node, rule, audit, owner, result)
+        if result.parsed and result.status_code in range(200, 300):
+            for key, value in result.parsed.artifacts.items():
+                category = "tokens" if key in result.parsed.credential_fields else "object_ids"
+                state_key = f"{node.id}.{key}"
+                self.store.write(audit, owner, StateWrite(category=category, key=state_key, value=value))
+                result.state_changes.append(f"{category}.{state_key}")
+            # Credentials are never returned to C4 or clients. Stored only as
+            # encrypted session artifacts and referenced by name thereafter.
+            for key in result.parsed.credential_fields:
+                parts = key.split(".")
+                item = result.parsed.data
+                for part in parts[:-1]:
+                    item = item[part]
+                item[parts[-1]] = "[REDACTED]"
+                result.parsed.artifacts[key] = "[REDACTED]"
+        self.store.transition(audit, "INTERPRETING")
+
+    def _approval_description(self, audit, owner, hypothesis, probe, graph, result):
+        """Component 5: the human-readable context a reviewer sees. Built only from
+        already-authorized hypothesis/probe/policy fields, never raw target text."""
+        node = next((n for n in graph.nodes if n.id == probe.op), None)
+        description = {
+            "method": node.method if node else None,
+            "path": node.path if node else None,
+            "owasp_category": hypothesis.owasp_category,
+            "risk_classification": result.risk_classification,
+            "motivation": probe.motivation,
+            "is_mutation": probe.parent_probe_id is not None,
+            "reason_blocked": result.error,
+            "expected_outcome": "If approved, replays exactly this stored request; no new "
+                "parameter, header, or body value is introduced at decision time.",
+        }
+        if probe.parent_probe_id:
+            try:
+                parent = self.store.get_probe(audit, owner, probe.parent_probe_id)
+                if parent["interpretation"]:
+                    description["prior_evidence"] = parent["interpretation"]["reasoning_summary"]
+            except Rejected:
+                pass
+        return description
+
+    async def execute_approved(self, audit: str, owner: str, probe_id: str, correlation: str) -> ExecutionResult:
+        """Component 5: replay a pending probe an operator approved. Rebuilds the
+        request from the stored context with the approval bypass scoped to this one
+        already-reserved probe; nothing about the request itself can change."""
+        execution_started = time.monotonic()
+        stored = self.store.get_probe(audit, owner, probe_id)
+        if not stored["result"]:
+            raise Rejected("probe_outcome_unknown_do_not_replay")
+        result = ExecutionResult.model_validate(stored["result"])
+        if result.status != "awaiting_approval":
+            raise Rejected("probe_not_awaiting_approval")
+        context = stored["context"]
+        hypothesis = AttackHypothesis.model_validate(context["hypothesis"])
+        probe = Probe.model_validate(context["probe"])
+        graph = EndpointGraph.model_validate(context["graph"])
+        result.correlation_id = correlation
+        try:
+            a = self.store.active(audit, owner)
+            target = self.settings.targets.get(a["target"])
+            if not target:
+                raise Rejected("target_not_authorized")
+            state = self.store.read(audit, owner, secrets=True)
+            node, rule, args = build_arguments(probe, hypothesis, graph, target, state, approved=True)
+            result.status, result.error, result.approval_required = "blocked", None, False
+            await self._perform(audit, owner, result, args, target, node, rule, a)
+        except (TimeoutError, httpx.TimeoutException):
+            result.status, result.error = "error", "transport_timeout_not_proof_of_crash"
+        except httpx.HTTPError:
+            result.status, result.error = "error", "transport_failure"
+        except (ValidationError, ValueError, TypeError):
+            result.status, result.error = "blocked", "invalid_arguments_or_contract"
+        except Rejected as exc:
+            result.status, result.error = "blocked", str(exc)
+        finally:
+            if result.attempts and not result.latency_ms:
+                result.latency_ms = (time.monotonic() - execution_started) * 1000
+            self.store.finish(result)
+            logger.info("probe_result", extra={"audit_id": audit, "probe_id": result.probe_id, "correlation_id": correlation, "outcome": result.status, "error_code": result.error})
+        return result
+
+    def execute_denied(self, audit: str, owner: str, probe_id: str, reason: str | None) -> ExecutionResult:
+        """Component 5: a human operator refused the pending probe. Permanently
+        blocked; never replayed."""
+        stored = self.store.get_probe(audit, owner, probe_id)
+        if not stored["result"]:
+            raise Rejected("probe_outcome_unknown_do_not_replay")
+        result = ExecutionResult.model_validate(stored["result"])
+        if result.status != "awaiting_approval":
+            raise Rejected("probe_not_awaiting_approval")
+        result.status, result.error, result.approval_required = "blocked", reason or "denied_by_operator", False
+        self.store.finish(result)
         return result
 
     async def http_request(self, args: HTTPArguments, target, node, rule, audit, owner, result):

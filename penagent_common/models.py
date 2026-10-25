@@ -74,7 +74,7 @@ class ExecutionResult(StrictModel):
     probe_id: str = Field(default_factory=lambda: uuid4().hex)
     correlation_id: str
     op: str
-    status: Literal["executed", "blocked", "error", "cancelled", "budget_exhausted", "duplicate"]
+    status: Literal["executed", "blocked", "error", "cancelled", "budget_exhausted", "duplicate", "awaiting_approval"]
     status_code: int | None = None
     response_headers: dict[str, str] = Field(default_factory=dict)
     parsed: Parsed | None = None
@@ -142,6 +142,11 @@ class AuditCreate(StrictModel):
     acknowledged_authorization: Literal[True]
 
 
+class ApprovalDecision(StrictModel):
+    decision: Literal["approve", "deny"]
+    reason: str | None = Field(default=None, max_length=500)
+
+
 class StateWrite(StrictModel):
     key: str = Field(pattern=r"^[A-Za-z0-9_.-]{1,160}$")
     category: Literal["tokens", "cookies", "object_ids", "observations"]
@@ -168,3 +173,36 @@ class RunInput(StrictModel):
 class UpstreamGraph(BaseModel):
     """Use existing public models; do not fork or rename their fields."""
     graph: EndpointGraph
+
+
+class Finding(StrictModel):
+    """Component 6 output: a scored, reproducible finding built only from stored,
+    already-redacted evidence. Never constructed from raw response text or an LLM."""
+    finding_id: str
+    title: str
+    owasp_category: str
+    classification: Category
+    confidence: float = Field(ge=0, le=1)
+    cvss_vector: str
+    cvss_score: float = Field(ge=0, le=10)
+    severity: Literal["critical", "high", "medium", "low"]
+    probe_chain: list[str] = Field(default_factory=list)
+    request_summary: list[dict[str, JsonValue]] = Field(default_factory=list)
+    explanation: str
+    remediation: str
+
+    @field_validator("classification", mode="before")
+    @classmethod
+    def category_from_wire(cls, value):
+        return Category(value)
+
+
+class AuditReport(StrictModel):
+    audit_id: str
+    target_id: str
+    generated_at: float
+    probes_executed: int
+    findings: list[Finding] = Field(default_factory=list)
+    observations: list[dict[str, JsonValue]] = Field(default_factory=list)
+    operational_issues: list[dict[str, JsonValue]] = Field(default_factory=list)
+    summary: dict[str, int] = Field(default_factory=dict)

@@ -86,3 +86,61 @@ changed. Shared C3/C4 journal schemas are separate from these legacy stores.
 Gemini was integrated using langchain-google-genai 4.4.2 and validated with the
 operator-supplied local key and gemini-3.1-flash-lite. Credentials were kept in
 ignored .env. The existing HGS heuristic/provider behavior was preserved.
+
+## Components 5 and 6, and real benchmark-image verification (2026-10-25)
+
+Component 5 (human approval gate, inside C3 -- see docs/EXECUTION.md) and
+Component 6 (audit report generation, new `c6-report/` service) were implemented.
+127 pytest cases pass, including new `tests/test_approvals.py` (10 cases) and
+`tests/test_report.py` (5 cases). `python -m demo.run` still passes unchanged
+(3 probes, CONFIRMED_VULNERABILITY/STRONG_SIGNAL/NEGATIVE), confirming the
+synthetic hermetic path is unaffected.
+
+Docker Desktop 28.5.2 was used. All five images (`sis`, `hgs`, `executor`,
+`interpreter`, `report`) built and `docker compose up` brought up all six
+containers (plus the synthetic fixture) healthy. A pre-existing `compose.yaml`
+bug was found and fixed during this work: a service on only the `control`
+network (`internal: true`) never gets its published host port bound by this
+Docker Engine, even with an explicit `ports:` entry; `report` needed
+`provider_egress` too, matching `interpreter`/`executor`, despite making no
+outbound calls itself. `demo.docker_verify` was extended to also check C6's
+`/health`/`/ready`, exercise Component 5's approve path (inside the main
+exploratory audit, against `op_fixture_denied` marked destructive for this run)
+and deny path (a dedicated audit), and confirm C6's report contains the run's
+`CONFIRMED_VULNERABILITY` finding with a well-formed CVSS v3.1 vector; it
+passed, as did the existing `--restart-check` after restarting
+executor/interpreter/report. A real, pre-existing HGS/C2 characteristic was
+found along the way: `GET /v1/queue/{target}` lists the whole generated batch,
+not the remaining queue, so it cannot be used to predict what `/next` (used
+internally by `/run`) will pop next; `demo.docker_verify`'s main loop was made
+robust to that rather than relying on it.
+
+The real target image was located and pulled: `images/README.md` names
+`monisha117/penagent-test-env`, but the image actually published under that
+Docker Hub account is `monisha117/penagent-target-env` (the pull of the
+documented name fails with "repository does not exist"); `images/README.md`
+was corrected in place. The corrected image was run per that document's
+instructions (`-p 18001:3000 -p 18002:8000 -p 18003:8080`). All three targets
+were reachable: Juice Shop (real OWASP Juice Shop, HTTP 200 at `/`), SREBench-API
+(FastAPI, `/health` healthy, `/scenarios/list` returns its 20 scenarios), and
+DVWS (also FastAPI, not the Express/Svelte/MariaDB/MongoDB stack
+`images/README.md` describes; real OpenAPI spec at `/openapi.json`, not
+`/api-docs` as documented). `demo.testenv_verify` (new) drives C3 ->
+Component 5 -> C4 -> Component 6 against these three live targets with a
+hand-built graph/hypothesis per target, the same pattern `demo.juice_check`
+already uses, rather than a live C1/C2/HGS deployment. It passed: Juice Shop
+root and SREBench `/health` both classified WEAK_SIGNAL (no operator
+expectation configured for either, intentionally -- this is a reachability
+check, not vulnerability discovery); DVWS's `/api/v1/debug/env` -- a real,
+live, unauthenticated endpoint that returns a database connection string and a
+JWT signing secret -- classified STRONG_SIGNAL against a configured
+expectation, with the report's `request_summary` confirmed to carry only a
+body hash, never the raw secrets; and Component 5's gate was exercised against
+a real, confirmed-destructive live action (`DELETE
+/api/v1/admin/maintenance/purge-cache`, which genuinely purges something, not
+a mock) -- approved once (replayed and executed for real) and denied once
+(blocked, never sent). No SREBench/DVWS benchmark specification, ground truth
+or dataset was created, and this did not attempt to discover the 20
+SREBench-API scenarios or DVWS's full OWASP API Top 10 coverage; that
+evaluation work remains explicitly deferred, consistent with earlier audit
+entries.

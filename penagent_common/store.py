@@ -46,6 +46,10 @@ class Store:
               holder TEXT PRIMARY KEY, expires REAL NOT NULL);
             CREATE TABLE IF NOT EXISTS rate_clock (
               id INTEGER PRIMARY KEY CHECK(id=1), next_start REAL NOT NULL);
+            CREATE TABLE IF NOT EXISTS approvals (
+              probe TEXT PRIMARY KEY, audit TEXT NOT NULL, requested REAL NOT NULL,
+              status TEXT NOT NULL DEFAULT 'pending', description BLOB NOT NULL,
+              decided_by TEXT, decided REAL, reason TEXT);
             """)
 
     @contextmanager
@@ -190,6 +194,57 @@ class Store:
                 db.execute("INSERT INTO handoffs VALUES(?,?,?,?) ON CONFLICT(audit,probe,kind) DO UPDATE SET status=excluded.status", (audit, probe, kind, status))
             row = db.execute("SELECT status FROM handoffs WHERE audit=? AND probe=? AND kind=?", (audit, probe, kind)).fetchone()
             return row[0] if row else None
+
+    def request_approval(self, audit, probe: str, description: dict):
+        """Component 5: persist a pending human-approval record for an already
+        reserved, already stored-as-pending probe. `description` is operator-facing
+        only (hypothesis/op/risk/rationale); never raw target response text."""
+        with self.connection() as db:
+            db.execute("INSERT INTO approvals(probe,audit,requested,status,description) VALUES(?,?,?,?,?)",
+                       (probe, audit, time.time(), "pending", self.pack(description)))
+
+    def _expire_approvals(self, audit: str):
+        """Lazy timeout sweep, mirroring how active() lazily enforces the duration
+        budget. A pending approval older than approval_timeout is auto-skipped,
+        never auto-approved."""
+        cutoff = time.time() - self.settings.approval_timeout
+        with self.connection() as db:
+            db.execute("BEGIN IMMEDIATE")
+            stale = db.execute("SELECT probe FROM approvals WHERE audit=? AND status='pending' AND requested<=?", (audit, cutoff)).fetchall()
+            for row in stale:
+                db.execute("UPDATE approvals SET status='timed_out',decided=? WHERE probe=?", (time.time(), row["probe"]))
+                probe_row = db.execute("SELECT result FROM probes WHERE id=?", (row["probe"],)).fetchone()
+                if probe_row and probe_row["result"]:
+                    result = self.unpack(probe_row["result"])
+                    if result.get("status") == "awaiting_approval":
+                        result["status"] = "blocked"
+                        result["error"] = "approval_timed_out_destructive_action_skipped"
+                        db.execute("UPDATE probes SET result=? WHERE id=?", (self.pack(result), row["probe"]))
+
+    def approvals(self, audit: str, owner: str, pending_only: bool = False):
+        self.audit(audit, owner)
+        self._expire_approvals(audit)
+        with self.connection() as db:
+            query = "SELECT probe,audit,requested,status,description,decided_by,decided,reason FROM approvals WHERE audit=?"
+            if pending_only:
+                query += " AND status='pending'"
+            rows = db.execute(query, (audit,)).fetchall()
+        return [{"probe_id": r["probe"], "requested": r["requested"], "status": r["status"],
+                 "description": self.unpack(r["description"]), "decided_by": r["decided_by"],
+                 "decided": r["decided"], "reason": r["reason"]} for r in rows]
+
+    def decide_approval(self, audit: str, owner: str, probe: str, decision: str, reason: str | None, decided_by: str):
+        """Atomic compare-and-swap of the operator's decision (approve/deny), distinct
+        from the execution outcome recorded on the probe afterward. Raises if already
+        decided, timed out, or unknown."""
+        self.active(audit, owner)
+        self._expire_approvals(audit)
+        with self.connection() as db:
+            cursor = db.execute("UPDATE approvals SET status=?,decided_by=?,decided=?,reason=? WHERE probe=? AND audit=? AND status='pending'",
+                                 (decision, decided_by, time.time(), reason, probe, audit))
+            if cursor.rowcount != 1:
+                row = db.execute("SELECT 1 FROM approvals WHERE probe=? AND audit=?", (probe, audit)).fetchone()
+                raise Rejected("approval_not_found" if not row else "approval_already_decided")
 
     def lease(self, audit, owner, holder, release=False):
         self.audit(audit, owner)

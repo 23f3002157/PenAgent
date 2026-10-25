@@ -44,7 +44,7 @@ def resolve(value, state):
     return value
 
 
-def build_arguments(probe, hypothesis, graph, target, state):
+def build_arguments(probe, hypothesis, graph, target, state, approved: bool = False):
     nodes = {n.id: n for n in graph.nodes}
     if hypothesis.id != probe.hypothesis_id or not hypothesis.attack_sequence or not hypothesis.target_endpoints:
         raise Rejected("invalid_hypothesis")
@@ -57,7 +57,7 @@ def build_arguments(probe, hypothesis, graph, target, state):
         raise Rejected("invalid_step_order")
     node = nodes[probe.op]
     rule = target.operations.get(node.id)
-    enforce_operation(node, rule, hypothesis.requires_approval)
+    enforce_operation(node, rule, hypothesis.requires_approval, approved)
     binding = Binding.model_validate(resolve(probe.binding.model_dump(), state))
     def destination_values(value):
         if isinstance(value, str) and value.lower().startswith(("http://", "https://", "file://", "gopher://", "ftp://")):
@@ -73,15 +73,16 @@ def build_arguments(probe, hypothesis, graph, target, state):
         if isinstance(value, dict):
             for name, child in value.items():
                 if name.lower() in {"role", "is_admin", "privileges", "balance", "amount", "credit_delta", "billing_tier", "account_status"}:
-                    raise Rejected("approval_required_component5_unavailable")
+                    raise Rejected("approval_required")
                 payload_risk(child)
         elif isinstance(value, list):
             for child in value:
                 payload_risk(child)
         elif isinstance(value, str) and re.search(r"\b(delete|purge|truncate|withdraw|shutdown|reset|destroy|payment|purchase)\b", value, re.I):
-            raise Rejected("approval_required_component5_unavailable")
-    payload_risk(binding.query)
-    payload_risk(binding.body)
+            raise Rejected("approval_required")
+    if not approved:
+        payload_risk(binding.query)
+        payload_risk(binding.body)
     headers = binding.headers.copy()
     if any(k.lower() not in {h.lower() for h in rule.allowed_headers} for k in headers):
         raise Rejected("header_not_authorized")

@@ -1,13 +1,15 @@
 # PenAgent
 
-PenAgent combines endpoint discovery, hypothesis planning, authorized HTTP probes
-and evidence-based response interpretation. Components 3 and 4 extend the existing
-Component 1 and 2 microservices while preserving their public HTTP contracts.
-Their SQLite connection helpers also close handles explicitly to fix a resource leak.
+PenAgent combines endpoint discovery, hypothesis planning, authorized HTTP probes,
+evidence-based response interpretation, a human approval gate for non-safe actions
+and audit report synthesis. Components 3-6 extend the existing Component 1 and 2
+microservices while preserving their public HTTP contracts. Their SQLite connection
+helpers also close handles explicitly to fix a resource leak.
 
 See the [repository audit](docs/AUDIT.md), [execution guide](docs/EXECUTION.md),
-[research-paper compliance map](docs/COMPLIANCE.md) and
-[verification report](docs/VERIFICATION.md) for detailed documentation.
+[step-by-step walkthrough](docs/WALKTHROUGH.md) (run it and watch what it
+decides, with real example output), [research-paper compliance map](docs/COMPLIANCE.md)
+and [verification report](docs/VERIFICATION.md) for detailed documentation.
 
 ## Components and request flow
 
@@ -17,9 +19,13 @@ See the [repository audit](docs/AUDIT.md), [execution guide](docs/EXECUTION.md),
 | 2: HGS | Generate and rank hypotheses from the endpoint graph | http://127.0.0.1:9002 |
 | 3: Executor | Validate and execute authorized probes; parse and store evidence | http://127.0.0.1:9003 |
 | 4: Interpreter | Classify evidence and propose bounded mutations | http://127.0.0.1:9004 |
+| 5: Approval gate | Pause non-safe actions for an operator to approve/deny/timeout | part of Component 3 |
+| 6: Report | Assemble stored evidence into a CVSS-scored audit report | http://127.0.0.1:9005 |
 
 ```text
 C1 endpoint graph -> C2 ranked hypotheses -> C3 validated HTTP execution
+                                               |
+                                 non-safe action -> C5 approval gate -> approve/deny/timeout
                                                |
                                       persisted response evidence
                                                |
@@ -28,13 +34,15 @@ C1 endpoint graph -> C2 ranked hypotheses -> C3 validated HTTP execution
                               validated mutation -> C3 -> C4
                                                |
                               significant evidence -> C2 replanning
+                                               |
+                                   C6 audit report (on demand)
 ```
 
 Service communication uses HTTP. C3/C4 share encrypted, audit-scoped SQLite state
-for session references, evidence, budgets and workflow progress. The minimal
-orchestrator persists transitions; it is not a full LangGraph application or a
-LangGraph checkpointer. Component 5 approval and Component 6 report synthesis
-are not implemented.
+for session references, evidence, budgets and workflow progress; C6 reads that
+same state read-only. The minimal orchestrator persists transitions; it is not a
+full LangGraph application or a LangGraph checkpointer. Component 5 lives inside
+C3 as the approval gate described above, not as a separate network service.
 
 ## Repository layout
 
@@ -42,14 +50,15 @@ are not implemented.
 |---|---|
 | `c1-spec-ingestion/` | Existing ingestion service; [service README](c1-spec-ingestion/README.md) |
 | `c2-hypothesis-gen/` | Existing planning service; [service README](c2-hypothesis-gen/README.md) |
-| `c3-executor/` | Production executor service and Dockerfile |
+| `c3-executor/` | Production executor service and Dockerfile; also hosts Component 5's approval gate |
 | `c4-interpreter/` | Production interpretation/mutation service and Dockerfile |
+| `c6-report/` | Production audit-report service and Dockerfile |
 | `penagent_common/` | Shared schemas, policy, configuration, authentication and persistence |
 | `tests/` | Automated unit, contract, integration and recovery tests |
 | `demo/` | Runnable integration verification, local HTTP fixture and Docker/Gemini checks |
-| `docs/` | Repository audit, execution guide, research-paper compliance and verification report |
+| `docs/` | Repository audit, execution guide, step-by-step walkthrough, research-paper compliance and verification report |
 | `images/` | Existing test-environment documentation and images |
-| `compose.yaml` | Four-service deployment plus the isolated verification fixture |
+| `compose.yaml` | Five-service deployment plus the isolated verification fixture |
 | `config.example.json` | Settings template with no authorized targets |
 | `.env.example` | Credential-free environment template |
 | `runtime/`, `reports/` | Generated local state and verification output; ignored by Git |
@@ -108,12 +117,13 @@ Preparation creates ignored `.env` service credentials, `runtime/docker.json`
 and persistent data directories. Existing configuration and populated keys are
 preserved. Retain the state encryption key to read existing encrypted audits.
 
-Compose publishes C1-C4 on loopback ports 9001-9004 by default. Host ports can be
-changed using `SIS_HOST_PORT`, `HGS_HOST_PORT`, `EXECUTOR_HOST_PORT` and
-`INTERPRETER_HOST_PORT` in `.env`. The synthetic fixture has no published host
-port. Application services join the control and bridge networks; the fixture
-joins only the internal control network. C1/C2 retain their existing unauthenticated
-APIs, so preserve the trusted local boundary.
+Compose publishes C1-C4 and C6 on loopback ports 9001-9005 by default. Host ports
+can be changed using `SIS_HOST_PORT`, `HGS_HOST_PORT`, `EXECUTOR_HOST_PORT`,
+`INTERPRETER_HOST_PORT` and `REPORT_HOST_PORT` in `.env`. The synthetic fixture
+has no published host port. Application services join the control and bridge
+networks; the fixture and C6 (read-only, no outbound calls) join only the
+internal control network. C1/C2 retain their existing unauthenticated APIs, so
+preserve the trusted local boundary.
 
 ## Optional Gemini integration
 
@@ -153,7 +163,8 @@ Other utilities:
 |---|---|
 | `demo.gemini_application` | Complete temporary TCP workflow with actual Gemini calls |
 | `demo.juice_check --url <authorized-origin>` | Supplementary read-only C3/C4 root request to an explicitly authorized target |
-| `demo.docker_verify --restart-check --output reports/docker-gemini.json` | Compare saved state/evidence after restarting C3/C4 |
+| `demo.docker_verify --restart-check --output reports/docker-gemini.json` | Compare saved state/evidence after restarting C3/C4/C6 |
+| `demo.testenv_verify --output reports/testenv-verify.json` | Smoke check against the real `monisha117/penagent-target-env` container (see [images/README.md](images/README.md)): C3→C5→C4→C6 against Juice Shop, SREBench-API and DVWS |
 
 The restart check requires an existing successful report at the selected path:
 
@@ -162,11 +173,11 @@ docker compose restart executor interpreter
 .\.venv\Scripts\python.exe -B -m demo.docker_verify --restart-check --output reports/docker-gemini.json
 ```
 
-## Component 3 and 4 APIs
+## Component 3, 4, 5 and 6 APIs
 
-Both services expose `/docs`, `/openapi.json`, `/health` and `/ready`. C3's business
-routes require an operator Bearer token from `PENAGENT_API_TOKENS`; C4's business
-routes require `PENAGENT_SERVICE_TOKEN`.
+C3, C4 and C6 expose `/docs`, `/openapi.json`, `/health` and `/ready`. C3 and C6's
+business routes require an operator Bearer token from `PENAGENT_API_TOKENS`; C4's
+business routes require `PENAGENT_SERVICE_TOKEN`.
 
 | Service | Method and route | Input / output |
 |---|---|---|
@@ -179,8 +190,11 @@ routes require `PENAGENT_SERVICE_TOKEN`.
 | C3 | POST `/v1/audits/{audit}/run` | Step-number-to-binding map -> workflow outcome |
 | C3 | POST `/v1/audits/{audit}/cancel` | Cancel audit |
 | C3 | GET `/v1/tools` | Four strict tool schemas |
+| C3 (C5) | GET `/v1/audits/{audit}/approvals` | Pending/decided approval records |
+| C3 (C5) | POST `/v1/audits/{audit}/approvals/{probe}` | `ApprovalDecision` (approve/deny + reason) -> `ExecutionResult` |
 | C4 | POST `/v1/audits/{audit}/interpret` | `{owner, probe_id}` -> `Interpretation` |
 | C4 | POST `/v1/audits/{audit}/mutations` | `{owner, probe_id}` -> `Mutation` or null |
+| C6 | GET `/v1/audits/{audit}/report` | -> `AuditReport` (CVSS-scored findings + observations) |
 
 C3 exposes `http_request`, `parse_response`, `read_session_state` and
 `write_session_state` through validated function-tool definitions. Audit identity
@@ -190,6 +204,18 @@ return redacted references; model-authored updates cannot fabricate credentials.
 Interpretation categories are `CONFIRMED_VULNERABILITY`, `STRONG_SIGNAL`,
 `WEAK_SIGNAL`, `NEGATIVE` and `ERROR_CRASH`. Confirmation requires configured
 security predicates and supporting evidence; status codes alone do not prove a flaw.
+
+A non-safe operation (`risk` other than `safe`, `DELETE`, a semantically dangerous
+path, or a risky payload field) is reserved as `awaiting_approval` instead of being
+denied outright. The operator reviews it with `GET /v1/audits/{audit}/approvals`
+and resolves it with `POST .../approvals/{probe}`; an approval replays exactly the
+stored request (nothing about it can change at decision time, and the bypass never
+applies to any other probe), a denial blocks it permanently, and an unresolved
+request auto-skips after `approval_timeout` (default 1800s). C6's report is
+callable at any point and reflects whatever evidence has been collected so far;
+`CONFIRMED_VULNERABILITY`/`STRONG_SIGNAL` become scored findings (deterministic
+CVSS v3.1, never LLM-assigned), `WEAK_SIGNAL` becomes an observation, and
+`ERROR_CRASH` becomes an unscored operational issue.
 
 ## Configuration, safety and persistence
 
@@ -205,8 +231,10 @@ no targets; the Docker preparation utility authorizes only its synthetic fixture
   raw secrets and arbitrary response contents; evidence hashes preserve provenance.
 - Header, parameter, body, authentication-context and observed-state mutations
   must pass schema, authorization, risk, ancestry, deduplication and budget checks.
-- Potentially destructive or approval-required actions are denied at the missing
-  Component 5 boundary. A model cannot approve them.
+- Potentially destructive or approval-required actions pause at the Component 5
+  gate for an authenticated human operator to approve, deny, or let time out.
+  A model cannot approve them, and an approval never widens scope beyond the
+  one already-reserved probe it was granted for.
 - A 5xx conservatively halts the audit; it is not proof of exploitation. Cancellation
   and persistent budgets prevent continued execution.
 - State, checkpoints and evidence survive restart. Unknown request outcomes are
@@ -221,27 +249,32 @@ committed in the original repository.
 
 ## Recorded verification status
 
-Last executed verification: **2026-10-24**. Host Python 3.13.5; Docker Python 3.11.
-These are recorded results, not a claim that verification runs whenever this file
-is edited.
+Last executed verification: **2026-10-25**. Host Python 3.12.8; Docker Desktop
+28.5.2, Docker Python 3.11. These are recorded results, not a claim that
+verification runs whenever this file is edited.
 
 | Check | Recorded result |
 |---|---|
-| New unit/contract/integration/recovery suite | 112 passed |
-| Interpreter combined statement/branch coverage | 88% |
+| New unit/contract/integration/recovery/approval/report suite | 127 passed |
+| Interpreter combined statement/branch coverage | 88% (unchanged by this work) |
 | Available C1 / C2 regressions | 6 passed / 8 passed |
 | Deterministic four-service TCP demonstration | Passed |
-| Actual Gemini native output and application flow | Passed |
-| Four Docker builds and five-container deployment | Passed |
-| Docker C1-C4 flow with real Gemini | Passed |
+| Actual Gemini native output and application flow | Passed (2026-10-24; not re-run this pass, no key available) |
+| Five Docker builds and six-container deployment (sis, hgs, executor, interpreter, report, fixture) | Passed |
+| Docker C1-C4 flow with real Gemini | Passed (2026-10-24) |
+| Component 5 approve/deny gate, live in Docker (`demo.docker_verify`) | Passed |
+| Component 6 report generation, live in Docker (`demo.docker_verify`) | Passed; 2 findings, valid CVSS v3.1 vectors |
 | Planner handoff, cancellation and controlled-error halt | Passed |
-| State and evidence after C3/C4 restart | Passed |
-| Existing Juice Shop read-only root request | HTTP 200, WEAK_SIGNAL; no vulnerability claimed |
+| State and evidence after C3/C4/C6 restart | Passed |
+| Real `monisha117/penagent-target-env` reachability (Juice Shop, SREBench-API, DVWS) | All 3 targets reachable; `images/README.md` corrected (wrong image name, wrong DVWS paths/stack documented) |
+| C3→C5→C4→C6 smoke against the 3 real targets (`demo.testenv_verify`) | Passed; DVWS's real, live, unauthenticated `/api/v1/debug/env` (returns DB credentials + a JWT secret) correctly flagged STRONG_SIGNAL; Component 5 approved/executed and denied/blocked a real destructive DELETE on DVWS |
 
 Overall acceptance remains **PARTIALLY COMPLETE**: the full original C1 suite had
 6 passes and 5 missing-input/environment failures; C2 had 8 passes and 1 missing
 ground-truth failure. Available-only reruns deselected those six blocked cases;
 they were not counted as passes. They concern Juice Shop/DVWS specification inputs
 and future SREBench specifications/ground truth. No replacement benchmarks or
-datasets were created. Synthetic fixture results do not establish real-world
-vulnerability discoveries or replace the blocked historical regressions.
+datasets were created. `demo.testenv_verify` is a reachability/pipeline smoke
+check against the three real targets, not a benchmark run: it does not attempt
+SREBench-API's 20 scenarios or DVWS's full OWASP API Top 10 coverage, and does
+not establish a complete real-world vulnerability inventory.

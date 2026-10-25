@@ -1,5 +1,13 @@
 # penagent-test-env: Unified Multi-Target Benchmark Image
 
+> **Note (verified 2026-10-25):** the image actually published to Docker Hub
+> under the `monisha117` account is **`monisha117/penagent-target-env`**, not
+> `penagent-test-env` as named below. `docker pull monisha117/penagent-test-env`
+> fails with "repository does not exist". Substitute `penagent-target-env` in
+> every `docker pull`/`docker run`/Compose `image:` reference on this page;
+> everything else below (ports, endpoints, credentials) was confirmed accurate
+> against the real container.
+
 **Image Name:** `monisha117/penagent-test-env:latest`  
 **Base Operating System:** Debian 12 (Bookworm) via `python:3.11-slim-bookworm`  
 **Runtimes Included:** Node.js v24 (LTS), Python 3.11, MariaDB 10.11+, MongoDB 7.0 Community  
@@ -145,7 +153,7 @@ Allow **~10–15 seconds** after container creation for database seeding to comp
 | :--- | :--- | :--- | :--- | :--- |
 | **Target 1: OWASP Juice Shop** | `http://localhost:18001` | Node.js 24 / SQLite | Modern e-commerce web application with 80+ vulnerabilities. | Scoreboard at `/#/score-board`. User registration open via UI. |
 | **Target 2: SREBench-API** | `http://localhost:18002` | FastAPI / Python 3.11 | Novel 20-scenario cross-service microservice benchmark. | Health: `/health`<br/>Docs: `/docs`<br/>Scenarios: `/scenarios/list` |
-| **Target 3: DVWS-Node** | `http://localhost:18003` | Express / Svelte / MariaDB / MongoDB | Vulnerable web service covering OWASP API Security Top 10. | UI: `http://localhost:18003`<br/>Swagger: `/api-docs`<br/>OpenAPI Spec: `/openAPI-spec.json`<br/>`admin` / `letmein`<br/>`test` / `test` |
+| **Target 3: DVWS-Node** | `http://localhost:18003` | FastAPI / Python (verified; not the Express/Svelte/MariaDB/MongoDB stack described above) | Vulnerable REST API covering OWASP API Security Top 10. | Health: `/health`<br/>OpenAPI spec: `/openapi.json` (not `/api-docs` or `/openAPI-spec.json`)<br/>No UI; no MariaDB/MongoDB-backed accounts observed |
 
 ---
 

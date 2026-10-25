@@ -97,6 +97,28 @@ services:
       <<: *health
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9004/ready',timeout=2)"]
 
+  report:
+    <<: *runtime
+    image: penagent-report:local
+    build:
+      context: .
+      dockerfile: c6-report/Dockerfile
+    environment:
+      PENAGENT_CONFIG: /app/config.json
+      PENAGENT_STATE_KEY: ${PENAGENT_STATE_KEY:?Required}
+      PENAGENT_API_TOKENS: ${PENAGENT_API_TOKENS:?Required}
+      PYTHONDONTWRITEBYTECODE: '1'
+    volumes:
+      - ./runtime/docker-state:/data
+      - ./runtime/docker.json:/app/config.json:ro
+    ports: ['127.0.0.1:${REPORT_HOST_PORT:-9005}:9005']
+    depends_on:
+      executor: {condition: service_healthy}
+      interpreter: {condition: service_healthy}
+    healthcheck:
+      <<: *health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9005/ready',timeout=2)"]
+
   fixture:
     <<: *runtime
     image: penagent-executor:local
