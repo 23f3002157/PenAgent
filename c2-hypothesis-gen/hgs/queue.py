@@ -1,5 +1,6 @@
 import json
 import sqlite3
+from contextlib import contextmanager
 import datetime
 import logging
 from typing import List, Dict, Any, Optional
@@ -28,10 +29,15 @@ class PriorityQueue:
         self._init_db()
         self._init_redis()
 
-    def _get_connection(self) -> sqlite3.Connection:
+    @contextmanager
+    def _get_connection(self):
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
-        return conn
+        try:
+            with conn:
+                yield conn
+        finally:
+            conn.close()
 
     def _init_db(self):
         with self._get_connection() as conn:
