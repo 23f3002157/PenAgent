@@ -1,0 +1,85 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SREBench-API Cross-Service Chaining Benchmark",
+    "version": "1.0.0",
+    "description": "Benchmark exposing 20 cross-service trust boundary scenarios for evaluating exploit chain discovery"
+  },
+  "paths": {
+    "/auth/v1/exchange-token": {
+      "post": {
+        "summary": "Exchange credentials for internal service delegation token",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Service token issued"}
+        }
+      }
+    },
+    "/users/v1/profile/{user_id}": {
+      "get": {
+        "summary": "Retrieve user tenant profile",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {"description": "User profile returned"}
+        }
+      }
+    },
+    "/vault/v1/documents/{doc_id}": {
+      "get": {
+        "summary": "Retrieve confidential vault document via cross-service trust",
+        "parameters": [
+          {
+            "name": "doc_id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "x-forwarded-user",
+            "in": "header",
+            "required": false,
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "x-internal-service",
+            "in": "header",
+            "required": false,
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {"description": "Vault document accessed"},
+          "403": {"description": "Cross-service access denied"}
+        }
+      }
+    },
+    "/scenarios/list": {
+      "get": {
+        "summary": "List all 20 cross-service chaining evaluation scenarios",
+        "parameters": [],
+        "responses": {
+          "200": {"description": "List of evaluation scenarios"}
+        }
+      }
+    }
+  }
+}

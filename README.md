@@ -8,8 +8,11 @@ helpers also close handles explicitly to fix a resource leak.
 
 See the [repository audit](docs/AUDIT.md), [execution guide](docs/EXECUTION.md),
 [step-by-step walkthrough](docs/WALKTHROUGH.md) (run it and watch what it
-decides, with real example output), [research-paper compliance map](docs/COMPLIANCE.md)
-and [verification report](docs/VERIFICATION.md) for detailed documentation.
+decides, with real example output), [research-paper compliance map](docs/COMPLIANCE.md),
+[verification report](docs/VERIFICATION.md) and [evaluation results](docs/RESULTS.md)
+(real TPR/FPR/CVSS-accuracy/etc. against DVWS, SREBench-API and Juice Shop) for
+detailed documentation. [`ui/`](ui/README.md) is a small operator dashboard for
+watching an audit run.
 
 ## Components and request flow
 
@@ -56,7 +59,8 @@ C3 as the approval gate described above, not as a separate network service.
 | `penagent_common/` | Shared schemas, policy, configuration, authentication and persistence |
 | `tests/` | Automated unit, contract, integration and recovery tests |
 | `demo/` | Runnable integration verification, local HTTP fixture and Docker/Gemini checks |
-| `docs/` | Repository audit, execution guide, step-by-step walkthrough, research-paper compliance and verification report |
+| `docs/` | Repository audit, execution guide, step-by-step walkthrough, research-paper compliance, verification report and evaluation results |
+| `ui/` | Operator dashboard (static HTML/CSS/JS, no build step) for audits, approvals and reports |
 | `images/` | Existing test-environment documentation and images |
 | `compose.yaml` | Five-service deployment plus the isolated verification fixture |
 | `config.example.json` | Settings template with no authorized targets |
@@ -249,7 +253,7 @@ committed in the original repository.
 
 ## Recorded verification status
 
-Last executed verification: **2026-10-25**. Host Python 3.12.8; Docker Desktop
+Last executed verification: **2026-10-26**. Host Python 3.12.8; Docker Desktop
 28.5.2, Docker Python 3.11. These are recorded results, not a claim that
 verification runs whenever this file is edited.
 
@@ -268,6 +272,9 @@ verification runs whenever this file is edited.
 | State and evidence after C3/C4/C6 restart | Passed |
 | Real `monisha117/penagent-target-env` reachability (Juice Shop, SREBench-API, DVWS) | All 3 targets reachable; `images/README.md` corrected (wrong image name, wrong DVWS paths/stack documented) |
 | C3→C5→C4→C6 smoke against the 3 real targets (`demo.testenv_verify`) | Passed; DVWS's real, live, unauthenticated `/api/v1/debug/env` (returns DB credentials + a JWT secret) correctly flagged STRONG_SIGNAL; Component 5 approved/executed and denied/blocked a real destructive DELETE on DVWS |
+| Full evaluation run, autonomous + guided, all 3 real targets (`demo.run_evaluation`, see [docs/RESULTS.md](docs/RESULTS.md)) | Guided TPR 80%/100%/33% (DVWS/SREBench/Juice Shop); autonomous TPR 0% everywhere, a specific, explained finding (see below), not a crash or a hidden gap |
+| New unit suite incl. `tests/test_evaluate.py` | 134 passed total |
+| Operator dashboard (`ui/`) manually exercised against the live stack | Audits/evidence/approvals/report views confirmed against real API responses (Node-scripted fetch parity check, not a browser screenshot) |
 
 Overall acceptance remains **PARTIALLY COMPLETE**: the full original C1 suite had
 6 passes and 5 missing-input/environment failures; C2 had 8 passes and 1 missing
@@ -277,4 +284,18 @@ and future SREBench specifications/ground truth. No replacement benchmarks or
 datasets were created. `demo.testenv_verify` is a reachability/pipeline smoke
 check against the three real targets, not a benchmark run: it does not attempt
 SREBench-API's 20 scenarios or DVWS's full OWASP API Top 10 coverage, and does
-not establish a complete real-world vulnerability inventory.
+not establish a complete real-world vulnerability inventory. The subsequent
+full evaluation run (`demo.run_evaluation`, see
+[docs/RESULTS.md](docs/RESULTS.md)) goes further -- real C1/C2 autonomous
+ingestion and hypothesis generation this time, not a hand-built graph, plus
+a separate guided pass -- and surfaces a concrete, reproducible limitation:
+C4's mutation-discovery only recognizes the synthetic fixture's own literal
+response-field conventions, so fully-autonomous discovery of real,
+non-synthetic-shaped vulnerabilities (header-trust bypasses, BOLA via a
+guessed ID, mass assignment) does not yet generalize past parameter-free
+GET endpoints. The guided pass, run through the identical C3→C5→C4→C6
+pipeline but pointed at the ground truth's own documented exploit chains,
+confirms execution/classification/approval-gating/report generation are all
+correct once a real attack path is supplied -- including one finding
+(Juice Shop's admin-registration bypass) independently confirmed by Juice
+Shop's own built-in challenge tracker, not just PenAgent's own classification.

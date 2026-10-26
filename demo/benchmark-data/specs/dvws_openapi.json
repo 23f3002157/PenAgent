@@ -1,0 +1,109 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Damn Vulnerable Web Services (DVWS) REST API",
+    "version": "1.0.0",
+    "description": "Benchmark API for evaluating OWASP API Security Top 10 vulnerabilities"
+  },
+  "paths": {
+    "/api/v1/accounts/{account_id}": {
+      "get": {
+        "summary": "Retrieve account details by account ID",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {"description": "Account details returned"},
+          "404": {"description": "Account not found"}
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "Authenticate user credentials",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {"type": "string"},
+                  "password": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Login successful"},
+          "401": {"description": "Invalid credentials"}
+        }
+      }
+    },
+    "/api/v1/accounts/{account_id}/profile": {
+      "put": {
+        "summary": "Update user account profile",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Profile updated"}
+        }
+      }
+    },
+    "/api/v1/export/data": {
+      "get": {
+        "summary": "Export customer data",
+        "parameters": [
+          {
+            "name": "records",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "integer"}
+          }
+        ],
+        "responses": {
+          "200": {"description": "Exported data records"}
+        }
+      }
+    },
+    "/api/v1/admin/maintenance/purge-cache": {
+      "delete": {
+        "summary": "Purge system application cache",
+        "parameters": [],
+        "responses": {
+          "200": {"description": "Cache purged successfully"}
+        }
+      }
+    },
+    "/api/v1/debug/env": {
+      "get": {
+        "summary": "Retrieve system debug environment variables",
+        "parameters": [],
+        "responses": {
+          "200": {"description": "Debug environment dump"}
+        }
+      }
+    }
+  }
+}

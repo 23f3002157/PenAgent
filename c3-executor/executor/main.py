@@ -1,8 +1,12 @@
-from fastapi import Depends, FastAPI, Header
+from uuid import uuid4
 
-from penagent_common.api import BodyLimit, correlation, install_errors, owner_dependency
+from fastapi import Depends, FastAPI, Header
+from hgs.models import AttackHypothesis, AttackSequenceStep
+
+from penagent_common.api import BodyLimit, correlation, install_cors, install_errors, owner_dependency
 from penagent_common.config import Settings
-from penagent_common.models import ApprovalDecision, AuditCreate, ExecuteInput, RunInput, StateWrite, ExecutionResult, SessionState
+from penagent_common.http import service_call
+from penagent_common.models import ApprovalDecision, AuditCreate, ExecuteInput, GuidedStepInput, Probe, RunInput, StateWrite, ExecutionResult, SessionState
 from penagent_common.policy import Rejected
 from penagent_common.store import Store
 from executor.service import Executor, public_result
@@ -15,6 +19,7 @@ def create_app(settings: Settings) -> FastAPI:
         raise ValueError("api_tokens and PENAGENT_SERVICE_TOKEN are required")
     app = FastAPI(title="PenAgent Component 3: Live Probe Executor", version="0.1.0")
     app.add_middleware(BodyLimit, limit=settings.max_request_size)
+    install_cors(app)
     store = Store(settings)
     executor = Executor(settings, store)
     app.state.executor = executor
@@ -40,6 +45,10 @@ def create_app(settings: Settings) -> FastAPI:
             raise Rejected("target_not_authorized")
         store.create(request.audit_id, subject, request.target_id)
         return {"audit_id": request.audit_id, "status": "PLANNING"}
+
+    @app.get("/v1/audits")
+    async def list_audits(subject: str = Depends(owner)):
+        return {"audits": store.list_audits(subject)}
 
     @app.get("/v1/audits/{audit}")
     async def status(audit: str, subject: str = Depends(owner)):
@@ -99,6 +108,27 @@ def create_app(settings: Settings) -> FastAPI:
     @app.post("/v1/audits/{audit}/run")
     async def run(audit: str, request: RunInput, subject: str = Depends(owner), x_correlation_id: str | None = Header(default=None)):
         return await Workflow(executor).run(audit, subject, request.bindings, correlation(x_correlation_id))
+
+    @app.post("/v1/audits/{audit}/guided-step")
+    async def guided_step(audit: str, request: GuidedStepInput, subject: str = Depends(owner), x_correlation_id: str | None = Header(default=None)):
+        # Lets a UI/demo caller drive one exact, pre-authored op+binding through
+        # execute -> interpret in a single call, using only the operator token
+        # it already has -- the server, not the caller, holds the machine token
+        # needed to reach C4, same as /run already does internally.
+        store.audit(audit, subject)
+        hypothesis = AttackHypothesis(id=f"{audit}-{request.op}-{uuid4().hex[:8]}", target_endpoints=[request.op],
+            owasp_category=request.owasp_category, attack_sequence=[AttackSequenceStep(step=1, op=request.op)])
+        probe = Probe(hypothesis_id=hypothesis.id, op=request.op, binding=request.binding)
+        correlation_id = correlation(x_correlation_id)
+        result = await executor.execute(audit, subject, hypothesis, probe, correlation_id)
+        interpretation = None
+        if result.status == "executed":
+            try:
+                interpretation = await service_call(settings, "POST", settings.interpreter_url, f"/v1/audits/{audit}/interpret",
+                    payload={"owner": subject, "probe_id": result.probe_id}, correlation_id=correlation_id)
+            except Rejected as exc:
+                interpretation = {"error": str(exc)}
+        return {"result": public_result(result), "interpretation": interpretation}
 
     @app.get("/v1/tools")
     async def tools(subject: str = Depends(owner)):

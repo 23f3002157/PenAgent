@@ -166,5 +166,70 @@ docker run -d --name penagent-testbed -p 18001:3000 -p 18002:8000 -p 18003:8080 
   did not drive HGS's autonomous hypothesis generation against the real
   images (it used a hand-built graph/hypothesis per target, the same pattern
   `demo.juice_check` already uses), and did not attempt SREBench-API's 20
-  scenarios or DVWS's documented OWASP API Top 10 coverage. That remains
-  deferred evaluation/benchmark work, not part of this follow-up.
+  scenarios or DVWS's documented OWASP API Top 10 coverage. That remained
+  deferred evaluation/benchmark work -- completed in the follow-up below.
+
+## Full evaluation run, operator UI, and paper-ready results (2026-10-26)
+
+Status: the deferred evaluation/benchmark work above is now done (minus
+Burp Suite/OWASP ZAP/PentestGPT baseline comparisons, which stay explicitly
+deferred by agreement). Full results, metrics, and honest discussion of
+limitations: [docs/RESULTS.md](RESULTS.md). Summary:
+
+- `demo/run_evaluation.py` drives real C1 ingestion + real C2 hypothesis
+  generation + C3/C5/C4 execution (autonomous mode, empty bindings, no
+  ground-truth hints) and a separate guided mode (hypotheses built directly
+  from `demo/benchmark-data/ground_truth_chains.json`) against all three real targets.
+  `demo/evaluate.py` scores both against ground truth with the paper's
+  Section 6.2 metrics -- replacing the container's own `/app/datasets/evaluate.py`,
+  found to be non-functional (loads the ground truth, never compares
+  anything against it; every finding counts as a match unconditionally).
+- 134 tests pass total, including new `tests/test_evaluate.py` (7 cases) and
+  a new `GET /v1/audits` list endpoint (`Store.list_audits`) the UI needed.
+- **Guided mode** (tests execution/classification/approval/report fidelity,
+  not discovery): DVWS 80% TPR (4/5, 0% FPR), SREBench-API 100% TPR (2/2),
+  Juice Shop 33% TPR (1/3, the other two time-boxed out or scored
+  STRONG_SIGNAL by design). One finding (Juice Shop's admin-registration
+  bypass) was independently confirmed by Juice Shop's own
+  `GET /api/Challenges` tracker flipping `solved: false -> true`.
+- **Autonomous mode**: 0% TPR on all three targets -- a specific, reproducible
+  finding, not a crash. Root causes found and documented in detail in
+  `docs/RESULTS.md`: C4's mutation-discovery only recognizes the synthetic
+  fixture's own literal JSON hint keys; HGS's heuristic planner never
+  supplies a usable concrete value for a path/body parameter, so any
+  parameterized hypothesis is rejected before it reaches the target; and
+  `Expectation.owasp_categories` requires an exact string match against
+  HGS's own taxonomy, which differs from the ground truth's. Only
+  parameter-free GET endpoints were autonomously reachable, and both were
+  found (DVWS `/debug/env`, Juice Shop `/rest/admin/application-configuration`),
+  correctly classified STRONG_SIGNAL.
+- A new operator dashboard, `ui/` (static HTML/CSS/vanilla JS, no build
+  step), was built and manually verified against the live stack: audits
+  list/create, a live evidence timeline, a Component 5 approvals inbox, a
+  Component 6 report view. CORS was added to C3/C6 (`install_cors` in
+  `penagent_common/api.py`) for this; it is Bearer-token-gated the same as
+  every other route, so CORS only enables the browser fetch, not a new
+  trust boundary.
+
+## Baseline, live exploration UI, follow-up (2026-10-26, same day)
+
+- `demo/baseline_pentestgpt.py` implements the paper's Section 6.3 PentestGPT
+  baseline (prompt-only reasoning given the spec, no execution) using local
+  Ollama models (`llama3.2:3b`, `phi3:latest`, `gemma3:4b`) in place of
+  GPT-4, scored with the same `demo/evaluate.py` and ground truth as
+  PenAgent's own runs. Full results, and the key finding that TPR alone is
+  misleading without FPR (baseline FPR 20-60%, PenAgent 0%): docs/RESULTS.md.
+- A real evaluator bug was found and fixed while building this: category
+  matching only accepted an exact `"APIn:"` numeric-prefix string; a model
+  given the exact taxonomy to copy still dropped the prefix. Replaced with
+  keyword-based canonicalization (`demo/evaluate.py::_owasp_prefix`),
+  verified not to change any of PenAgent's own already-recorded guided/
+  autonomous numbers, with a new regression test
+  (`test_match_findings_category_keyword_matches_dropped_numeric_prefix`).
+- The UI gained an **Explore** tab: a live endpoint map (C1's graph, nodes
+  colored by latest classification) plus a scrolling activity feed -- and
+  `demo/configure_live_targets.py` + `demo/live_demo.py` let it watch a real,
+  paced exploration of DVWS/SREBench-API/Juice Shop (not only the synthetic
+  fixture), verified live end-to-end including a Component 5 approval
+  pause-and-resume captured mid-run through the real HTTP API.
+- 135 tests pass (one new evaluator regression test).

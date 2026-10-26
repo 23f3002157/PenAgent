@@ -1,0 +1,105 @@
+{
+  "dvws": [
+    {
+      "op": "op_get_account_api_v1_accounts__account_id__get",
+      "method": "GET",
+      "path": "/api/v1/accounts/{account_id}",
+      "owasp_category": "API1:2023 - Broken Object Level Authorization",
+      "binding": {
+        "path": {
+          "account_id": "2"
+        }
+      }
+    },
+    {
+      "op": "op_login_api_v1_auth_login_post",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "owasp_category": "API2:2023 - Broken Authentication",
+      "binding": {
+        "body": {
+          "username": "' OR '1'='1' -- ",
+          "password": "x"
+        }
+      }
+    },
+    {
+      "op": "op_update_profile_api_v1_accounts__account_id__profile_put",
+      "method": "PUT",
+      "path": "/api/v1/accounts/{account_id}/profile",
+      "owasp_category": "API3:2023 - Broken Object Property Level Authorization",
+      "binding": {
+        "path": {
+          "account_id": "1"
+        },
+        "body": {
+          "role": "admin"
+        }
+      }
+    },
+    {
+      "op": "op_purge_cache_api_v1_admin_maintenance_purge_cache_delete",
+      "method": "DELETE",
+      "path": "/api/v1/admin/maintenance/purge-cache",
+      "owasp_category": "API5:2023 - Broken Function Level Authorization",
+      "binding": {}
+    },
+    {
+      "op": "op_get_debug_env_api_v1_debug_env_get",
+      "method": "GET",
+      "path": "/api/v1/debug/env",
+      "owasp_category": "API8:2023 - Security Misconfiguration",
+      "binding": {}
+    }
+  ],
+  "srebench-api": [
+    {
+      "op": "op_get_user_profile_users_v1_profile__user_id__get",
+      "method": "GET",
+      "path": "/users/v1/profile/{user_id}",
+      "owasp_category": "API1:2023 - Broken Object Level Authorization",
+      "binding": {
+        "path": {
+          "user_id": "usr_102"
+        }
+      }
+    },
+    {
+      "op": "op_get_vault_document_vault_v1_documents__doc_id__get",
+      "method": "GET",
+      "path": "/vault/v1/documents/{doc_id}",
+      "owasp_category": "API1:2023 - Broken Object Level Authorization",
+      "binding": {
+        "path": {
+          "doc_id": "doc_002"
+        },
+        "headers": {
+          "x-internal-service": "auth-service-internal"
+        }
+      }
+    }
+  ],
+  "juice-shop": [
+    {
+      "op": "op_js_register",
+      "method": "POST",
+      "path": "/api/Users",
+      "owasp_category": "API2:2023 - Broken Authentication",
+      "binding": {
+        "body": {
+          "email": "__DYNAMIC__",
+          "password": "Test1234!",
+          "passwordRepeat": "Test1234!",
+          "role": "admin"
+        }
+      }
+    },
+    {
+      "op": "op_admin_get_rest_admin_application-configuration",
+      "method": "GET",
+      "path": "/rest/admin/application-configuration",
+      "owasp_category": "API8:2023 - Security Misconfiguration",
+      "binding": {}
+    }
+  ]
+}
