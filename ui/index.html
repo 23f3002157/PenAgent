@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PenAgent Console</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app" class="shell">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">PA</span>
+      <div class="brand-text">
+        <span class="brand-name">PenAgent Console</span>
+        <span class="brand-tag">Autonomous API Security Testing — Operator Console</span>
+      </div>
+    </div>
+    <nav class="topnav">
+      <button class="topnav-btn active" data-view="audits">Audits</button>
+      <button class="topnav-btn" data-view="baselines">Baselines &amp; Results</button>
+    </nav>
+    <div class="topbar-status" id="connStatus"><span class="dot dot-unknown"></span>Not connected</div>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <section class="panel">
+      <h2 class="panel-title">Connection</h2>
+      <form id="connForm" class="stack-sm">
+        <label class="field">
+          <span>Executor (C3) base URL</span>
+          <input id="c3Url" type="text" placeholder="http://127.0.0.1:9003" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Report (C6) base URL</span>
+          <input id="c6Url" type="text" placeholder="http://127.0.0.1:9005" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Spec graph (C1) base URL</span>
+          <input id="c1Url" type="text" placeholder="http://127.0.0.1:9001" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Operator token</span>
+          <input id="token" type="password" placeholder="Bearer token" autocomplete="off">
+        </label>
+        <button type="submit" class="btn btn-primary btn-block">Connect</button>
+      </form>
+    </section>
+
+    <section class="panel panel-grow">
+      <div class="panel-header">
+        <h2 class="panel-title">Audits</h2>
+        <button id="refreshAudits" class="btn btn-ghost btn-icon" title="Refresh" aria-label="Refresh audits">&#8635;</button>
+      </div>
+      <ul id="auditList" class="audit-list" aria-live="polite"></ul>
+      <details class="new-audit">
+        <summary>New audit</summary>
+        <form id="newAuditForm" class="stack-sm">
+          <label class="field">
+            <span>Audit ID</span>
+            <input id="newAuditId" type="text" placeholder="e.g. dvws-review-1" required>
+          </label>
+          <label class="field">
+            <span>Target ID</span>
+            <input id="newAuditTarget" list="knownTargets" type="text" placeholder="e.g. dvws, juice-shop, fixture" required>
+            <datalist id="knownTargets">
+              <option value="fixture"><option value="dvws"><option value="srebench-api"><option value="juice-shop">
+            </datalist>
+          </label>
+          <label class="check">
+            <input id="newAuditAck" type="checkbox" required>
+            <span>I am authorized to probe this target</span>
+          </label>
+          <button type="submit" class="btn btn-primary btn-block">Create audit</button>
+        </form>
+      </details>
+    </section>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="empty-state">
+      <h1>Welcome to the PenAgent Console</h1>
+      <p>Connect to your running services on the left, then pick an audit to watch it work, or create a new one
+         against <code>dvws</code>, <code>srebench-api</code> or <code>juice-shop</code> (if wired in — see
+         <code>docs/WALKTHROUGH.md</code>) to watch the agent actually explore a real target.</p>
+      <div class="quickstart">
+        <button class="btn btn-primary quickstart-btn" data-target="dvws">Quick-start: explore DVWS</button>
+        <button class="btn btn-primary quickstart-btn" data-target="juice-shop">Quick-start: explore Juice Shop</button>
+      </div>
+      <p class="muted">Or click <b>Baselines &amp; Results</b> above to see the full evaluation this console was built to demonstrate.</p>
+    </div>
+  </main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

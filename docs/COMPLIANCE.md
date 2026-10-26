@@ -38,6 +38,10 @@ This map distinguishes implemented C3-C6 behavior from remaining open items.
 | 5.7 CVSS-scored, reproducible findings | c6-report/report/synth.py, cvss.py (deterministic FIRST.org formula, never LLM-assigned) | test_report.py: test_confirmed_finding_chain_and_cvss, test_cvss_reference_vectors |
 | 5.7 Findings/observations/operational-issues buckets by classification | report/synth.py build_report | test_report_buckets_each_classification |
 | 5.7 Remediation and report API | report/synth.py remediation lookup; report/main.py GET /v1/audits/{audit}/report | test_remediation_lookup_hits_known_category_and_falls_back, test_report_http_endpoint |
+| 6.2 TPR/FPR/chain-depth/CVSS-accuracy/time-to-finding/unnecessary-action/replan-frequency metrics | demo/evaluate.py (real implementation; the container's own evaluate.py is non-functional) | tests/test_evaluate.py (7 cases); real run in docs/RESULTS.md |
+| 6.1 Datasets and targets: Juice Shop, DVWS, SREBench-API | demo/run_evaluation.py, demo/eval_targets.py against the real monisha117/penagent-target-env container | docs/RESULTS.md; reports/eval-autonomous.json, reports/eval-guided.json |
+| 6.4 Ablation-adjacent: autonomous vs. guided execution modes | demo/run_evaluation.py's two modes, never conflated | docs/RESULTS.md's per-target, per-mode tables |
+| 6.3 PentestGPT baseline (prompt-only, no execution) | demo/baseline_pentestgpt.py; Ollama open models in place of GPT-4, stated explicitly | docs/RESULTS.md's baseline section; same demo/evaluate.py scoring as PenAgent's own runs |
 
 ## Explicit boundaries and unverified areas
 
@@ -63,3 +67,12 @@ This map distinguishes implemented C3-C6 behavior from remaining open items.
   were created; fixture results do not replace those historical results.
 - Real Gemini calls and Docker/Python 3.11 execution were independently exercised.
   The positive fixture is simulated; no real-world vulnerability is claimed.
+- Section 6's evaluation (docs/RESULTS.md) does not include the paper's 6.3
+  baseline comparisons (Burp Suite Pro, OWASP ZAP, PentestGPT) -- explicitly
+  deferred. It is n=1 per (target, mode), not the paper's 3-run mean/stdev.
+  Autonomous-mode discovery scored 0% TPR on all three real targets, traced
+  to a specific, documented limitation in C4's mutation-discovery (keyed off
+  literal JSON fields the synthetic fixture uses, not present in real
+  targets' responses) -- guided-mode results (up to 100% TPR) show the
+  execution/classification/approval/report pipeline itself is correct once
+  pointed at a real attack path.

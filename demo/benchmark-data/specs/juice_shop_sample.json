@@ -1,0 +1,82 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "OWASP Juice Shop API Sample",
+    "version": "1.0.0",
+    "description": "Sample subset of Juice Shop REST API endpoints for testing PenAgent"
+  },
+  "paths": {
+    "/rest/user/login": {
+      "post": {
+        "summary": "User login endpoint",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {"type": "string"},
+                  "password": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Authentication successful"},
+          "401": {"description": "Invalid credentials"}
+        }
+      }
+    },
+    "/api/Users/{id}": {
+      "get": {
+        "summary": "Retrieve user details by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "integer"}
+          }
+        ],
+        "responses": {
+          "200": {"description": "User details returned"},
+          "403": {"description": "Access forbidden"}
+        }
+      },
+      "delete": {
+        "summary": "Delete user by ID (Destructive action)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "integer"}
+          }
+        ],
+        "responses": {
+          "200": {"description": "User deleted"}
+        }
+      }
+    },
+    "/api/Feedbacks": {
+      "get": {
+        "summary": "List all feedback submissions",
+        "parameters": [],
+        "responses": {
+          "200": {"description": "List of feedbacks"}
+        }
+      }
+    },
+    "/rest/admin/application-configuration": {
+      "get": {
+        "summary": "Admin application configuration",
+        "parameters": [],
+        "responses": {
+          "200": {"description": "Configuration object"}
+        }
+      }
+    }
+  }
+}

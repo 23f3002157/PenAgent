@@ -66,6 +66,9 @@ def test_api_isolation_and_validation(settings):
         assert client.post("/v1/audits/audit/probes", json={"made_up": "schema"}, headers=alice).status_code == 422
         assert client.get("/openapi.json").status_code == 200
         assert client.put("/v1/audits/audit/state", content=b"x" * (settings.max_request_size + 1), headers=alice).status_code == 413
+        listed = client.get("/v1/audits", headers=alice).json()["audits"]
+        assert listed and listed[0]["id"] == "audit"
+        assert client.get("/v1/audits", headers=bob).json()["audits"] == []
 
 
 async def test_all_four_bound_tools_over_live_target(tmp_path):

@@ -1,0 +1,83 @@
+# PenAgent Console
+
+A small, dependency-free operator dashboard for watching PenAgent work: audits,
+the live evidence timeline, Component 5's approval inbox, Component 6's report
+(with a one-click PDF download), and — for DVWS/SREBench-API/Juice Shop — a
+guided-run panel that actually drives probes against the target from the
+browser, plus a **Baselines & Results** view of the full paper evaluation.
+All of it reads from your running services over plain `fetch()`.
+
+No build step, no npm, no framework. Just `index.html` + `styles.css` +
+`app.js`, consistent with the rest of this repository being Python-first.
+
+## Run it
+
+```bash
+cd ui
+python -m http.server 8800
+```
+
+Open <http://localhost:8800>. In the **Connection** panel, enter:
+
+- **Executor (C3) base URL** — e.g. `http://127.0.0.1:9003`
+- **Report (C6) base URL** — e.g. `http://127.0.0.1:9005`
+- **Spec graph (C1) base URL** — e.g. `http://127.0.0.1:9001` (unauthenticated by
+  design, same as the rest of C1; needed for the Explore tab's endpoint map)
+- **Operator token** — your `PENAGENT_API_TOKENS` value (see `.env`)
+
+These are only kept in this browser's `localStorage`; nothing is sent
+anywhere except the two base URLs you configure. C3 and C6 both need CORS
+enabled for the browser to reach them — this is on by default for any
+`localhost`/`127.0.0.1` origin (see `install_cors` in
+`penagent_common/api.py`); set `PENAGENT_UI_ORIGINS` (comma-separated) on
+those services if you're serving the console from somewhere else.
+
+## What you can do here
+
+Two top-nav views: **Audits** (the operator console) and **Baselines &amp;
+Results** (the paper's evaluation numbers, read-only).
+
+### Audits view
+
+- **Sidebar** — list existing audits, create a new one against an
+  already-authorized target (`dvws`, `srebench-api`, `juice-shop`, or
+  `fixture` — a `datalist` suggests these). With no audit selected yet, two
+  **Quick-start** buttons create and open an audit against DVWS or Juice Shop
+  in one click.
+- **Explore** tab — a live endpoint map: every operation C1 discovered for
+  this target, laid out around the target as a hub, colored by its latest
+  classification (grey = not yet probed). Next to it, a scrolling activity
+  feed of every probe as it happens. For the three real targets, a **run
+  panel** above the map lets you actually drive the pre-authored guided
+  exploit chain from here — "Run this step" fires one probe+interpret call
+  (`POST {c3}/v1/audits/{audit}/guided-step`) and advances the map live;
+  "Run all remaining (paced)" walks the whole chain with the same ~2s cadence
+  `demo/live_demo.py` uses, and stops cleanly if a step lands on Component 5
+  (go resolve it in the Approvals tab, then continue). This is the literal
+  "click to make the agent run things on DVWA/Juice Shop" control surface.
+- **Evidence** tab — the live probe-by-probe timeline (classification,
+  HTTP status, reasoning) and the audit's state-machine transition trail.
+  Polls every few seconds while an audit is selected.
+- **Approvals** tab — Component 5's inbox: every pending (or decided) request
+  with its full human-readable description, and one-click approve/deny.
+- **Report** tab — Component 6's CVSS-scored findings (severity-colored),
+  observations, and operational issues, with a live classification summary
+  and a **Download PDF report** link that fetches
+  `GET {c6}/v1/audits/{audit}/report.pdf` with your operator token.
+- **Session state** tab — tokens/cookies/object IDs/observations the audit
+  has gathered so far (redacted unless you hold the owning operator token).
+
+This mirrors `docs/WALKTHROUGH.md` exactly — that document is the narrated,
+curl-based version of the same tour.
+
+### Baselines & Results view
+
+Needs no connection/token — it reads two static JSON files exported by
+`python -m demo.export_ui_data` (`data/guided-chains.json`,
+`data/results.json`), regenerate them after a fresh `demo/run_evaluation.py`
+run. Per target (DVWS, SREBench-API, Juice Shop): a true-positive-rate bar
+chart comparing PenAgent (autonomous vs. ground-truth-guided) against the
+three Ollama PentestGPT-style baselines, plus a full metrics table (TPR, FPR,
+CVSS accuracy, chain depth, time to first finding). The methodology caveats
+(n=1, no Burp/ZAP, autonomous ≠ guided) are stated inline and in
+`docs/RESULTS.md`.

@@ -170,6 +170,16 @@ class RunInput(StrictModel):
     bindings: dict[str, Binding] = Field(default_factory=dict)
 
 
+class GuidedStepInput(StrictModel):
+    """One UI/demo-driven step: execute this exact op+binding and interpret it,
+    in one call, authenticated with only the operator token (the server holds
+    the machine token needed to reach C4, not the caller) -- lets the console
+    UI drive a scripted exploration without ever handling the service token."""
+    op: str
+    owasp_category: str = "guided-demo"
+    binding: Binding = Field(default_factory=Binding)
+
+
 class UpstreamGraph(BaseModel):
     """Use existing public models; do not fork or rename their fields."""
     graph: EndpointGraph

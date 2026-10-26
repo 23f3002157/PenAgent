@@ -142,5 +142,32 @@ a mock) -- approved once (replayed and executed for real) and denied once
 (blocked, never sent). No SREBench/DVWS benchmark specification, ground truth
 or dataset was created, and this did not attempt to discover the 20
 SREBench-API scenarios or DVWS's full OWASP API Top 10 coverage; that
-evaluation work remains explicitly deferred, consistent with earlier audit
-entries.
+evaluation work remained explicitly deferred -- completed in the follow-up
+below.
+
+## Full evaluation, operator UI (2026-10-26)
+
+The deferred SREBench-API/DVWS/Juice Shop evaluation and the operator UI were
+built. Details and real numbers: docs/RESULTS.md and docs/VERIFICATION.md's
+"Full evaluation run" entry. Two findings from this work are worth recording
+here specifically because they're about the *evaluation infrastructure
+itself*, not about PenAgent:
+
+1. The container's own `/app/datasets/evaluate.py` does not work -- it loads
+   ground truth and never compares anything against it. `demo/evaluate.py`
+   is a real implementation, unit-tested against synthetic fixtures.
+2. The container's `/scenarios/list` live endpoint advertises 20 SREBench
+   scenarios, but only 2-3 distinct `endpoint_chain` patterns repeat across
+   them with incrementing placeholder numbers; the curated
+   `ground_truth_chains.json` gives exactly 2 scenarios with real, concrete,
+   independently actionable exploit chains. Evaluation was scored against
+   those 2, not a fabricated 20.
+
+A genuine PenAgent-side finding, not an evaluation-infrastructure one: C4's
+mutation-discovery (`interpreter/evidence.py`) keys its strategy off literal
+JSON field names the project's own synthetic fixture happens to use
+(`missing_header`, `invalid_parameter`, etc.); real targets signal the same
+information in free text or don't signal it via those exact keys at all, so
+autonomous mutation-driven discovery does not yet generalize past the
+fixture's own conventions. Recorded as a concrete, scoped follow-up item in
+docs/RESULTS.md, not glossed over.

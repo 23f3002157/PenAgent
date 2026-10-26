@@ -1,7 +1,9 @@
 import hmac
+import os
 from uuid import uuid4
 
 from fastapi import Header, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from penagent_common.policy import Rejected
 
@@ -60,6 +62,18 @@ def machine_dependency(settings):
             raise HTTPException(status_code=401, detail="invalid_service_token")
         return True
     return machine
+
+
+def install_cors(app):
+    """Browser-facing routes only (C3, C6): these are still Bearer-token-gated,
+    so this only enables the fetch itself, not an added trust boundary. Local
+    dev default is any localhost/127.0.0.1 origin; PENAGENT_UI_ORIGINS
+    (comma-separated) overrides it for anything else."""
+    configured = os.environ.get("PENAGENT_UI_ORIGINS", "")
+    origins = [o.strip() for o in configured.split(",") if o.strip()]
+    app.add_middleware(CORSMiddleware,
+        allow_origin_regex=None if origins else r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+        allow_origins=origins, allow_methods=["GET", "POST", "PUT"], allow_headers=["Authorization", "Content-Type"])
 
 
 def correlation(value: str | None) -> str:

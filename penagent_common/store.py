@@ -84,6 +84,13 @@ class Store:
                 raise Rejected("audit_not_found")
             return dict(row)
 
+    def list_audits(self, owner: str, limit: int = 100):
+        """Operator-facing audit list, most recent first. Used by the UI; no
+        route exposes another owner's audits."""
+        with self.connection() as db:
+            rows = db.execute("SELECT * FROM audits WHERE owner=? ORDER BY created DESC LIMIT ?", (owner, limit)).fetchall()
+        return [{k: v for k, v in dict(r).items() if k != "owner"} for r in rows]
+
     def active(self, audit: str, owner: str):
         a = self.audit(audit, owner)
         if a["cancelled"]:

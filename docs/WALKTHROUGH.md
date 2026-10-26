@@ -193,6 +193,50 @@ docker compose down          # stops the local stack (state in runtime/ survives
 docker rm -f penagent-testbed  # if you also started the real benchmark image
 ```
 
+## Watch it live in the console UI
+
+Everything above also works through [`ui/`](../ui/README.md), a small
+dependency-free dashboard (no build step -- just `python -m http.server`
+from `ui/`) that reads the same C3/C6/C1 APIs this walkthrough drives by
+hand: an audits list with one-click create, an **Explore** tab (a live
+endpoint map colored by classification, plus a scrolling activity feed --
+literally watching it explore a target), a live-polled evidence timeline, a
+Component 5 approvals inbox with one-click approve/deny, and a Component 6
+report view with severity-colored finding cards. It's the same tour, just
+watched rather than typed.
+
+### Watching it explore a real target (DVWS / SREBench-API / Juice Shop)
+
+By default only the synthetic `fixture` target is authorized. To watch the
+Explore tab light up against a real benchmark target instead:
+
+```bash
+# 1. Have the benchmark container running (images/README.md) and the local
+#    stack up, then wire the real targets into it (one-time per compose restart):
+python -m demo.configure_live_targets
+docker compose restart executor interpreter report
+
+# 2. Ingest each real target's spec into C1 (also one-time per restart --
+#    Juice Shop needs its local sample spec copied into the sis container first,
+#    since its live /assets/public/specs/openapi.json is just the SPA's index.html):
+docker exec penagent-local-sis-1 mkdir -p /app/specs
+docker cp demo/benchmark-data/specs/juice_shop_sample.json penagent-local-sis-1:/app/specs/
+# then POST /v1/ingest to http://127.0.0.1:9001 for dvws, srebench-api and juice-shop
+# (base_url using the gateway IP demo.configure_live_targets printed, spec_source
+# the target's real /openapi.json -- or /app/specs/juice_shop_sample.json for Juice Shop)
+
+# 3. Open the Console, connect (now also pointing "Spec graph (C1)" at :9001),
+#    then drive a real, paced exploration so you can watch each step land:
+python -m demo.live_demo juice-shop --audit demo-live-1 --pause 3
+```
+
+`demo/live_demo.py` submits the ground-truth-derived guided chain one probe
+at a time, waiting between each so you can watch the Explore tab's nodes
+light up and the activity feed scroll in near-real-time, rather than seeing
+a finished result appear all at once. If a step pauses for Component 5
+approval, it waits up to 60s for you to approve/deny it live in the
+Approvals tab before moving on.
+
 ## Quick reference: what each classification means
 
 | `classification` | Meaning | Where it shows up in the report |
