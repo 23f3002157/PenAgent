@@ -34,8 +34,9 @@ those services if you're serving the console from somewhere else.
 
 ## What you can do here
 
-Two top-nav views: **Audits** (the operator console) and **Baselines &amp;
-Results** (the paper's evaluation numbers, read-only).
+Three top-nav views: **Audits** (the operator console), **Exploration**
+(PenAgent run against every real route Juice Shop/DVWS expose, unscored), and
+**Baselines &amp; Results** (the paper's scored evaluation numbers).
 
 ### Audits view
 
@@ -69,6 +70,41 @@ Results** (the paper's evaluation numbers, read-only).
 
 This mirrors `docs/WALKTHROUGH.md` exactly — that document is the narrated,
 curl-based version of the same tour.
+
+### Exploration view
+
+Also needs no connection/token — reads `data/explore.json`, exported by
+`python -m demo.export_ui_data` from `reports/explore-juice-shop.json` and
+`reports/explore-dvws.json` (produced by `python -m demo.explore_run
+--output reports/explore`, which drives PenAgent against **every** real
+route each target exposes — 46 for Juice Shop, pulled directly off the
+running container's `build/server.js`, not a curated subset — with plain
+generic inputs, no scoring against hidden ground truth). Per target:
+
+- **Stat tiles** — routes authorized, probes executed, STRONG/CONFIRMED
+  findings, and how many of those same routes a zero-hint autonomous run
+  (real C1→C2→C3, no human input at all) could even reach on its own.
+- **Status-code bar** — protected (401/403) vs. exposed-to-anonymous (2xx)
+  vs. target-crashed (5xx), legend + direct-labeled counts, colorblind-safe
+  (validated with the dataviz skill's palette checker against this exact
+  3-color set).
+- **Method chips** and a **status-by-resource-area breakdown** — every op
+  grouped into its resource area (Identity & auth, Admin, Basket & checkout,
+  Orders, …) with its own protected/exposed/crash bar, so you can see which
+  *parts* of the API are the weak ones, not just an aggregate number.
+- **A clickable endpoint map** — every authorized route as a node around the
+  target, colored the same way as the status bar. Click a node (or a row in
+  the table at the bottom) to open the detail panel beside it: method+path,
+  category, executor status, HTTP code, and — if PenAgent called it
+  STRONG_SIGNAL/CONFIRMED — the full explanation, CVSS vector and
+  remediation text, the same content the Report tab shows.
+- **Findings** — any STRONG_SIGNAL/CONFIRMED result, as the same cards the
+  Report tab uses.
+- **Juice Shop's own challenge tracker** — a highlighted card listing
+  challenges `GET /api/Challenges` independently confirms were solved (not
+  PenAgent's self-grading).
+- **A collapsible table** of every individual request and what came back,
+  also click-to-expand into the same detail panel as the graph.
 
 ### Baselines & Results view
 

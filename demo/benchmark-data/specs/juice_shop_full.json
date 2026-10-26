@@ -1,0 +1,1120 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "OWASP Juice Shop API (expanded, real-route exploration set)",
+    "version": "2.0.0",
+    "description": "Real Express routes read directly off the running container's build/server.js (docker exec grep), not the SPA's /assets/public/specs/openapi.json (which just serves index.html). Expectations are intentionally generic/non-curated -- this spec is for genuine exploration coverage, not scored ground-truth benchmarking."
+  },
+  "paths": {
+    "/rest/user/login": {
+      "post": {
+        "summary": "User login (SQLi/auth-bypass surface)",
+        "operationId": "js_login",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users": {
+      "post": {
+        "summary": "Self-registration (mass-assignment: role)",
+        "operationId": "js_register",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List all users (info disclosure)",
+        "operationId": "js_users_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/user/whoami": {
+      "get": {
+        "summary": "Current session identity",
+        "operationId": "js_whoami",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/user/authentication-details": {
+      "get": {
+        "summary": "List authentication details (potential over-exposure)",
+        "operationId": "js_auth_details",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/user/security-question": {
+      "get": {
+        "summary": "Security question lookup by email",
+        "operationId": "js_security_question",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/user/reset-password": {
+      "post": {
+        "summary": "Password reset via security answer",
+        "operationId": "js_reset_password",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "answer": {
+                    "type": "string"
+                  },
+                  "new": {
+                    "type": "string"
+                  },
+                  "repeat": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/user/change-password": {
+      "get": {
+        "summary": "Change password (no old-password check surface)",
+        "operationId": "js_change_password",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Users/{id}": {
+      "get": {
+        "summary": "Read another user's account by ID",
+        "operationId": "js_users_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update another user's account (mass assignment)",
+        "operationId": "js_users_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete another user's account",
+        "operationId": "js_users_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Addresss": {
+      "get": {
+        "summary": "List all addresses (cross-tenant leak)",
+        "operationId": "js_addresses_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Addresss/{id}": {
+      "get": {
+        "summary": "Read another user's saved address",
+        "operationId": "js_addresses_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Cards": {
+      "get": {
+        "summary": "List all payment cards (cross-tenant leak)",
+        "operationId": "js_cards_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Cards/{id}": {
+      "get": {
+        "summary": "Read another user's payment card",
+        "operationId": "js_cards_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/basket/{id}": {
+      "get": {
+        "summary": "Read another user's shopping basket",
+        "operationId": "js_basket_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/basket/{id}/checkout": {
+      "post": {
+        "summary": "Checkout another user's basket",
+        "operationId": "js_basket_checkout",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/basket/{id}/coupon/{coupon}": {
+      "put": {
+        "summary": "Apply a coupon code to a basket",
+        "operationId": "js_basket_coupon",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "coupon",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/BasketItems": {
+      "get": {
+        "summary": "List all basket items (cross-tenant leak)",
+        "operationId": "js_basketitems_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/BasketItems/{id}": {
+      "get": {
+        "summary": "Read another user's basket item",
+        "operationId": "js_basketitems_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      },
+      "put": {
+        "summary": "Tamper with basket item quantity/price",
+        "operationId": "js_basketitems_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quantity": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/order-history/orders": {
+      "get": {
+        "summary": "List ALL users' order history (BOLA)",
+        "operationId": "js_order_history_all",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/order-history": {
+      "get": {
+        "summary": "List own order history",
+        "operationId": "js_order_history_own",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/track-order/{id}": {
+      "get": {
+        "summary": "Track another user's order",
+        "operationId": "js_track_order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/continue-code": {
+      "get": {
+        "summary": "Fetch own order continue-code",
+        "operationId": "js_continue_code",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/continue-code/apply/{continueCode}": {
+      "get": {
+        "summary": "Replay/guess another order's continue-code",
+        "operationId": "js_continue_code_apply",
+        "parameters": [
+          {
+            "name": "continueCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Products": {
+      "get": {
+        "summary": "List products",
+        "operationId": "js_products_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/products/search": {
+      "get": {
+        "summary": "Product search (SQLi/XSS injection surface)",
+        "operationId": "js_products_search",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/products/{id}/reviews": {
+      "get": {
+        "summary": "Read product reviews",
+        "operationId": "js_product_reviews_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/products/reviews": {
+      "put": {
+        "summary": "Edit/like another user's product review (NoSQL injection surface)",
+        "operationId": "js_product_reviews_edit",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Feedbacks": {
+      "post": {
+        "summary": "Submit feedback (XSS/rating-tamper surface)",
+        "operationId": "js_feedback_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string"
+                  },
+                  "rating": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List all feedback (author info leak)",
+        "operationId": "js_feedback_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Complaints": {
+      "post": {
+        "summary": "File a complaint (file-upload/XXE-adjacent surface)",
+        "operationId": "js_complaint_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PrivacyRequests": {
+      "get": {
+        "summary": "List all GDPR privacy/data-erasure requests (cross-tenant leak)",
+        "operationId": "js_privacy_requests_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/SecurityQuestions": {
+      "get": {
+        "summary": "List security questions",
+        "operationId": "js_security_questions_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/SecurityAnswers": {
+      "get": {
+        "summary": "List security answers (should never be exposed)",
+        "operationId": "js_security_answers_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Quantitys": {
+      "get": {
+        "summary": "List internal stock quantities (business data leak)",
+        "operationId": "js_quantitys_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/api/Recycles": {
+      "get": {
+        "summary": "List e-waste recycling requests (cross-tenant leak)",
+        "operationId": "js_recycles_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/admin/application-configuration": {
+      "get": {
+        "summary": "Admin application configuration leak",
+        "operationId": "js_admin_config",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/admin/application-version": {
+      "get": {
+        "summary": "Admin application version leak",
+        "operationId": "js_admin_version",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/wallet/balance": {
+      "get": {
+        "summary": "Read own wallet balance",
+        "operationId": "js_wallet_balance",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/2fa/status": {
+      "get": {
+        "summary": "2FA enrollment status",
+        "operationId": "js_2fa_status",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/2fa/disable": {
+      "post": {
+        "summary": "Disable 2FA (should require re-auth)",
+        "operationId": "js_2fa_disable",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/deluxe-membership": {
+      "post": {
+        "summary": "Upgrade to deluxe membership (payment-bypass surface)",
+        "operationId": "js_deluxe_membership",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentMode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/memories": {
+      "get": {
+        "summary": "List uploaded memory images (cross-tenant leak / EXIF geolocation)",
+        "operationId": "js_memories_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    },
+    "/rest/captcha": {
+      "get": {
+        "summary": "Fetch captcha (bypassable-captcha surface)",
+        "operationId": "js_captcha",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "403": {
+            "description": "forbidden"
+          }
+        }
+      }
+    }
+  }
+}

@@ -20,6 +20,8 @@ const state = {
   guidedProgress: {},  // audit_id -> next step index
   guidedRunning: false,
   resultsCache: null,  // loaded once from data/results.json
+  exploreCache: null,  // loaded once from data/explore.json
+  exploreSelected: {}, // target_id -> currently selected op_id in the Exploration view
 };
 
 // ---------- small utilities ----------
@@ -722,6 +724,275 @@ async function renderBaselinesView() {
   `;
 }
 
+// ---------- Exploration view: full real-route run against Juice Shop / DVWS ----------
+
+const EXPLORE_TARGET_LABELS = { "juice-shop": "Juice Shop", dvws: "DVWS" };
+const STATUS_BUCKET = {
+  protected: { label: "Protected (401/403)", icon: "&#10003;", colorVar: "--negative" },
+  exposed: { label: "Exposed to anonymous (2xx)", icon: "&#9650;", colorVar: "--weak" },
+  crash: { label: "Target crashed (5xx)", icon: "&#10007;", colorVar: "--error" },
+  other: { label: "Other", colorVar: "--pending" },
+};
+
+async function fetchExplore() {
+  if (state.exploreCache) return state.exploreCache;
+  const response = await fetch("data/explore.json");
+  state.exploreCache = response.ok ? await response.json() : {};
+  return state.exploreCache;
+}
+
+function statusChartHtml(buckets, total) {
+  const segs = Object.entries(buckets).filter(([, n]) => n > 0).map(([key, n]) => {
+    const meta = STATUS_BUCKET[key];
+    const pct = total ? (n / total) * 100 : 0;
+    return `<div class="status-bar-seg" style="width:${pct}%;background:var(${meta.colorVar})" title="${escapeHtml(meta.label)}: ${n}">${pct >= 8 ? n : ""}</div>`;
+  }).join("");
+  const legend = Object.entries(buckets).filter(([, n]) => n > 0).map(([key, n]) => {
+    const meta = STATUS_BUCKET[key];
+    return `<span class="status-legend-item"><span class="status-legend-swatch" style="background:var(${meta.colorVar})">${meta.icon || ""}</span>${escapeHtml(meta.label)} — ${n}</span>`;
+  }).join("");
+  return `
+    <div class="status-chart">
+      <div class="status-chart-title">What ${total} real HTTP requests actually got back</div>
+      <div class="status-bar-track">${segs}</div>
+      <div class="status-legend">${legend}</div>
+    </div>`;
+}
+
+function challengeCardHtml(data) {
+  if (!data) return "";
+  const items = data.solved.map((c) => `
+    <div class="challenge-item">
+      <span class="check">&#10003;</span>
+      <span>${escapeHtml(c.name)}</span>
+      <span class="difficulty-dots">${"&#9733;".repeat(c.difficulty || 1)}</span>
+      <span class="cat">${escapeHtml(c.category)}</span>
+    </div>`).join("");
+  return `
+    <div class="challenge-card">
+      <div class="challenge-card-title">Juice Shop's own challenge tracker: ${data.total_solved} of ${data.total_challenges} solved —
+        confirmed by the target itself (<code>GET /api/Challenges</code>), not PenAgent's own grading</div>
+      <div class="challenge-list">${items}</div>
+    </div>`;
+}
+
+function opStatusBucket(statusCode) {
+  if (statusCode == null) return "other";
+  if (statusCode === 401 || statusCode === 403) return "protected";
+  if (statusCode >= 500) return "crash";
+  if (statusCode < 300) return "exposed";
+  return "other";
+}
+
+function opOutcomeTableHtml(targetId, outcomes) {
+  const rows = outcomes.map((o) => {
+    const bucket = STATUS_BUCKET[opStatusBucket(o.status_code)];
+    return `<tr class="clickable-row" data-op="${escapeHtml(o.op)}">
+      <td class="mono">${escapeHtml(o.method)} ${escapeHtml(o.path)}</td>
+      <td>${escapeHtml(o.category)}</td>
+      <td>${escapeHtml(o.status)}</td>
+      <td><span class="status-legend-swatch" style="background:var(${bucket.colorVar})"></span> ${escapeHtml(o.status_code ?? "—")}</td>
+    </tr>`;
+  }).join("");
+  return `
+    <details>
+      <summary class="muted" style="cursor:pointer;font-size:12.5px;margin-bottom:8px">Full op-by-op table (${outcomes.length} requests) — click a row for detail</summary>
+      <div class="result-table-wrap">
+        <table class="result-table" data-table-target="${escapeHtml(targetId)}">
+          <thead><tr><th>Operation</th><th>Category</th><th>Executor status</th><th>HTTP code</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </details>`;
+}
+
+function methodChipsHtml(breakdown) {
+  const order = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+  const keys = Object.keys(breakdown).sort((a, b) => order.indexOf(a) - order.indexOf(b));
+  const chips = keys.map((m) => `<span class="method-chip">${escapeHtml(m)}<b>${breakdown[m]}</b></span>`).join("");
+  return `<div class="method-chips">${chips}</div>`;
+}
+
+function categoryBarsHtml(breakdown) {
+  const rows = Object.entries(breakdown).sort((a, b) => b[1].protected + b[1].exposed + b[1].crash - (a[1].protected + a[1].exposed + a[1].crash))
+    .map(([category, buckets]) => {
+      const total = buckets.protected + buckets.exposed + buckets.crash + buckets.other;
+      const segs = Object.entries(buckets).filter(([, n]) => n > 0).map(([key, n]) => {
+        const meta = STATUS_BUCKET[key];
+        return `<div class="category-bar-seg" style="width:${(n / total) * 100}%;background:var(${meta.colorVar})" title="${escapeHtml(meta.label)}: ${n}"></div>`;
+      }).join("");
+      return `<div class="category-bar-row">
+        <span>${escapeHtml(category)}</span>
+        <div class="category-bar-track">${segs}</div>
+        <span class="mono muted">${total}</span>
+      </div>`;
+    }).join("");
+  return `
+    <div class="explore-section-title">Status by resource area</div>
+    <div class="category-bars">${rows}</div>`;
+}
+
+function layoutExploreGraphNodes(outcomes, width, height) {
+  const cx = width / 2, cy = height / 2, r = Math.min(width, height) / 2 - 56;
+  return outcomes.map((o, i) => {
+    const angle = (i / outcomes.length) * 2 * Math.PI - Math.PI / 2;
+    return { o, x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle), cx, cy };
+  });
+}
+
+function exploreGraphHtml(targetId, outcomes, selectedOp) {
+  const width = 480, height = 480;
+  const positioned = layoutExploreGraphNodes(outcomes, width, height);
+  const edges = positioned.map((p) => {
+    const bucket = STATUS_BUCKET[opStatusBucket(p.o.status_code)];
+    return `<line x1="${p.cx}" y1="${p.cy}" x2="${p.x}" y2="${p.y}" class="explore-edge" style="stroke:var(${bucket.colorVar});opacity:0.3"></line>`;
+  }).join("");
+  const nodes = positioned.map((p) => {
+    const bucket = STATUS_BUCKET[opStatusBucket(p.o.status_code)];
+    const selected = p.o.op === selectedOp;
+    return `
+      <g class="explore-node xgraph-node ${selected ? "node-selected" : ""}" data-op="${escapeHtml(p.o.op)}" transform="translate(${p.x},${p.y})">
+        <circle r="${selected ? 12 : 8}" style="fill:var(${bucket.colorVar})"></circle>
+        <title>${escapeHtml(p.o.method)} ${escapeHtml(p.o.path)} — HTTP ${p.o.status_code ?? "—"}</title>
+      </g>`;
+  }).join("");
+  const legend = ["protected", "exposed", "crash"].map((key) => {
+    const meta = STATUS_BUCKET[key];
+    return `<span class="legend-item"><span class="legend-dot" style="background:var(${meta.colorVar})"></span>${escapeHtml(meta.label)}</span>`;
+  }).join("");
+  return `
+    <div class="card explore-card" data-graph-target="${escapeHtml(targetId)}">
+      <div class="card-title">Endpoint map — click any node</div>
+      <svg viewBox="0 0 ${width} ${height}" class="explore-svg">
+        ${edges}
+        <circle cx="${width / 2}" cy="${height / 2}" r="30" class="explore-hub"></circle>
+        <text x="${width / 2}" y="${height / 2 + 4}" text-anchor="middle" class="explore-hub-label">${escapeHtml(EXPLORE_TARGET_LABELS[targetId] || targetId)}</text>
+        ${nodes}
+      </svg>
+      <div class="explore-legend">${legend}</div>
+    </div>`;
+}
+
+function opDetailHtml(outcome, finding) {
+  const bucket = STATUS_BUCKET[opStatusBucket(outcome.status_code)];
+  const findingBlock = finding ? `
+      <div class="op-detail-row">
+        ${badge(finding.classification, finding.classification)}
+        ${badge(finding.severity, "sev-" + finding.severity)}
+        <span class="muted">CVSS ${finding.cvss_score} · <span class="mono">${escapeHtml(finding.cvss_vector)}</span></span>
+      </div>
+      <p class="op-detail-explain">${escapeHtml(finding.explanation)}</p>
+      <div class="op-detail-remediation"><b>Remediation:</b> ${escapeHtml(finding.remediation)}</div>`
+    : `<p class="op-detail-explain muted">${outcome.error ? escapeHtml(outcome.error)
+        : "No STRONG/CONFIRMED finding on this op — either correctly protected, or PenAgent's classifier called it WEAK_SIGNAL (deliberately generic, non-curated expectations here give it no basis to confirm anything on its own)."}</p>`;
+  return `
+    <div class="op-detail-title">${escapeHtml(outcome.method)} ${escapeHtml(outcome.path)}</div>
+    <div class="op-detail-row">
+      ${badge(outcome.category, "neutral")}
+      <span class="status-legend-item"><span class="status-legend-swatch" style="background:var(${bucket.colorVar})">${bucket.icon || ""}</span>${escapeHtml(bucket.label)}</span>
+      <span class="muted">executor: <b>${escapeHtml(outcome.status)}</b></span>
+      <span class="muted">HTTP <b>${escapeHtml(outcome.status_code ?? "—")}</b></span>
+    </div>
+    ${findingBlock}`;
+}
+
+function selectExploreOp(targetId, opId) {
+  const data = state.exploreCache[targetId];
+  const outcome = data.op_outcomes.find((o) => o.op === opId);
+  if (!outcome) return;
+  state.exploreSelected = state.exploreSelected || {};
+  state.exploreSelected[targetId] = opId;
+  const finding = (data.direct_findings || []).find((f) => (f.request_summary[0] || {}).op === opId);
+  const panel = document.getElementById(`opDetail-${targetId}`);
+  if (panel) panel.innerHTML = opDetailHtml(outcome, finding);
+  document.querySelectorAll(`[data-graph-target="${targetId}"] .xgraph-node`).forEach((el) => {
+    const isSelected = el.dataset.op === opId;
+    el.classList.toggle("node-selected", isSelected);
+    el.querySelector("circle").setAttribute("r", isSelected ? "12" : "8");
+  });
+  document.querySelectorAll(`table[data-table-target="${targetId}"] tr.clickable-row`).forEach((el) => {
+    el.classList.toggle("row-selected", el.dataset.op === opId);
+  });
+}
+
+function renderExploreTargetCard(targetId, data) {
+  const total = data.op_outcomes.length;
+  const directFindings = data.direct_findings || [];
+  const autoFindings = data.autonomous_findings || [];
+  const findingsHtml = directFindings.length
+    ? directFindings.map(findingCard).join("")
+    : '<p class="empty-tab">PenAgent\'s own classifier called every probe WEAK_SIGNAL here — deliberately generic, non-curated expectations (no "this exact field is the violation" hints), so it has no basis to confirm anything on its own. See the challenge tracker above for an independent signal.</p>';
+  const selectedOp = (state.exploreSelected || {})[targetId];
+  return `
+    <div class="explore-target-card">
+      <div class="explore-target-head">
+        <h2>${escapeHtml(EXPLORE_TARGET_LABELS[targetId] || targetId)}</h2>
+        <span class="muted">${data.ops_authorized} real routes authorized · ${data.direct_probes} executed directly · ${data.autonomous_probes} reached by zero-hint autonomous discovery</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat-tile"><div class="stat-value">${data.ops_authorized}</div><div class="stat-label">real routes authorized</div></div>
+        <div class="stat-tile"><div class="stat-value">${data.direct_probes}</div><div class="stat-label">probes executed</div></div>
+        <div class="stat-tile"><div class="stat-value">${directFindings.length}</div><div class="stat-label">STRONG/CONFIRMED findings</div></div>
+        <div class="stat-tile"><div class="stat-value">${autoFindings.length}</div><div class="stat-label">found with zero hints (C1→C2→C3)</div></div>
+      </div>
+      ${statusChartHtml(data.status_buckets, total)}
+      ${methodChipsHtml(data.method_breakdown)}
+      ${categoryBarsHtml(data.category_breakdown)}
+      <div class="xgraph-wrap">
+        ${exploreGraphHtml(targetId, data.op_outcomes, selectedOp)}
+        <div class="op-detail-panel" id="opDetail-${escapeHtml(targetId)}">
+          ${selectedOp ? opDetailHtml(data.op_outcomes.find((o) => o.op === selectedOp), (directFindings).find((f) => (f.request_summary[0] || {}).op === selectedOp))
+            : '<div class="op-detail-empty">Click a node in the map, or a row in the table below, to see the full request detail.</div>'}
+        </div>
+      </div>
+      ${challengeCardHtml(data.current_solved)}
+      <h3>Findings</h3>
+      ${findingsHtml}
+      ${opOutcomeTableHtml(targetId, data.op_outcomes)}
+    </div>`;
+}
+
+function wireExploreClicks(targetId) {
+  document.querySelectorAll(`[data-graph-target="${targetId}"] .xgraph-node`).forEach((el) => {
+    el.addEventListener("click", () => selectExploreOp(targetId, el.dataset.op));
+  });
+  document.querySelectorAll(`table[data-table-target="${targetId}"] tr.clickable-row`).forEach((el) => {
+    el.addEventListener("click", () => selectExploreOp(targetId, el.dataset.op));
+  });
+}
+
+async function renderExplorationView() {
+  const main = document.getElementById("main");
+  let explore;
+  try {
+    explore = await fetchExplore();
+  } catch (err) {
+    main.innerHTML = `<div class="empty-state"><h1>Could not load exploration data</h1><p>${escapeHtml(err.message)}</p></div>`;
+    return;
+  }
+  const targets = Object.keys(explore);
+  if (!targets.length) {
+    main.innerHTML = `<div class="empty-state"><h1>No exploration run yet</h1>
+      <p class="muted">Run <code>python -m demo.explore_run --output reports/explore</code>, then
+      <code>python -m demo.export_ui_data</code>, to populate this view.</p></div>`;
+    return;
+  }
+  main.innerHTML = `
+    <div class="view-header">
+      <h1>Exploration</h1>
+      <p class="muted">PenAgent let loose on every real route each target actually exposes — not a curated
+        benchmark subset, and nothing here is scored against hidden ground truth. "Direct run" means every
+        authorized op was executed once with a plain, generic input (a guessed ID, a classic SQLi probe on
+        login, an extra <code>role</code> field on registration) — standard first-pass pentest technique,
+        not inside knowledge of the target. "Zero-hint autonomous" is real C1 spec ingestion → C2 hypothesis
+        generation → C3 execution with no human-supplied input at all — the honest ceiling of unaided discovery
+        today (see <code>docs/RESULTS.md</code>).</p>
+    </div>
+    ${targets.map((t) => renderExploreTargetCard(t, explore[t])).join("")}
+  `;
+  targets.forEach(wireExploreClicks);
+}
+
 // ---------- top-nav view switching & quickstart ----------
 
 function emptyStateHtml() {
@@ -735,7 +1006,8 @@ function emptyStateHtml() {
         <button class="btn btn-primary quickstart-btn" data-target="dvws">Quick-start: explore DVWS</button>
         <button class="btn btn-primary quickstart-btn" data-target="juice-shop">Quick-start: explore Juice Shop</button>
       </div>
-      <p class="muted">Or click <b>Baselines &amp; Results</b> above to see the full evaluation this console was built to demonstrate.</p>
+      <p class="muted">Or click <b>Exploration</b> above to see PenAgent let loose on every real route Juice Shop and
+         DVWS expose, or <b>Baselines &amp; Results</b> for the scored evaluation against local LLM baselines.</p>
     </div>`;
 }
 
@@ -746,6 +1018,9 @@ function setView(view) {
   if (view === "baselines") {
     sidebar.style.display = "none";
     void renderBaselinesView();
+  } else if (view === "exploration") {
+    sidebar.style.display = "none";
+    void renderExplorationView();
   } else {
     sidebar.style.display = "";
     if (state.selected) void renderMain();

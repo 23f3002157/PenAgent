@@ -68,7 +68,7 @@ def ground_truth_entries(key):
 # Autonomous mode
 # ---------------------------------------------------------------------------
 
-async def autonomous_run(target_id, spec_info, operations, directory):
+async def autonomous_run(target_id, spec_info, operations, directory, max_hypotheses=20, max_probes=40, approve_on_sight=None, approve_all=False, max_iterations=60):
     from sis import api as sis_api
     from sis.main import app as sis_app
     from sis.service import SpecIngestionService
@@ -99,7 +99,7 @@ async def autonomous_run(target_id, spec_info, operations, directory):
             token, api_token = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
             settings = Settings(database=str(directory / f"{target_id}-exec.db"), encryption_key=Fernet.generate_key().decode(),
                 service_token=token, api_tokens={"evaluator": api_token}, sis_url=sis, hgs_url=hgs, requests_per_second=4.0,
-                request_timeout=20, service_timeout=30, max_probes=40, targets={target_id: operations})
+                request_timeout=20, service_timeout=30, max_probes=max_probes, targets={target_id: operations})
             c4 = exits.enter_context(live_server(interpreter_app(settings)))
             settings.interpreter_url = c4
             c3 = exits.enter_context(live_server(executor_app(settings)))
@@ -124,7 +124,7 @@ async def autonomous_run(target_id, spec_info, operations, directory):
                 graph = await call(sis, "GET", f"/v1/graph/{target_id}")
                 run["graph_nodes"] = len(graph["nodes"])
 
-                batch = await call(hgs, "POST", "/v1/hypotheses/generate", {"target_id": target_id, "max_hypotheses": 20})
+                batch = await call(hgs, "POST", "/v1/hypotheses/generate", {"target_id": target_id, "max_hypotheses": max_hypotheses})
                 run["hypotheses_generated"] = batch["count"]
 
                 audit = target_id + "-auto-" + secrets.token_hex(3)
@@ -132,7 +132,7 @@ async def autonomous_run(target_id, spec_info, operations, directory):
                 run["audit_id"] = audit
                 first_finding_at = None
 
-                for _ in range(min(60, (batch["count"] or 1) * 4 + 5)):
+                for _ in range(min(max_iterations, (batch["count"] or 1) * 4 + 5)):
                     output = await call(c3, "POST", f"/v1/audits/{audit}/run", {"bindings": {"1": {}}})
                     run["outcomes"].append(output)
                     if output["status"] == "queue_empty":
@@ -142,7 +142,8 @@ async def autonomous_run(target_id, spec_info, operations, directory):
                         probe_entry = next((p for p in pending["approvals"] if p["status"] == "pending"), None)
                         op = (probe_entry or {}).get("description", {}).get("path", "")
                         matched_op = next((o for o, cfg in operations["operations"].items() if cfg["path"] == op), None)
-                        decision = "approve" if matched_op in APPROVE_ON_SIGHT else "deny"
+                        on_sight = approve_on_sight if approve_on_sight is not None else APPROVE_ON_SIGHT
+                        decision = "approve" if (approve_all or matched_op in on_sight) else "deny"
                         decided = await call(c3, "POST", f"/v1/audits/{audit}/approvals/{output['probe_id']}", {"decision": decision, "reason": "autonomous-eval"})
                         run["approvals"].append({"op": matched_op, "decision": decision, "result_status": decided["status"]})
                     if output["status"] in {"hypothesis_finished", "chain_halted", "duplicate", "queue_empty"}:

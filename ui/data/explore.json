@@ -1,0 +1,924 @@
+{
+  "juice-shop": {
+    "ops_authorized": 46,
+    "status_buckets": {
+      "protected": 25,
+      "exposed": 16,
+      "crash": 5,
+      "other": 0
+    },
+    "category_breakdown": {
+      "Identity & auth": {
+        "protected": 7,
+        "exposed": 3,
+        "crash": 1,
+        "other": 0
+      },
+      "Payment & address": {
+        "protected": 6,
+        "exposed": 0,
+        "crash": 0,
+        "other": 0
+      },
+      "Basket & checkout": {
+        "protected": 6,
+        "exposed": 0,
+        "crash": 0,
+        "other": 0
+      },
+      "Orders": {
+        "protected": 1,
+        "exposed": 2,
+        "crash": 2,
+        "other": 0
+      },
+      "Products & reviews": {
+        "protected": 0,
+        "exposed": 3,
+        "crash": 1,
+        "other": 0
+      },
+      "Feedback & records": {
+        "protected": 3,
+        "exposed": 4,
+        "crash": 1,
+        "other": 0
+      },
+      "Admin": {
+        "protected": 0,
+        "exposed": 2,
+        "crash": 0,
+        "other": 0
+      },
+      "Account security": {
+        "protected": 2,
+        "exposed": 0,
+        "crash": 0,
+        "other": 0
+      },
+      "Account features": {
+        "protected": 0,
+        "exposed": 2,
+        "crash": 0,
+        "other": 0
+      }
+    },
+    "method_breakdown": {
+      "POST": 8,
+      "GET": 33,
+      "PUT": 4,
+      "DELETE": 1
+    },
+    "op_outcomes": [
+      {
+        "op": "op_js_login",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "POST",
+        "path": "/rest/user/login",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_register",
+        "status": "executed",
+        "error": null,
+        "status_code": 201,
+        "method": "POST",
+        "path": "/api/Users",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_users_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/Users",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_whoami",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/user/whoami",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_auth_details",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/rest/user/authentication-details",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_security_question",
+        "status": "executed",
+        "error": null,
+        "status_code": 500,
+        "method": "GET",
+        "path": "/rest/user/security-question",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_reset_password",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "POST",
+        "path": "/rest/user/reset-password",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_change_password",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/rest/user/change-password",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_users_get",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/Users/{id}",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_users_update",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "PUT",
+        "path": "/api/Users/{id}",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_users_delete",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "DELETE",
+        "path": "/api/Users/{id}",
+        "category": "Identity & auth"
+      },
+      {
+        "op": "op_js_addresses_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/Addresss",
+        "category": "Payment & address"
+      },
+      {
+        "op": "op_js_addresses_get",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/Addresss/{id}",
+        "category": "Payment & address"
+      },
+      {
+        "op": "op_js_cards_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/Cards",
+        "category": "Payment & address"
+      },
+      {
+        "op": "op_js_cards_get",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/Cards/{id}",
+        "category": "Payment & address"
+      },
+      {
+        "op": "op_js_basket_get",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/rest/basket/{id}",
+        "category": "Basket & checkout"
+      },
+      {
+        "op": "op_js_basket_checkout",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "POST",
+        "path": "/rest/basket/{id}/checkout",
+        "category": "Basket & checkout"
+      },
+      {
+        "op": "op_js_basket_coupon",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "PUT",
+        "path": "/rest/basket/{id}/coupon/{coupon}",
+        "category": "Basket & checkout"
+      },
+      {
+        "op": "op_js_basketitems_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/BasketItems",
+        "category": "Basket & checkout"
+      },
+      {
+        "op": "op_js_basketitems_get",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/BasketItems/{id}",
+        "category": "Basket & checkout"
+      },
+      {
+        "op": "op_js_basketitems_update",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "PUT",
+        "path": "/api/BasketItems/{id}",
+        "category": "Basket & checkout"
+      },
+      {
+        "op": "op_js_order_history_all",
+        "status": "executed",
+        "error": null,
+        "status_code": 403,
+        "method": "GET",
+        "path": "/rest/order-history/orders",
+        "category": "Orders"
+      },
+      {
+        "op": "op_js_order_history_own",
+        "status": "executed",
+        "error": null,
+        "status_code": 500,
+        "method": "GET",
+        "path": "/rest/order-history",
+        "category": "Orders"
+      },
+      {
+        "op": "op_js_track_order",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/track-order/{id}",
+        "category": "Orders"
+      },
+      {
+        "op": "op_js_continue_code",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/continue-code",
+        "category": "Orders"
+      },
+      {
+        "op": "op_js_continue_code_apply",
+        "status": "executed",
+        "error": null,
+        "status_code": 500,
+        "method": "GET",
+        "path": "/rest/continue-code/apply/{continueCode}",
+        "category": "Orders"
+      },
+      {
+        "op": "op_js_products_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/api/Products",
+        "category": "Products & reviews"
+      },
+      {
+        "op": "op_js_products_search",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/products/search",
+        "category": "Products & reviews"
+      },
+      {
+        "op": "op_js_product_reviews_get",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/products/{id}/reviews",
+        "category": "Products & reviews"
+      },
+      {
+        "op": "op_js_product_reviews_edit",
+        "status": "executed",
+        "error": null,
+        "status_code": 500,
+        "method": "PUT",
+        "path": "/rest/products/reviews",
+        "category": "Products & reviews"
+      },
+      {
+        "op": "op_js_feedback_create",
+        "status": "executed",
+        "error": null,
+        "status_code": 500,
+        "method": "POST",
+        "path": "/api/Feedbacks",
+        "category": "Feedback & records"
+      },
+      {
+        "op": "op_js_feedback_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/api/Feedbacks",
+        "category": "Feedback & records"
+      },
+      {
+        "op": "op_js_complaint_create",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "POST",
+        "path": "/api/Complaints",
+        "category": "Feedback & records"
+      },
+      {
+        "op": "op_js_privacy_requests_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/PrivacyRequests",
+        "category": "Feedback & records"
+      },
+      {
+        "op": "op_js_security_questions_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/api/SecurityQuestions",
+        "category": "Feedback & records"
+      },
+      {
+        "op": "op_js_security_answers_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/api/SecurityAnswers",
+        "category": "Feedback & records"
+      },
+      {
+        "op": "op_js_quantitys_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/api/Quantitys",
+        "category": "Feedback & records"
+      },
+      {
+        "op": "op_js_recycles_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/api/Recycles",
+        "category": "Feedback & records"
+      },
+      {
+        "op": "op_js_admin_config",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/admin/application-configuration",
+        "category": "Admin"
+      },
+      {
+        "op": "op_js_admin_version",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/admin/application-version",
+        "category": "Admin"
+      },
+      {
+        "op": "op_js_wallet_balance",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/rest/wallet/balance",
+        "category": "Payment & address"
+      },
+      {
+        "op": "op_js_2fa_status",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "GET",
+        "path": "/rest/2fa/status",
+        "category": "Account security"
+      },
+      {
+        "op": "op_js_2fa_disable",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "POST",
+        "path": "/rest/2fa/disable",
+        "category": "Account security"
+      },
+      {
+        "op": "op_js_deluxe_membership",
+        "status": "executed",
+        "error": null,
+        "status_code": 401,
+        "method": "POST",
+        "path": "/rest/deluxe-membership",
+        "category": "Payment & address"
+      },
+      {
+        "op": "op_js_memories_list",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/memories",
+        "category": "Account features"
+      },
+      {
+        "op": "op_js_captcha",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/rest/captcha",
+        "category": "Account features"
+      }
+    ],
+    "direct_findings": [],
+    "autonomous_findings": [],
+    "autonomous_probes": 6,
+    "direct_probes": 46,
+    "challenge_delta": {
+      "newly_solved_count": 0,
+      "newly_solved": [],
+      "total_challenges": 112,
+      "total_solved_before": 4,
+      "total_solved_after": 4
+    },
+    "current_solved": {
+      "total_solved": 4,
+      "total_challenges": 112,
+      "solved": [
+        {
+          "name": "Admin Registration",
+          "category": "Improper Input Validation",
+          "difficulty": 3
+        },
+        {
+          "name": "Error Handling",
+          "category": "Security Misconfiguration",
+          "difficulty": 1
+        },
+        {
+          "name": "Login Admin",
+          "category": "Injection",
+          "difficulty": 2
+        },
+        {
+          "name": "Repetitive Registration",
+          "category": "Improper Input Validation",
+          "difficulty": 1
+        }
+      ]
+    }
+  },
+  "dvws": {
+    "ops_authorized": 6,
+    "status_buckets": {
+      "protected": 0,
+      "exposed": 6,
+      "crash": 0,
+      "other": 0
+    },
+    "category_breakdown": {
+      "Accounts": {
+        "protected": 0,
+        "exposed": 2,
+        "crash": 0,
+        "other": 0
+      },
+      "Auth": {
+        "protected": 0,
+        "exposed": 1,
+        "crash": 0,
+        "other": 0
+      },
+      "Admin": {
+        "protected": 0,
+        "exposed": 3,
+        "crash": 0,
+        "other": 0
+      }
+    },
+    "method_breakdown": {
+      "GET": 3,
+      "POST": 1,
+      "PUT": 1,
+      "DELETE": 1
+    },
+    "op_outcomes": [
+      {
+        "op": "op_get_account_api_v1_accounts__account_id__get",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/api/v1/accounts/{account_id}",
+        "category": "Accounts"
+      },
+      {
+        "op": "op_login_api_v1_auth_login_post",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "POST",
+        "path": "/api/v1/auth/login",
+        "category": "Auth"
+      },
+      {
+        "op": "op_update_profile_api_v1_accounts__account_id__profile_put",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "PUT",
+        "path": "/api/v1/accounts/{account_id}/profile",
+        "category": "Accounts"
+      },
+      {
+        "op": "op_purge_cache_api_v1_admin_maintenance_purge_cache_delete",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "DELETE",
+        "path": "/api/v1/admin/maintenance/purge-cache",
+        "category": "Admin"
+      },
+      {
+        "op": "op_get_debug_env_api_v1_debug_env_get",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/api/v1/debug/env",
+        "category": "Admin"
+      },
+      {
+        "op": "op_js_export_data_api_v1_export_data_get",
+        "status": "executed",
+        "error": null,
+        "status_code": 200,
+        "method": "GET",
+        "path": "/api/v1/export/data",
+        "category": "Admin"
+      }
+    ],
+    "direct_findings": [
+      {
+        "finding_id": "6d1d2f5377ce9d55",
+        "title": "exploration on GET /api/v1/accounts/{account_id}",
+        "owasp_category": "exploration",
+        "classification": "STRONG_SIGNAL",
+        "confidence": 0.75,
+        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+        "cvss_score": 7.5,
+        "severity": "high",
+        "probe_chain": [
+          "218d1521516548f5b2424cfccf03780d"
+        ],
+        "request_summary": [
+          {
+            "audit_id": "dvws-explore-0-010445",
+            "hypothesis_id": "dvws-explore-0",
+            "probe_id": "218d1521516548f5b2424cfccf03780d",
+            "correlation_id": "explore-0",
+            "op": "op_get_account_api_v1_accounts__account_id__get",
+            "status": "executed",
+            "status_code": 200,
+            "response_headers": {
+              "date": "[REDACTED]",
+              "server": "[REDACTED]",
+              "content-length": "101",
+              "content-type": "application/json"
+            },
+            "parsed": {
+              "kind": "json",
+              "data": {
+                "evidence_available": true,
+                "body_sha256": "3cfb9702d05cd118fadb725000368628d42a27a12117f6962a258e103e4cdf64"
+              },
+              "parse_error": null,
+              "artifacts": {},
+              "credential_fields": [],
+              "body_sha256": "3cfb9702d05cd118fadb725000368628d42a27a12117f6962a258e103e4cdf64"
+            },
+            "latency_ms": 29.62070799912908,
+            "attempts": 1,
+            "error": null,
+            "approval_required": false,
+            "risk_classification": "safe",
+            "state_changes": [],
+            "request_fingerprint": "1c0491fed90196f012471f4ed0d62d208532b4e30e41f31b8d36668bf1d5a86a"
+          }
+        ],
+        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: An account holder must not be able to read another account's balance or API key.",
+        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+      },
+      {
+        "finding_id": "d0db64115d9afbfa",
+        "title": "exploration on POST /api/v1/auth/login",
+        "owasp_category": "exploration",
+        "classification": "STRONG_SIGNAL",
+        "confidence": 0.75,
+        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+        "cvss_score": 5.3,
+        "severity": "medium",
+        "probe_chain": [
+          "c58ad4ebe4a44483a238284c4de1e87f"
+        ],
+        "request_summary": [
+          {
+            "audit_id": "dvws-explore-1-bd019a",
+            "hypothesis_id": "dvws-explore-1",
+            "probe_id": "c58ad4ebe4a44483a238284c4de1e87f",
+            "correlation_id": "explore-1",
+            "op": "op_login_api_v1_auth_login_post",
+            "status": "executed",
+            "status_code": 200,
+            "response_headers": {
+              "date": "[REDACTED]",
+              "server": "[REDACTED]",
+              "content-length": "154",
+              "content-type": "application/json"
+            },
+            "parsed": {
+              "kind": "json",
+              "data": {
+                "evidence_available": true,
+                "body_sha256": "ee70972d338e1ffe7104e2e59f64100eac43d960153ddcb9892d4b7fd83cd93c"
+              },
+              "parse_error": null,
+              "artifacts": {},
+              "credential_fields": [],
+              "body_sha256": "ee70972d338e1ffe7104e2e59f64100eac43d960153ddcb9892d4b7fd83cd93c"
+            },
+            "latency_ms": 493.167208000159,
+            "attempts": 1,
+            "error": null,
+            "approval_required": false,
+            "risk_classification": "safe",
+            "state_changes": [],
+            "request_fingerprint": "8b517d6946213f848ee91be8ac68f104a04abed4170f2406804f72143b720ff1"
+          }
+        ],
+        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: No credential-less request should ever receive an admin-role token.",
+        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+      },
+      {
+        "finding_id": "19afbaf29388fb4a",
+        "title": "exploration on PUT /api/v1/accounts/{account_id}/profile",
+        "owasp_category": "exploration",
+        "classification": "STRONG_SIGNAL",
+        "confidence": 0.75,
+        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:N",
+        "cvss_score": 8.2,
+        "severity": "high",
+        "probe_chain": [
+          "69ac6d1a7f644342b526d2187c67ebdb"
+        ],
+        "request_summary": [
+          {
+            "audit_id": "dvws-explore-2-3c1e46",
+            "hypothesis_id": "dvws-explore-2",
+            "probe_id": "69ac6d1a7f644342b526d2187c67ebdb",
+            "correlation_id": "explore-2-approved",
+            "op": "op_update_profile_api_v1_accounts__account_id__profile_put",
+            "status": "executed",
+            "status_code": 200,
+            "response_headers": {
+              "date": "[REDACTED]",
+              "server": "[REDACTED]",
+              "content-length": "132",
+              "content-type": "application/json"
+            },
+            "parsed": {
+              "kind": "json",
+              "data": {
+                "evidence_available": true,
+                "body_sha256": "4f3cfbc6bbed6ce78591d828b50f3b0cd50d52cd6f8e727f708aa880209b8806"
+              },
+              "parse_error": null,
+              "artifacts": {},
+              "credential_fields": [],
+              "body_sha256": "4f3cfbc6bbed6ce78591d828b50f3b0cd50d52cd6f8e727f708aa880209b8806"
+            },
+            "latency_ms": 491.3429999996879,
+            "attempts": 1,
+            "error": null,
+            "approval_required": false,
+            "risk_classification": "destructive",
+            "state_changes": [],
+            "request_fingerprint": "06451da771458effd9e30556f4e96e41fcad6a3b6c183d7fa3d34f3caa0c2ce5"
+          }
+        ],
+        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: A profile update must not be able to grant itself an elevated role.",
+        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+      },
+      {
+        "finding_id": "bcb9df77c7c60b9c",
+        "title": "exploration on DELETE /api/v1/admin/maintenance/purge-cache",
+        "owasp_category": "exploration",
+        "classification": "STRONG_SIGNAL",
+        "confidence": 0.75,
+        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+        "cvss_score": 7.5,
+        "severity": "high",
+        "probe_chain": [
+          "2d42f7dc6cf0410293b65add023704a8"
+        ],
+        "request_summary": [
+          {
+            "audit_id": "dvws-explore-3-e33f91",
+            "hypothesis_id": "dvws-explore-3",
+            "probe_id": "2d42f7dc6cf0410293b65add023704a8",
+            "correlation_id": "explore-3-approved",
+            "op": "op_purge_cache_api_v1_admin_maintenance_purge_cache_delete",
+            "status": "executed",
+            "status_code": 200,
+            "response_headers": {
+              "date": "[REDACTED]",
+              "server": "[REDACTED]",
+              "content-length": "55",
+              "content-type": "application/json"
+            },
+            "parsed": {
+              "kind": "json",
+              "data": {
+                "evidence_available": true,
+                "body_sha256": "c366b6d328d5d0bf1b73a9f96c73d50f1afae1dbb3453e45ef4b97369fb3b0d1"
+              },
+              "parse_error": null,
+              "artifacts": {},
+              "credential_fields": [],
+              "body_sha256": "c366b6d328d5d0bf1b73a9f96c73d50f1afae1dbb3453e45ef4b97369fb3b0d1"
+            },
+            "latency_ms": 474.12858300049265,
+            "attempts": 1,
+            "error": null,
+            "approval_required": false,
+            "risk_classification": "destructive",
+            "state_changes": [],
+            "request_fingerprint": "dc01b728d86add4f72e6c4adf32b1887d13b939f676fe1639fcbb6cce5ad0401"
+          }
+        ],
+        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: A cache purge must never execute without explicit human approval.",
+        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+      },
+      {
+        "finding_id": "451efc3c66dcc67a",
+        "title": "exploration on GET /api/v1/debug/env",
+        "owasp_category": "exploration",
+        "classification": "STRONG_SIGNAL",
+        "confidence": 0.75,
+        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+        "cvss_score": 7.5,
+        "severity": "high",
+        "probe_chain": [
+          "98b052065e004c96b42cc32fdec210ef"
+        ],
+        "request_summary": [
+          {
+            "audit_id": "dvws-explore-4-d40d8a",
+            "hypothesis_id": "dvws-explore-4",
+            "probe_id": "98b052065e004c96b42cc32fdec210ef",
+            "correlation_id": "explore-4",
+            "op": "op_get_debug_env_api_v1_debug_env_get",
+            "status": "executed",
+            "status_code": 200,
+            "response_headers": {
+              "date": "[REDACTED]",
+              "server": "[REDACTED]",
+              "content-length": "146",
+              "content-type": "application/json"
+            },
+            "parsed": {
+              "kind": "json",
+              "data": {
+                "evidence_available": true,
+                "body_sha256": "a568e4d285e6851ef11c3066f18da3e5a53530d3da1a21ef58735dfae71996ca"
+              },
+              "parse_error": null,
+              "artifacts": {},
+              "credential_fields": [],
+              "body_sha256": "a568e4d285e6851ef11c3066f18da3e5a53530d3da1a21ef58735dfae71996ca"
+            },
+            "latency_ms": 482.11937499945634,
+            "attempts": 1,
+            "error": null,
+            "approval_required": false,
+            "risk_classification": "safe",
+            "state_changes": [],
+            "request_fingerprint": "d723bfb06066f7bdb5ccee85aa866f8b908492ac2f24c56af715f5c5c31c95d1"
+          }
+        ],
+        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: Anonymous clients must not receive internal credentials or signing secrets.",
+        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+      }
+    ],
+    "autonomous_findings": [
+      {
+        "finding_id": "c4e0dfbb5e09afc7",
+        "title": "API5:BFLA on GET /api/v1/debug/env",
+        "owasp_category": "API5:BFLA",
+        "classification": "STRONG_SIGNAL",
+        "confidence": 0.75,
+        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+        "cvss_score": 7.5,
+        "severity": "high",
+        "probe_chain": [
+          "cf32829f8f1c4ad5af8d033ad28a7c41"
+        ],
+        "request_summary": [
+          {
+            "audit_id": "dvws-auto-74a0e4",
+            "hypothesis_id": "hyp_36b5f9",
+            "probe_id": "cf32829f8f1c4ad5af8d033ad28a7c41",
+            "correlation_id": "225fda0b1e8344ad8b350e49e9339432",
+            "op": "op_get_debug_env_api_v1_debug_env_get",
+            "status": "executed",
+            "status_code": 200,
+            "response_headers": {
+              "date": "[REDACTED]",
+              "server": "[REDACTED]",
+              "content-length": "146",
+              "content-type": "application/json"
+            },
+            "parsed": {
+              "kind": "json",
+              "data": {
+                "evidence_available": true,
+                "body_sha256": "a568e4d285e6851ef11c3066f18da3e5a53530d3da1a21ef58735dfae71996ca"
+              },
+              "parse_error": null,
+              "artifacts": {},
+              "credential_fields": [],
+              "body_sha256": "a568e4d285e6851ef11c3066f18da3e5a53530d3da1a21ef58735dfae71996ca"
+            },
+            "latency_ms": 228.85425000094983,
+            "attempts": 1,
+            "error": null,
+            "approval_required": false,
+            "risk_classification": "safe",
+            "state_changes": [],
+            "request_fingerprint": "d723bfb06066f7bdb5ccee85aa866f8b908492ac2f24c56af715f5c5c31c95d1"
+          }
+        ],
+        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis API5:BFLA. Expected: Anonymous clients must not receive internal credentials or signing secrets.",
+        "remediation": "Enforce function-level authorization checks server-side for every administrative or privileged operation, independent of client/UI-level hiding."
+      }
+    ],
+    "autonomous_probes": 3,
+    "direct_probes": 6,
+    "challenge_delta": null
+  }
+}
