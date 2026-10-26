@@ -162,23 +162,32 @@ exact same `demo/evaluate.py` and ground truth as PenAgent's own runs above
 -- a genuinely apples-to-apples comparison.
 
 **Model substitution, stated plainly**: the paper's baseline uses GPT-4. Per
-instruction, this uses locally-hosted open-weight models via Ollama instead
--- `llama3.2:3b`, `phi3:latest` (3.8B), `gemma3:4b` -- not a drop-in
-replacement for GPT-4 by any stretch (2-4B parameters vs. GPT-4's much larger
-scale). The comparison below is baseline-vs-PenAgent at this model scale, not
-a claim about what a GPT-4-backed PentestGPT would score.
+instruction, this uses six locally-hosted open-weight models via Ollama
+instead -- `gemma3:1b-it-qat` (1.0B), `gemma2:2b` (2.6B), `llama3.2:3b`
+(3.2B), `phi3:latest` (3.8B), `qwen:latest` (4.0B), `gemma3:4b` (4.3B),
+real parameter counts from `ollama show` -- not a drop-in replacement for
+GPT-4 by any stretch. The comparison below is baseline-vs-PenAgent at this
+model scale, not a claim about what a GPT-4-backed PentestGPT would score.
 
-| Target | Model | TPR | FPR | Findings | Wall clock |
-|---|---|---:|---:|---:|---:|
-| DVWS | llama3.2:3b | 40% | 33% | 3 | 4.1s |
-| DVWS | phi3:latest | 40% | 60% | 5 | 11.3s |
-| DVWS | gemma3:4b | 60% | 33% | 6 | 14.4s |
-| SREBench-API | llama3.2:3b | 100% | 33% | 3 | 4.0s |
-| SREBench-API | phi3:latest | 100% | 33% | 3 | 5.7s |
-| SREBench-API | gemma3:4b | 100% | 25% | 4 | 7.8s |
-| Juice Shop | llama3.2:3b | 67% | 33% | 3 | 3.7s |
-| Juice Shop | phi3:latest | **100%** | 20% | 5 | 8.8s |
-| Juice Shop | gemma3:4b | 67% | 40% | 5 | 9.7s |
+Averaged across all 3 targets (full per-target breakdown in
+`ui/data/results.json`, rendered in the operator console's Baselines view):
+
+| Approach | Params | Precision | Recall (TPR) | F1 | CVSS acc. | Avg. time |
+|---|---:|---:|---:|---:|---:|---:|
+| **PenAgent (guided)** | — | **100%** | 71% | **80%** | 83% | live HTTP, no LLM call |
+| Llama 3.2 | 3.2B | 67% | 69% | 66% | 22% | 4.3s |
+| Phi-3 | 3.8B | 56% | 80% | 65% | 20% | 8.2s |
+| Gemma 3 | 4.3B | 47% | 76% | 57% | 18% | 9.9s |
+| Gemma 3 | 1.0B | 46% | 71% | 55% | 19% | 8.3s |
+| Gemma 2 | 2.6B | 56% | 58% | 54% | 16% | 8.0s |
+| Qwen2 | 4.0B | 0% | 0% | 0% | — | 2.6s |
+| PenAgent (autonomous) | — | 0% | 0% | 0% | — | live HTTP, no LLM call |
+
+PenAgent (guided) has the highest F1 of all eight rows and the only perfect
+precision. Qwen2 -- the *largest* baseline model at 4.0B parameters --
+produced the *lowest* precision of the six (every one of its "confirmed"
+findings was a miss), well below the smallest model (Gemma 3, 1.0B, 46%
+precision): raw parameter count does not predict reliability here.
 
 ### The comparison that actually matters: TPR alone is misleading here
 
@@ -189,12 +198,13 @@ reason is the entire point of the paper's Section 6.3 baseline design:
 
 - **The baseline's "CONFIRMED_VULNERABILITY" is an unverified guess.** It
   never sends a single HTTP request. It cannot tell a correct guess from a
-  plausible-sounding wrong one -- which is exactly why its **FPR is 20-60%
-  across the board**: roughly a third to three-fifths of everything it
-  "confirms" is not a real ground-truth vulnerability, asserted with the
-  same flat confidence as the correct ones. A FPR that high in a real audit
-  means an operator can't trust the tool's own confirmations at all without
-  independently re-verifying every one -- which defeats the purpose.
+  plausible-sounding wrong one -- which is exactly why its **average FPR
+  per model ranges 33-100% across the six** (Qwen2 confirmed nothing real
+  at all): a third to all of everything a given model "confirms" is not a
+  real ground-truth vulnerability, asserted with the same flat confidence
+  as the correct ones. A FPR that high in a real audit means an operator
+  can't trust the tool's own confirmations at all without independently
+  re-verifying every one -- which defeats the purpose.
 - **PenAgent's guided/autonomous CONFIRMED findings have 0% FPR everywhere**
   (see the headline metrics table above) because confirmation requires a
   real HTTP response matching an operator-defined, evidence-backed

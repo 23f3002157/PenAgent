@@ -4,6 +4,9 @@
       "autonomous": {
         "true_positive_rate": 0.0,
         "false_positive_rate": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
         "avg_exploit_chain_depth": 1.0,
         "cvss_score_accuracy": null,
         "time_to_first_finding_seconds": 0.8089179992675781,
@@ -25,6 +28,9 @@
       "guided": {
         "true_positive_rate": 0.8,
         "false_positive_rate": 0.0,
+        "precision": 1.0,
+        "recall": 0.8,
+        "f1_score": 0.889,
         "avg_exploit_chain_depth": 1.0,
         "cvss_score_accuracy": 0.86,
         "time_to_first_finding_seconds": 0.048516273498535156,
@@ -49,6 +55,9 @@
       "autonomous": {
         "true_positive_rate": 0.0,
         "false_positive_rate": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
         "avg_exploit_chain_depth": 0.0,
         "cvss_score_accuracy": null,
         "time_to_first_finding_seconds": null,
@@ -67,6 +76,9 @@
       "guided": {
         "true_positive_rate": 1.0,
         "false_positive_rate": 0.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
         "avg_exploit_chain_depth": 1.0,
         "cvss_score_accuracy": 0.63,
         "time_to_first_finding_seconds": 0.03778886795043945,
@@ -87,6 +99,9 @@
       "autonomous": {
         "true_positive_rate": 0.0,
         "false_positive_rate": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
         "avg_exploit_chain_depth": 1.0,
         "cvss_score_accuracy": null,
         "time_to_first_finding_seconds": 0.4808158874511719,
@@ -106,6 +121,9 @@
       "guided": {
         "true_positive_rate": 0.333,
         "false_positive_rate": 0.0,
+        "precision": 1.0,
+        "recall": 0.333,
+        "f1_score": 0.5,
         "avg_exploit_chain_depth": 1.0,
         "cvss_score_accuracy": 0.99,
         "time_to_first_finding_seconds": 0.0997769832611084,
@@ -126,11 +144,180 @@
     }
   },
   "baseline": {
+    "gemma2-2b": {
+      "dvws": {
+        "metrics": {
+          "true_positive_rate": 0.4,
+          "false_positive_rate": 0.333,
+          "precision": 0.667,
+          "recall": 0.4,
+          "f1_score": 0.5,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": 0.195,
+          "time_to_first_finding_seconds": 16.380770921707153,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 5,
+          "true_positives": 2,
+          "confirmed_findings": 3,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [
+            "DVWS-API2",
+            "DVWS-API3"
+          ],
+          "unmatched_ground_truth_ids": [
+            "DVWS-API1",
+            "DVWS-API5",
+            "DVWS-API8"
+          ]
+        },
+        "wall_clock": 16.38,
+        "n_findings": 3
+      },
+      "srebench-api": {
+        "metrics": {
+          "true_positive_rate": 1.0,
+          "false_positive_rate": 0.333,
+          "precision": 0.667,
+          "recall": 1.0,
+          "f1_score": 0.8,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": 0.1,
+          "time_to_first_finding_seconds": 3.9763588905334473,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 2,
+          "true_positives": 2,
+          "confirmed_findings": 3,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [
+            "SRE-01",
+            "SRE-02"
+          ],
+          "unmatched_ground_truth_ids": []
+        },
+        "wall_clock": 3.98,
+        "n_findings": 3
+      },
+      "juice-shop": {
+        "metrics": {
+          "true_positive_rate": 0.333,
+          "false_positive_rate": 0.667,
+          "precision": 0.333,
+          "recall": 0.333,
+          "f1_score": 0.333,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": 0.19,
+          "time_to_first_finding_seconds": 3.683229923248291,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 3,
+          "true_positives": 1,
+          "confirmed_findings": 3,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [
+            "JS-01"
+          ],
+          "unmatched_ground_truth_ids": [
+            "JS-02",
+            "JS-03"
+          ]
+        },
+        "wall_clock": 3.68,
+        "n_findings": 3
+      }
+    },
+    "gemma3-1b-it-qat": {
+      "dvws": {
+        "metrics": {
+          "true_positive_rate": 0.8,
+          "false_positive_rate": 0.333,
+          "precision": 0.667,
+          "recall": 0.8,
+          "f1_score": 0.727,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": 0.215,
+          "time_to_first_finding_seconds": 18.31344699859619,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 5,
+          "true_positives": 4,
+          "confirmed_findings": 6,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [
+            "DVWS-API1",
+            "DVWS-API2",
+            "DVWS-API3",
+            "DVWS-API5"
+          ],
+          "unmatched_ground_truth_ids": [
+            "DVWS-API8"
+          ]
+        },
+        "wall_clock": 18.31,
+        "n_findings": 6
+      },
+      "srebench-api": {
+        "metrics": {
+          "true_positive_rate": 1.0,
+          "false_positive_rate": 0.25,
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1_score": 0.667,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": 0.1,
+          "time_to_first_finding_seconds": 3.2966511249542236,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 2,
+          "true_positives": 2,
+          "confirmed_findings": 4,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [
+            "SRE-01",
+            "SRE-02"
+          ],
+          "unmatched_ground_truth_ids": []
+        },
+        "wall_clock": 3.3,
+        "n_findings": 4
+      },
+      "juice-shop": {
+        "metrics": {
+          "true_positive_rate": 0.333,
+          "false_positive_rate": 0.6,
+          "precision": 0.2,
+          "recall": 0.333,
+          "f1_score": 0.25,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": 0.25,
+          "time_to_first_finding_seconds": 3.3872461318969727,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 3,
+          "true_positives": 1,
+          "confirmed_findings": 5,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [
+            "JS-02"
+          ],
+          "unmatched_ground_truth_ids": [
+            "JS-01",
+            "JS-03"
+          ]
+        },
+        "wall_clock": 3.39,
+        "n_findings": 5
+      }
+    },
     "gemma3-4b": {
       "dvws": {
         "metrics": {
           "true_positive_rate": 0.6,
           "false_positive_rate": 0.333,
+          "precision": 0.5,
+          "recall": 0.6,
+          "f1_score": 0.545,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.217,
           "time_to_first_finding_seconds": 13.825070142745972,
@@ -157,6 +344,9 @@
         "metrics": {
           "true_positive_rate": 1.0,
           "false_positive_rate": 0.25,
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1_score": 0.667,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.1,
           "time_to_first_finding_seconds": 7.333348035812378,
@@ -179,6 +369,9 @@
         "metrics": {
           "true_positive_rate": 0.667,
           "false_positive_rate": 0.4,
+          "precision": 0.4,
+          "recall": 0.667,
+          "f1_score": 0.5,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.22,
           "time_to_first_finding_seconds": 8.646245241165161,
@@ -205,6 +398,9 @@
         "metrics": {
           "true_positive_rate": 0.4,
           "false_positive_rate": 0.333,
+          "precision": 0.667,
+          "recall": 0.4,
+          "f1_score": 0.5,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.27,
           "time_to_first_finding_seconds": 5.638295888900757,
@@ -231,6 +427,9 @@
         "metrics": {
           "true_positive_rate": 1.0,
           "false_positive_rate": 0.333,
+          "precision": 0.667,
+          "recall": 1.0,
+          "f1_score": 0.8,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.1,
           "time_to_first_finding_seconds": 3.6707661151885986,
@@ -253,6 +452,9 @@
         "metrics": {
           "true_positive_rate": 0.667,
           "false_positive_rate": 0.333,
+          "precision": 0.667,
+          "recall": 0.667,
+          "f1_score": 0.667,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.3,
           "time_to_first_finding_seconds": 3.460228204727173,
@@ -279,6 +481,9 @@
         "metrics": {
           "true_positive_rate": 0.4,
           "false_positive_rate": 0.6,
+          "precision": 0.4,
+          "recall": 0.4,
+          "f1_score": 0.4,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.25,
           "time_to_first_finding_seconds": 10.937829971313477,
@@ -305,6 +510,9 @@
         "metrics": {
           "true_positive_rate": 1.0,
           "false_positive_rate": 0.333,
+          "precision": 0.667,
+          "recall": 1.0,
+          "f1_score": 0.8,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.1,
           "time_to_first_finding_seconds": 5.356490135192871,
@@ -327,6 +535,9 @@
         "metrics": {
           "true_positive_rate": 1.0,
           "false_positive_rate": 0.2,
+          "precision": 0.6,
+          "recall": 1.0,
+          "f1_score": 0.75,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.263,
           "time_to_first_finding_seconds": 8.326823234558105,
@@ -345,6 +556,87 @@
         },
         "wall_clock": 8.33,
         "n_findings": 5
+      }
+    },
+    "qwen-latest": {
+      "dvws": {
+        "metrics": {
+          "true_positive_rate": 0.0,
+          "false_positive_rate": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1_score": 0.0,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": null,
+          "time_to_first_finding_seconds": 4.449859142303467,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 5,
+          "true_positives": 0,
+          "confirmed_findings": 1,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [],
+          "unmatched_ground_truth_ids": [
+            "DVWS-API1",
+            "DVWS-API2",
+            "DVWS-API3",
+            "DVWS-API5",
+            "DVWS-API8"
+          ]
+        },
+        "wall_clock": 4.45,
+        "n_findings": 1
+      },
+      "srebench-api": {
+        "metrics": {
+          "true_positive_rate": 0.0,
+          "false_positive_rate": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1_score": 0.0,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": null,
+          "time_to_first_finding_seconds": 1.6985688209533691,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 2,
+          "true_positives": 0,
+          "confirmed_findings": 1,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [],
+          "unmatched_ground_truth_ids": [
+            "SRE-01",
+            "SRE-02"
+          ]
+        },
+        "wall_clock": 1.7,
+        "n_findings": 1
+      },
+      "juice-shop": {
+        "metrics": {
+          "true_positive_rate": 0.0,
+          "false_positive_rate": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1_score": 0.0,
+          "avg_exploit_chain_depth": 1.0,
+          "cvss_score_accuracy": null,
+          "time_to_first_finding_seconds": 1.548084020614624,
+          "unnecessary_action_rate": 0.0,
+          "replanning_frequency": 0.0,
+          "total_ground_truth": 3,
+          "true_positives": 0,
+          "confirmed_findings": 1,
+          "total_probes": 0,
+          "matched_ground_truth_ids": [],
+          "unmatched_ground_truth_ids": [
+            "JS-01",
+            "JS-02",
+            "JS-03"
+          ]
+        },
+        "wall_clock": 1.55,
+        "n_findings": 1
       }
     }
   }

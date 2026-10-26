@@ -30,6 +30,53 @@ def export_guided_chains():
     return chains
 
 
+# Real parameter counts and quantization, read from `ollama show <model>` --
+# not estimated. Lets the comparison view show whether raw model size tracks
+# with baseline accuracy (it doesn't: qwen-latest is the largest and the
+# least accurate of the six).
+MODEL_INFO = {
+    "gemma3-1b-it-qat": {"label": "Gemma 3 1B", "params_b": 1.0, "quant": "Q4_0"},
+    "gemma2-2b": {"label": "Gemma 2 2B", "params_b": 2.6, "quant": "Q4_0"},
+    "llama3.2-3b": {"label": "Llama 3.2 3B", "params_b": 3.2, "quant": "Q4_K_M"},
+    "phi3-latest": {"label": "Phi-3 3.8B", "params_b": 3.8, "quant": "Q4_0"},
+    "qwen-latest": {"label": "Qwen2 4B", "params_b": 4.0, "quant": "Q4_0"},
+    "gemma3-4b": {"label": "Gemma 3 4B", "params_b": 4.3, "quant": "Q4_K_M"},
+}
+_AVG_KEYS = ["true_positive_rate", "false_positive_rate", "precision", "recall", "f1_score", "cvss_score_accuracy"]
+
+
+def _average_metrics(metrics_list: list[dict]) -> dict:
+    out = {}
+    for key in _AVG_KEYS:
+        values = [m[key] for m in metrics_list if m.get(key) is not None]
+        out[key] = round(sum(values) / len(values), 3) if values else None
+    return out
+
+
+def export_comparison(results: dict) -> dict:
+    """Aggregate, across all 3 targets, PenAgent (guided + autonomous) against
+    every local Ollama baseline model -- the head-to-head the paper's Section
+    6.3 asks for, computed from the same per-target metrics already in
+    results.json, not re-derived by hand."""
+    targets = list(results["penagent"].keys())
+    rows = []
+    for mode, label in [("guided", "PenAgent (guided)"), ("autonomous", "PenAgent (autonomous)")]:
+        per_target = [results["penagent"][t][mode] for t in targets if mode in results["penagent"][t]]
+        if per_target:
+            rows.append({"id": f"penagent-{mode}", "label": label, "is_penagent": True,
+                         "metrics": _average_metrics(per_target), "params_b": None, "quant": None})
+    for model, per_target_map in results["baseline"].items():
+        per_target = [per_target_map[t]["metrics"] for t in targets if t in per_target_map]
+        if not per_target:
+            continue
+        info = MODEL_INFO.get(model, {"label": model, "params_b": None, "quant": None})
+        wall_clock = [per_target_map[t]["wall_clock"] for t in targets if t in per_target_map]
+        rows.append({"id": model, "label": info["label"], "is_penagent": False,
+                     "metrics": _average_metrics(per_target), "params_b": info["params_b"], "quant": info["quant"],
+                     "avg_wall_clock_seconds": round(sum(wall_clock) / len(wall_clock), 2) if wall_clock else None})
+    return {"targets": targets, "rows": rows}
+
+
 def export_results():
     repo = Path(__file__).resolve().parent.parent
     result = {"penagent": {}, "baseline": {}}
@@ -172,8 +219,10 @@ def export_explore():
 
 def main():
     UI_DATA.mkdir(parents=True, exist_ok=True)
+    results = export_results()
     (UI_DATA / "guided-chains.json").write_text(json.dumps(export_guided_chains(), indent=2), encoding="utf-8")
-    (UI_DATA / "results.json").write_text(json.dumps(export_results(), indent=2), encoding="utf-8")
+    (UI_DATA / "results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+    (UI_DATA / "comparison.json").write_text(json.dumps(export_comparison(results), indent=2), encoding="utf-8")
     (UI_DATA / "explore.json").write_text(json.dumps(export_explore(), indent=2), encoding="utf-8")
     print(json.dumps({"status": "exported", "dir": str(UI_DATA)}))
 

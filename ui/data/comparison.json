@@ -1,0 +1,135 @@
+{
+  "targets": [
+    "dvws",
+    "srebench-api",
+    "juice-shop"
+  ],
+  "rows": [
+    {
+      "id": "penagent-guided",
+      "label": "PenAgent (guided)",
+      "is_penagent": true,
+      "metrics": {
+        "true_positive_rate": 0.711,
+        "false_positive_rate": 0.0,
+        "precision": 1.0,
+        "recall": 0.711,
+        "f1_score": 0.796,
+        "cvss_score_accuracy": 0.827
+      },
+      "params_b": null,
+      "quant": null
+    },
+    {
+      "id": "penagent-autonomous",
+      "label": "PenAgent (autonomous)",
+      "is_penagent": true,
+      "metrics": {
+        "true_positive_rate": 0.0,
+        "false_positive_rate": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "cvss_score_accuracy": null
+      },
+      "params_b": null,
+      "quant": null
+    },
+    {
+      "id": "gemma2-2b",
+      "label": "Gemma 2 2B",
+      "is_penagent": false,
+      "metrics": {
+        "true_positive_rate": 0.578,
+        "false_positive_rate": 0.444,
+        "precision": 0.556,
+        "recall": 0.578,
+        "f1_score": 0.544,
+        "cvss_score_accuracy": 0.162
+      },
+      "params_b": 2.6,
+      "quant": "Q4_0",
+      "avg_wall_clock_seconds": 8.01
+    },
+    {
+      "id": "gemma3-1b-it-qat",
+      "label": "Gemma 3 1B",
+      "is_penagent": false,
+      "metrics": {
+        "true_positive_rate": 0.711,
+        "false_positive_rate": 0.394,
+        "precision": 0.456,
+        "recall": 0.711,
+        "f1_score": 0.548,
+        "cvss_score_accuracy": 0.188
+      },
+      "params_b": 1.0,
+      "quant": "Q4_0",
+      "avg_wall_clock_seconds": 8.33
+    },
+    {
+      "id": "gemma3-4b",
+      "label": "Gemma 3 4B",
+      "is_penagent": false,
+      "metrics": {
+        "true_positive_rate": 0.756,
+        "false_positive_rate": 0.328,
+        "precision": 0.467,
+        "recall": 0.756,
+        "f1_score": 0.571,
+        "cvss_score_accuracy": 0.179
+      },
+      "params_b": 4.3,
+      "quant": "Q4_K_M",
+      "avg_wall_clock_seconds": 9.94
+    },
+    {
+      "id": "llama3.2-3b",
+      "label": "Llama 3.2 3B",
+      "is_penagent": false,
+      "metrics": {
+        "true_positive_rate": 0.689,
+        "false_positive_rate": 0.333,
+        "precision": 0.667,
+        "recall": 0.689,
+        "f1_score": 0.656,
+        "cvss_score_accuracy": 0.223
+      },
+      "params_b": 3.2,
+      "quant": "Q4_K_M",
+      "avg_wall_clock_seconds": 4.26
+    },
+    {
+      "id": "phi3-latest",
+      "label": "Phi-3 3.8B",
+      "is_penagent": false,
+      "metrics": {
+        "true_positive_rate": 0.8,
+        "false_positive_rate": 0.378,
+        "precision": 0.556,
+        "recall": 0.8,
+        "f1_score": 0.65,
+        "cvss_score_accuracy": 0.204
+      },
+      "params_b": 3.8,
+      "quant": "Q4_0",
+      "avg_wall_clock_seconds": 8.21
+    },
+    {
+      "id": "qwen-latest",
+      "label": "Qwen2 4B",
+      "is_penagent": false,
+      "metrics": {
+        "true_positive_rate": 0.0,
+        "false_positive_rate": 1.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "cvss_score_accuracy": null
+      },
+      "params_b": 4.0,
+      "quant": "Q4_0",
+      "avg_wall_clock_seconds": 2.57
+    }
+  ]
+}

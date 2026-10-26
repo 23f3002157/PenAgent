@@ -128,9 +128,22 @@ def compute_metrics(run: dict, ground_truth: list[dict]) -> dict:
     hypotheses = run.get("hypotheses_processed", 0) or 1
     replanning_frequency = run.get("replanning_transitions", 0) / hypotheses
 
+    # precision/recall/F1 in their standard information-retrieval sense --
+    # recall is exactly true_positive_rate (every ground-truth entry is
+    # equally weighted as "1 relevant item"), precision is the fraction of
+    # CONFIRMED findings that were real, i.e. exactly (1 - false_positive_rate).
+    # Both are derivable from the fields above; reported directly because
+    # "precision/recall/F1" is the vocabulary a paper comparison expects.
+    precision = (true_positives / len(confirmed)) if confirmed else (1.0 if not ground_truth else 0.0)
+    recall = tpr
+    f1_score = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
+
     return {
         "true_positive_rate": round(tpr, 3),
         "false_positive_rate": round(fpr, 3),
+        "precision": round(precision, 3),
+        "recall": round(recall, 3),
+        "f1_score": round(f1_score, 3),
         "avg_exploit_chain_depth": round(avg_chain_depth, 2),
         "cvss_score_accuracy": round(cvss_accuracy, 3) if cvss_accuracy is not None else None,
         "time_to_first_finding_seconds": run.get("time_to_first_finding_seconds"),

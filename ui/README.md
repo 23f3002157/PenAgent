@@ -9,6 +9,8 @@ All of it reads from your running services over plain `fetch()`.
 
 No build step, no npm, no framework. Just `index.html` + `styles.css` +
 `app.js`, consistent with the rest of this repository being Python-first.
+Light/dark theme toggle in the top bar (persisted per browser); every data
+table in the console is filterable, sortable, and downloadable as CSV.
 
 ## Run it
 
@@ -103,17 +105,29 @@ generic inputs, no scoring against hidden ground truth). Per target:
 - **Juice Shop's own challenge tracker** — a highlighted card listing
   challenges `GET /api/Challenges` independently confirms were solved (not
   PenAgent's self-grading).
-- **A collapsible table** of every individual request and what came back,
-  also click-to-expand into the same detail panel as the graph.
+- **A collapsible table** of every individual request and what came back —
+  filterable by typing (path, category or status), sortable by clicking any
+  column header, and downloadable as CSV, also click-to-expand into the
+  same detail panel as the graph.
 
 ### Baselines & Results view
 
-Needs no connection/token — it reads two static JSON files exported by
+Needs no connection/token — it reads static JSON files exported by
 `python -m demo.export_ui_data` (`data/guided-chains.json`,
-`data/results.json`), regenerate them after a fresh `demo/run_evaluation.py`
-run. Per target (DVWS, SREBench-API, Juice Shop): a true-positive-rate bar
-chart comparing PenAgent (autonomous vs. ground-truth-guided) against the
-three Ollama PentestGPT-style baselines, plus a full metrics table (TPR, FPR,
-CVSS accuracy, chain depth, time to first finding). The methodology caveats
-(n=1, no Burp/ZAP, autonomous ≠ guided) are stated inline and in
-`docs/RESULTS.md`.
+`data/results.json`, `data/comparison.json`), regenerate them after a fresh
+`demo/run_evaluation.py` / `demo/baseline_pentestgpt.py` run. Per target
+(DVWS, SREBench-API, Juice Shop): a true-positive-rate bar chart comparing
+PenAgent (autonomous vs. ground-truth-guided) against **six** local Ollama
+PentestGPT-style baselines (1.0B–4.3B parameters, real sizes from
+`ollama show`), plus a full metrics table (TPR, FPR, CVSS accuracy, chain
+depth, time to first finding).
+
+Above the per-target cards, a **head-to-head comparison** aggregates all
+eight approaches (PenAgent guided + autonomous, six baselines) across all
+three targets at once: ranked precision and F1 bar charts, a sortable,
+downloadable table (precision/recall/F1/CVSS-accuracy/model size/wall
+clock), and an evidence-based explanation of why PenAgent's F1 and precision
+come out ahead of every baseline — because every `CONFIRMED_VULNERABILITY`
+it reports passed a real HTTP request against a configured predicate, not a
+language-model guess. The methodology caveats (n=1, no Burp/ZAP,
+autonomous ≠ guided) are stated inline and in `docs/RESULTS.md`.

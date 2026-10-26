@@ -20,6 +20,7 @@ const state = {
   guidedProgress: {},  // audit_id -> next step index
   guidedRunning: false,
   resultsCache: null,  // loaded once from data/results.json
+  comparisonCache: null, // loaded once from data/comparison.json
   exploreCache: null,  // loaded once from data/explore.json
   exploreSelected: {}, // target_id -> currently selected op_id in the Exploration view
 };
@@ -622,9 +623,11 @@ async function renderStateTab(body) {
 
 // ---------- Baselines & Results view ----------
 
-const BASELINE_LABELS = { "gemma3-4b": "Gemma3 4B", "llama3.2-3b": "Llama 3.2 3B", "phi3-latest": "Phi-3" };
+const BASELINE_LABELS = {
+  "gemma3-4b": "Gemma 3 4B", "llama3.2-3b": "Llama 3.2 3B", "phi3-latest": "Phi-3 3.8B",
+  "gemma2-2b": "Gemma 2 2B", "qwen-latest": "Qwen2 4B", "gemma3-1b-it-qat": "Gemma 3 1B",
+};
 const TARGET_LABELS = { dvws: "DVWS", "srebench-api": "SREBench-API", "juice-shop": "Juice Shop" };
-const BAR_COLORS = ["--strong", "--confirmed", "--weak", "--negative", "--error"];
 
 function pct(value) {
   return value == null ? "—" : `${Math.round(value * 100)}%`;
@@ -682,18 +685,97 @@ function renderResultsTable(target, results) {
 function renderTargetCard(target, results) {
   const pa = results.penagent[target] || {};
   const bars = [];
-  if (pa.autonomous) bars.push(["PenAgent (autonomous)", pa.autonomous.true_positive_rate]);
-  if (pa.guided) bars.push(["PenAgent (guided)", pa.guided.true_positive_rate]);
+  if (pa.autonomous) bars.push(["PenAgent (autonomous)", pa.autonomous.true_positive_rate, true]);
+  if (pa.guided) bars.push(["PenAgent (guided)", pa.guided.true_positive_rate, true]);
   for (const [model, byTarget] of Object.entries(results.baseline)) {
     const entry = byTarget[target];
-    if (entry) bars.push([`${BASELINE_LABELS[model] || model}`, entry.metrics.true_positive_rate]);
+    if (entry) bars.push([`${BASELINE_LABELS[model] || model}`, entry.metrics.true_positive_rate, false]);
   }
-  const barHtml = bars.map(([label, value], i) => metricBarRow(label, value, BAR_COLORS[i % BAR_COLORS.length])).join("");
+  // Only one categorical distinction matters here -- PenAgent vs. baseline --
+  // so that's the only thing color encodes, rather than 8 cycled hues for 8 bars.
+  const barHtml = bars.map(([label, value, isPenAgent]) => metricBarRow(label, value, isPenAgent ? "--pending" : "--text-faint")).join("");
   return `
     <div class="card">
       <div class="card-title">${escapeHtml(TARGET_LABELS[target] || target)} — true positive rate</div>
       <div class="bars">${barHtml}</div>
       ${renderResultsTable(target, results)}
+    </div>`;
+}
+
+async function fetchComparison() {
+  if (state.comparisonCache) return state.comparisonCache;
+  const response = await fetch("data/comparison.json");
+  state.comparisonCache = response.ok ? await response.json() : { rows: [] };
+  return state.comparisonCache;
+}
+
+function comparisonBarChart(rows, metricKey, metricLabel) {
+  const sorted = rows.slice().sort((a, b) => (b.metrics[metricKey] ?? 0) - (a.metrics[metricKey] ?? 0));
+  const bars = sorted.map((r) => metricBarRow(
+    r.is_penagent ? `★ ${r.label}` : r.label,
+    r.metrics[metricKey], r.is_penagent ? "--pending" : "--text-faint",
+  )).join("");
+  return `
+    <div class="comparison-chart">
+      <div class="explore-section-title">${escapeHtml(metricLabel)} — ranked</div>
+      <div class="bars">${bars}</div>
+    </div>`;
+}
+
+function comparisonTableHtml(rows) {
+  const sorted = rows.slice().sort((a, b) => (b.metrics.f1_score ?? 0) - (a.metrics.f1_score ?? 0));
+  const body = sorted.map((r) => `
+    <tr class="${r.is_penagent ? "row-highlight" : ""}">
+      <td>${r.is_penagent ? "&#9733; " : ""}${escapeHtml(r.label)}</td>
+      <td>${r.params_b ? `${r.params_b}B` : "—"}</td>
+      <td>${pct(r.metrics.precision)}</td>
+      <td>${pct(r.metrics.recall)}</td>
+      <td><b>${pct(r.metrics.f1_score)}</b></td>
+      <td>${r.metrics.cvss_score_accuracy == null ? "—" : pct(r.metrics.cvss_score_accuracy)}</td>
+      <td>${r.avg_wall_clock_seconds != null ? `${r.avg_wall_clock_seconds}s` : "live HTTP, no LLM call"}</td>
+    </tr>`).join("");
+  return `
+    <div class="table-toolbar">
+      <button class="btn btn-ghost btn-sm csv-download-btn" data-table-id="comparisonTable" data-filename="penagent-comparison.csv">&#8681; CSV</button>
+    </div>
+    <div class="result-table-wrap">
+      <table class="result-table" id="comparisonTable">
+        <thead><tr><th>Approach</th><th>Model size</th><th>Precision</th><th>Recall</th><th>F1</th><th>CVSS acc.</th><th>Avg. time</th></tr></thead>
+        <tbody>${body}</tbody>
+      </table>
+    </div>`;
+}
+
+async function renderComparisonSection() {
+  let comparison;
+  try {
+    comparison = await fetchComparison();
+  } catch {
+    return "";
+  }
+  const rows = comparison.rows || [];
+  if (!rows.length) return "";
+  const best = rows.slice().sort((a, b) => (b.metrics.f1_score ?? 0) - (a.metrics.f1_score ?? 0))[0];
+  return `
+    <div class="card">
+      <div class="card-title">Head-to-head: PenAgent vs. 6 local LLM baselines, averaged across all 3 targets</div>
+      <p class="muted" style="margin-bottom:var(--space-4)">Same OpenAPI spec given to every baseline model (1B–4.3B parameters,
+        real sizes from <code>ollama show</code>), reasoning only, no execution — isolating what PenAgent's
+        execution-and-verification loop actually buys over text-only inference.</p>
+      <div class="xgraph-wrap" style="grid-template-columns:1fr 1fr">
+        ${comparisonBarChart(rows, "f1_score", "F1 score")}
+        ${comparisonBarChart(rows, "precision", "Precision (share of CONFIRMED findings that were real)")}
+      </div>
+      ${comparisonTableHtml(rows)}
+      <div class="callout" style="margin-top:var(--space-4)">
+        <b>${escapeHtml(best.label)} has the highest F1 score</b> (${pct(best.metrics.f1_score)}) of all ${rows.length}
+        approaches compared, with ${pct(best.metrics.precision)} precision — every <code>CONFIRMED_VULNERABILITY</code>
+        it reports passed a real HTTP request against a configured security predicate. The baseline models reason over
+        the identical spec with no execution at all: their raw true-positive rate is sometimes competitive, but
+        model size doesn't predict reliability — the largest baseline here (Qwen2, 4B) has the <i>lowest</i>
+        precision of all six, well below the smallest (Gemma 3, 1B). Precision is what execution buys; that's
+        the gap this chart measures, not a scanner feature race against Burp or ZAP.
+      </div>
     </div>`;
 }
 
@@ -708,13 +790,16 @@ async function renderBaselinesView() {
   }
   const targets = Object.keys(results.penagent);
   const cards = targets.map((t) => renderTargetCard(t, results)).join("");
+  const comparisonSection = await renderComparisonSection();
   main.innerHTML = `
     <div class="view-header">
       <h1>Baselines &amp; Results</h1>
-      <p class="muted">PenAgent (autonomous discovery vs. ground-truth-guided execution) against three local-model
-        PentestGPT-style baselines (Ollama, prompt-only reasoning, no execution), on DVWS, SREBench-API and Juice Shop.
-        "Autonomous" and "guided" are never the same number — see <code>docs/RESULTS.md</code> for the full methodology.</p>
+      <p class="muted">PenAgent (autonomous discovery vs. ground-truth-guided execution) against six local-model
+        PentestGPT-style baselines (Ollama, 1B–4.3B parameters, prompt-only reasoning, no execution), on DVWS,
+        SREBench-API and Juice Shop. "Autonomous" and "guided" are never the same number — see
+        <code>docs/RESULTS.md</code> for the full methodology.</p>
     </div>
+    ${comparisonSection}
     ${cards}
     <div class="callout">
       These are n=1 runs on real benchmark images, not averaged across repeated trials, and do not include
@@ -784,8 +869,8 @@ function opStatusBucket(statusCode) {
   return "other";
 }
 
-function opOutcomeTableHtml(targetId, outcomes) {
-  const rows = outcomes.map((o) => {
+function opTableRowsHtml(outcomes) {
+  return outcomes.map((o) => {
     const bucket = STATUS_BUCKET[opStatusBucket(o.status_code)];
     return `<tr class="clickable-row" data-op="${escapeHtml(o.op)}">
       <td class="mono">${escapeHtml(o.method)} ${escapeHtml(o.path)}</td>
@@ -794,16 +879,59 @@ function opOutcomeTableHtml(targetId, outcomes) {
       <td><span class="status-legend-swatch" style="background:var(${bucket.colorVar})"></span> ${escapeHtml(o.status_code ?? "—")}</td>
     </tr>`;
   }).join("");
+}
+
+function opOutcomeTableHtml(targetId, outcomes) {
+  const rows = opTableRowsHtml(outcomes);
+  const tableId = `opTable-${targetId}`;
   return `
     <details>
-      <summary class="muted" style="cursor:pointer;font-size:12.5px;margin-bottom:8px">Full op-by-op table (${outcomes.length} requests) — click a row for detail</summary>
+      <summary class="muted" style="cursor:pointer;font-size:12.5px;margin-bottom:8px">Full op-by-op table (${outcomes.length} requests) — click a row for detail, a column header to sort</summary>
+      <div class="table-toolbar">
+        <input type="text" class="table-filter" id="opFilter-${escapeHtml(targetId)}" placeholder="Filter by path, category or status…">
+        <button class="btn btn-ghost btn-sm csv-download-btn" data-table-id="${tableId}" data-filename="penagent-${escapeHtml(targetId)}-exploration.csv">&#8681; CSV</button>
+      </div>
       <div class="result-table-wrap">
-        <table class="result-table" data-table-target="${escapeHtml(targetId)}">
-          <thead><tr><th>Operation</th><th>Category</th><th>Executor status</th><th>HTTP code</th></tr></thead>
-          <tbody>${rows}</tbody>
+        <table class="result-table" id="${tableId}" data-table-target="${escapeHtml(targetId)}">
+          <thead><tr>
+            <th data-sort="path" class="sortable">Operation</th>
+            <th data-sort="category" class="sortable">Category</th>
+            <th data-sort="status" class="sortable">Executor status</th>
+            <th data-sort="status_code" class="sortable">HTTP code</th>
+          </tr></thead>
+          <tbody id="opTableBody-${escapeHtml(targetId)}">${rows}</tbody>
         </table>
       </div>
     </details>`;
+}
+
+function wireOpTableRowClicks(targetId) {
+  document.querySelectorAll(`#opTableBody-${targetId} tr.clickable-row`).forEach((el) => {
+    el.addEventListener("click", () => selectExploreOp(targetId, el.dataset.op));
+  });
+}
+
+function sortOpTable(targetId, key) {
+  const data = state.exploreCache[targetId];
+  state.exploreSort = state.exploreSort || {};
+  const current = state.exploreSort[targetId];
+  const dir = current && current.key === key ? -current.dir : 1;
+  state.exploreSort[targetId] = { key, dir };
+  const sorted = data.op_outcomes.slice().sort((a, b) => {
+    const av = a[key] ?? "", bv = b[key] ?? "";
+    if (av < bv) return -dir;
+    if (av > bv) return dir;
+    return 0;
+  });
+  const tbody = document.getElementById(`opTableBody-${targetId}`);
+  if (tbody) tbody.innerHTML = opTableRowsHtml(sorted);
+  wireOpTableRowClicks(targetId);
+  const filterInput = document.getElementById(`opFilter-${targetId}`);
+  if (filterInput && filterInput.value) filterInput.dispatchEvent(new Event("input"));
+  document.querySelectorAll(`table[data-table-target="${targetId}"] th[data-sort]`).forEach((th) => {
+    th.classList.toggle("sort-active", th.dataset.sort === key);
+    th.classList.toggle("sort-desc", th.dataset.sort === key && dir === -1);
+  });
 }
 
 function methodChipsHtml(breakdown) {
@@ -956,9 +1084,19 @@ function wireExploreClicks(targetId) {
   document.querySelectorAll(`[data-graph-target="${targetId}"] .xgraph-node`).forEach((el) => {
     el.addEventListener("click", () => selectExploreOp(targetId, el.dataset.op));
   });
-  document.querySelectorAll(`table[data-table-target="${targetId}"] tr.clickable-row`).forEach((el) => {
-    el.addEventListener("click", () => selectExploreOp(targetId, el.dataset.op));
+  wireOpTableRowClicks(targetId);
+  document.querySelectorAll(`table[data-table-target="${targetId}"] th[data-sort]`).forEach((th) => {
+    th.addEventListener("click", () => sortOpTable(targetId, th.dataset.sort));
   });
+  const filterInput = document.getElementById(`opFilter-${targetId}`);
+  if (filterInput) {
+    filterInput.addEventListener("input", () => {
+      const q = filterInput.value.toLowerCase();
+      document.querySelectorAll(`#opTableBody-${targetId} tr`).forEach((tr) => {
+        tr.style.display = tr.textContent.toLowerCase().includes(q) ? "" : "none";
+      });
+    });
+  }
 }
 
 async function renderExplorationView() {
@@ -1046,9 +1184,26 @@ async function quickstart(targetId) {
 
 document.querySelectorAll(".topnav-btn").forEach((btn) => btn.addEventListener("click", () => setView(btn.dataset.view)));
 document.getElementById("main").addEventListener("click", (ev) => {
-  const btn = ev.target.closest(".quickstart-btn");
-  if (btn) void quickstart(btn.dataset.target);
+  const quickstartBtn = ev.target.closest(".quickstart-btn");
+  if (quickstartBtn) void quickstart(quickstartBtn.dataset.target);
+  const csvBtn = ev.target.closest(".csv-download-btn");
+  if (csvBtn) downloadTableCsv(csvBtn.dataset.tableId, csvBtn.dataset.filename);
 });
+
+function downloadTableCsv(tableId, filename) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const csv = [...table.querySelectorAll("tr")].map((tr) =>
+    [...tr.children].map((cell) => `"${cell.textContent.trim().replaceAll('"', '""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  toast(`Downloaded ${filename}`, "ok");
+}
 
 // ---------- wiring ----------
 
@@ -1062,5 +1217,26 @@ document.getElementById("connForm").addEventListener("submit", async (ev) => {
 document.getElementById("refreshAudits").addEventListener("click", refreshAuditList);
 document.getElementById("newAuditForm").addEventListener("submit", createAudit);
 
+// ---------- theme toggle ----------
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  const btn = document.getElementById("themeToggle");
+  if (btn) btn.textContent = theme === "dark" ? "☀" : "☾";
+}
+
+function loadTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem("penagent-console-theme"); } catch { /* storage unavailable */ }
+  applyTheme(saved || (window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+}
+
+document.getElementById("themeToggle").addEventListener("click", () => {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try { localStorage.setItem("penagent-console-theme", next); } catch { /* storage unavailable; theme still applies for this session */ }
+});
+
+loadTheme();
 loadConfig();
 testConnection().then((ok) => { if (ok) refreshAuditList(); });
