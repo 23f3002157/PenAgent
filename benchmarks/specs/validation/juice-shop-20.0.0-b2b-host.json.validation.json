@@ -1,0 +1,35 @@
+{
+  "base_path": "/b2b/v2",
+  "full_schema_validation": true,
+  "openapi": "3.0.0",
+  "operations": [
+    {
+      "anonymous": false,
+      "method": "POST",
+      "operation_id": "createCustomerOrder",
+      "parameters": [],
+      "path": "/b2b/v2/orders",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Order"
+            }
+          }
+        },
+        "description": "Customer order to be placed"
+      },
+      "schema_assurance": "official-as-published",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source_evidence": [],
+      "spec_path": "/orders"
+    }
+  ],
+  "server": "http://127.0.0.1:18001/b2b/v2",
+  "sha256": "a8b5d0b56c2eff6ba6abdcbf892c7d5ecb41ed05974c6c0bff006aec67757636",
+  "warnings": []
+}

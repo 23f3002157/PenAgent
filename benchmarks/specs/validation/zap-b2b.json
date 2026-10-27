@@ -1,0 +1,30 @@
+{
+  "tool": "actual ZAP 2.17.0 OpenAPI add-on",
+  "network": "none",
+  "mode": "safe",
+  "passive_rules_disabled": true,
+  "active_rules_disabled": true,
+  "active_scans": [],
+  "spider_scans": [],
+  "real_target_requests": 0,
+  "capture_fixture_requests": 1,
+  "original_servers": [
+    {
+      "url": "http://127.0.0.1:18001/b2b/v2"
+    }
+  ],
+  "fixture_servers": [
+    {
+      "url": "http://127.0.0.1:18080/b2b/v2"
+    }
+  ],
+  "import_result": [],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/b2b/v2/orders"
+    }
+  ],
+  "missing_operations": [],
+  "note": "Local fixture captures generated import examples only. This proves import/method-path mapping, not target reachability or authentication."
+}

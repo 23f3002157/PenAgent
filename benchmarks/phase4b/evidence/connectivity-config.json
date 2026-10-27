@@ -1,0 +1,151 @@
+{
+  "forbidden_connections": [
+    [
+      "172.24.0.2",
+      3000
+    ],
+    [
+      "172.17.0.2",
+      3000
+    ],
+    [
+      "172.24.0.1",
+      3000
+    ],
+    [
+      "172.24.0.1",
+      9003
+    ],
+    [
+      "host.docker.internal",
+      3000
+    ],
+    [
+      "host.docker.internal",
+      18001
+    ],
+    [
+      "1.1.1.1",
+      443
+    ],
+    [
+      "host.docker.internal",
+      9001
+    ],
+    [
+      "host.docker.internal",
+      9002
+    ],
+    [
+      "host.docker.internal",
+      9003
+    ],
+    [
+      "host.docker.internal",
+      9004
+    ]
+  ],
+  "gateway": {
+    "id": "46d3ed3ebfaee38c45ee04fa05a9ab156bd0271e5199944dd9ad59ce58c71f82",
+    "image": "sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6",
+    "networks": {
+      "penagent-phase4-juice20-r1_isolated": {
+        "Aliases": null,
+        "DNSNames": [
+          "penagent-phase4b-gateway-r1",
+          "46d3ed3ebfae"
+        ],
+        "DriverOpts": null,
+        "EndpointID": "c956777dadcb25f0ba56d386f76f02a7931fa3f94b633e07bad0288db359f8eb",
+        "Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "GwPriority": 0,
+        "IPAMConfig": null,
+        "IPAddress": "172.24.0.3",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "Links": null,
+        "MacAddress": "d2:28:6a:b1:74:0c",
+        "NetworkID": "e4b38d4a8c6f3ffff0d287f5fb03e560ff19eb4b903b7151b736d14318dd4e7e"
+      },
+      "penagent-phase4b-tools-r1": {
+        "Aliases": [
+          "benchmark-gateway"
+        ],
+        "DNSNames": [
+          "penagent-phase4b-gateway-r1",
+          "benchmark-gateway",
+          "46d3ed3ebfae"
+        ],
+        "DriverOpts": {},
+        "EndpointID": "885f2a7594125b966dec8f369f586a827e31f4b3f1d29e9f81875fd35e08c58a",
+        "Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "GwPriority": 0,
+        "IPAMConfig": {},
+        "IPAddress": "172.25.0.1",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "Links": null,
+        "MacAddress": "aa:de:c9:32:7f:47",
+        "NetworkID": "50f1cdd51866688c8a856a8bcda1d446ae1966d68e40caa1149ec47ef2d4d5fc"
+      }
+    },
+    "ports": {},
+    "running": true
+  },
+  "gateway_ip": "172.25.0.1",
+  "gateway_origin": "http://172.25.0.1:8088",
+  "network": {
+    "internal": true,
+    "ipam": [
+      {
+        "Subnet": "172.25.0.0/16"
+      }
+    ],
+    "options": {
+      "com.docker.network.bridge.gateway_mode_ipv4": "isolated",
+      "com.docker.network.enable_ipv4": "true",
+      "com.docker.network.enable_ipv6": "false"
+    }
+  },
+  "target": {
+    "id": "0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c",
+    "image": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+    "networks": {
+      "penagent-phase4-juice20-r1_isolated": {
+        "Aliases": [
+          "penagent-phase4-juice20-r1-target-1",
+          "target"
+        ],
+        "DNSNames": [
+          "penagent-phase4-juice20-r1-target-1",
+          "target",
+          "0710d10e33c5"
+        ],
+        "DriverOpts": null,
+        "EndpointID": "01657ba90fd6f7e56ffe86d2e8d122a83d0ee48e24faf89c793425a52f1201aa",
+        "Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "GwPriority": 0,
+        "IPAMConfig": null,
+        "IPAddress": "172.24.0.2",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "Links": null,
+        "MacAddress": "36:6d:8e:09:fc:20",
+        "NetworkID": "e4b38d4a8c6f3ffff0d287f5fb03e560ff19eb4b903b7151b736d14318dd4e7e"
+      }
+    },
+    "ports": {
+      "3000/tcp": []
+    },
+    "running": true
+  },
+  "target_ip": "172.24.0.2",
+  "target_origin": "http://172.24.0.2:3000",
+  "tool_network": "penagent-phase4b-tools-r1"
+}

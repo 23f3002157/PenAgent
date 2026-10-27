@@ -1,0 +1,84 @@
+[
+  {
+    "commands": [
+      {
+        "argv": [
+          "docker",
+          "inspect",
+          "--format",
+          "{\"container_id\":{{json .Id}},\"image_id\":{{json .Image}},\"running\":{{json .State.Running}}}",
+          "blissful_chebyshev"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "{\"container_id\":\"0356c18439557ca2fed64e8c69f73035c4b485ca069b6f961b1de038f17d9ac3\",\"image_id\":\"sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f\",\"running\":true}\n"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "blissful_chebyshev",
+          "/nodejs/bin/node",
+          "-p",
+          "require('/juice-shop/package.json').version"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "20.0.0\n"
+      }
+    ],
+    "expected": {
+      "container_id": "0356c18439557ca2fed64e8c69f73035c4b485ca069b6f961b1de038f17d9ac3",
+      "image_id": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+      "version": "20.0.0"
+    },
+    "name": "blissful_chebyshev",
+    "observed": {
+      "container_id": "0356c18439557ca2fed64e8c69f73035c4b485ca069b6f961b1de038f17d9ac3",
+      "image_id": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+      "running": true,
+      "version": "20.0.0"
+    }
+  },
+  {
+    "commands": [
+      {
+        "argv": [
+          "docker",
+          "inspect",
+          "--format",
+          "{\"container_id\":{{json .Id}},\"image_id\":{{json .Image}},\"running\":{{json .State.Running}}}",
+          "penagent-phase4-juice20-r1-target-1"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "{\"container_id\":\"0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c\",\"image_id\":\"sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f\",\"running\":true}\n"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "penagent-phase4-juice20-r1-target-1",
+          "/nodejs/bin/node",
+          "-p",
+          "require('/juice-shop/package.json').version"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "20.0.0\n"
+      }
+    ],
+    "expected": {
+      "container_id": "0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c",
+      "image_id": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+      "version": "20.0.0"
+    },
+    "name": "penagent-phase4-juice20-r1-target-1",
+    "observed": {
+      "container_id": "0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c",
+      "image_id": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+      "running": true,
+      "version": "20.0.0"
+    }
+  }
+]

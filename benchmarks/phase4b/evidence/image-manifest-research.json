@@ -1,0 +1,38 @@
+[
+  {
+    "argv": [
+      "docker",
+      "manifest",
+      "inspect",
+      "php:5.5.38-apache"
+    ],
+    "exit_code": 0,
+    "pulled_or_executed": false,
+    "stderr": "",
+    "stdout": "{\n\t\"schemaVersion\": 2,\n\t\"mediaType\": \"application/vnd.docker.distribution.manifest.v2+json\",\n\t\"config\": {\n\t\t\"mediaType\": \"application/octet-stream\",\n\t\t\"size\": 9782,\n\t\t\"digest\": \"sha256:ea0a3d41ce6c99e1b96c335f3a9e616ecae62f1fabfdfdede51bb66b506d14ee\"\n\t},\n\t\"layers\": [\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 51365611,\n\t\t\t\"digest\": \"sha256:357ea8c3d80bc25792e010facfc98aee5972ebc47e290eb0d5aea3671a901cab\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 77581307,\n\t\t\t\"digest\": \"sha256:85537f80f73d06f9701f77e0105386b0a1abd8735f52804efc66782627af9c62\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 180,\n\t\t\t\"digest\": \"sha256:3d821ad560e13c778e616da2a9033ac30d3811185f43635e95c20b22ab380077\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 2846544,\n\t\t\t\"digest\": \"sha256:b4ae91aad5222bbe7ca67b9c2b69e54fd29989bea1eec3d8a9aca56b011c303c\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 270,\n\t\t\t\"digest\": \"sha256:66e1c1a53c958663cb6a8d19f5993b36bfaf8e334d476c5ed30d6766c8db1f9a\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 432,\n\t\t\t\"digest\": \"sha256:5d1f306a891255c05b40e49a8d1dd76efb713792e0aa200386ab0e269faa49dc\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 223,\n\t\t\t\"digest\": \"sha256:37733078a51e3cf33ba985f69be1dda278d529bb87184a83c71037cade3170b4\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 475,\n\t\t\t\"digest\": \"sha256:c5351b4d6bee8cc2fc09f2af750fa4627dfdd37b44b651f3f3289260783d3b38\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 11082003,\n\t\t\t\"digest\": \"sha256:4f946c4dcbe28544ad2ceca17a2f724622e9510778451b24cc7ab3fe6fd6e2b0\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 491,\n\t\t\t\"digest\": \"sha256:0c48c69d4b1191a50bcf6c24a6fbd4966873fbf9413c5af77575941944a6f484\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 16220123,\n\t\t\t\"digest\": \"sha256:dbc71ed1796a1c784234541320ff771ae77cdcd87e008de6f86609fee3921b76\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 1838,\n\t\t\t\"digest\": \"sha256:9c6d026ad71149135a9e412d4bc5f1b8d5f7261d4e7bbd5b40cf268137c3e6c8\"\n\t\t},\n\t\t{\n\t\t\t\"mediaType\": \"application/vnd.docker.image.rootfs.diff.tar.gzip\",\n\t\t\t\"size\": 585,\n\t\t\t\"digest\": \"sha256:3fced1e5eb8f0aa7c8fb4b76fda3969105e408b8f3fccb31bfd1edbcd121ec23\"\n\t\t}\n\t]\n}\n"
+  },
+  {
+    "argv": [
+      "docker",
+      "manifest",
+      "inspect",
+      "monisha117/penagent-test-env:latest"
+    ],
+    "exit_code": 1,
+    "pulled_or_executed": false,
+    "stderr": "errors:\ndenied: requested access to the resource is denied\nunauthorized: authentication required\n\n",
+    "stdout": ""
+  },
+  {
+    "argv": [
+      "docker",
+      "manifest",
+      "inspect",
+      "penagent-target-env:latest"
+    ],
+    "exit_code": 1,
+    "pulled_or_executed": false,
+    "stderr": "errors:\ndenied: requested access to the resource is denied\nunauthorized: authentication required\n\n",
+    "stdout": ""
+  }
+]

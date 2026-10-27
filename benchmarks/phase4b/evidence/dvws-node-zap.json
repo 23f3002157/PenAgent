@@ -1,0 +1,224 @@
+{
+  "source_type": "SUCCESSOR",
+  "adopted": false,
+  "network": "none",
+  "target_requests": 0,
+  "status": "IMPORT_RETURNED",
+  "import_result": [],
+  "transformation": "Only server origin changed to loopback capture, retaining /api",
+  "transformed_spec_sha256": "a66f1eab40d50b51e0ae4bdcd98e7cd3fc1e61e8d6402e33ad25e1fd8138c5e6",
+  "capture_requests": 52,
+  "operations": [
+    {
+      "method": "DELETE",
+      "path": "/api/v2/notes/noteId"
+    },
+    {
+      "method": "GET",
+      "path": "/api/upload"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/info"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/admin/logs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/greeter"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/info"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/notes"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/notes/noteId"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/notesearch/all"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/notifications"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/notifications/id/read"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/passphrase/username"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/profile-sharing/jsonp"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/release/release"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/reports/activity"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/reports/monthly"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/resource-store"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/sysinfo/command"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/users"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/users/checkadmin"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/users/id/profile-details"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/users/ldap-search"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/users/logout/redirect"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/users/profile"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/users/profile-sharing"
+    },
+    {
+      "method": "POST",
+      "path": "/api/download"
+    },
+    {
+      "method": "POST",
+      "path": "/api/upload"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/account-recovery/lookup"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/account-recovery/reset"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/admin/create-user"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/export"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/integrations/supplier-orders/import"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/login"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/notes"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/notes/import/xml"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/notesearch"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/passphrase"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/resource-store/orders"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/resource-store/promotions/redeem"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/users"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/users/change-password"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/users/ldap-search"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/users/notification-preferences"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/users/profile/export/xml"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/users/profile/import/xml"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/users/profile/restore/xml"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v2/notes/noteId"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v2/notifications/id/read"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v2/users/notification-preferences"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v2/users/profile-sharing"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v2/users/profile/bio"
+    }
+  ],
+  "active_scans": [],
+  "spider_scans": [],
+  "mode": "safe"
+}

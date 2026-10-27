@@ -1,0 +1,20 @@
+{
+  "completeness": "Deliberate five-operation subset; response schemas incomplete",
+  "generator": "python -m benchmarks.generate_specs",
+  "not_authorized": [
+    "Account creation",
+    "Order placement",
+    "Mutations",
+    "Active scanning",
+    "Automated crawling"
+  ],
+  "official": false,
+  "original_sha256": "48adf896eee5adb2774103e76875ba48a9ab6ee4cd29ede3406a3261d8a4dff7",
+  "source_image_digest": "bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+  "target_version": "20.0.0",
+  "unverified_schema_parts": [
+    "Response fields beyond version, envelope/array shape",
+    "Authenticated behavior",
+    "Error responses other than documented country-mapping configuration failure"
+  ]
+}

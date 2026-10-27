@@ -1,0 +1,60 @@
+[
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "benchmarks/tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "stderr": "test_auth (test_core.Contracts.test_auth) ... C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\local\\validation-deps\\openapi_spec_validator\\shortcuts.py:66: DeprecationWarning: validate_spec shortcut is deprecated. Use validate instead.\n  warnings.warn(\nok\ntest_base_path_retained (test_core.Contracts.test_base_path_retained) ... ok\ntest_body (test_core.Contracts.test_body) ... ok\ntest_broken_ref (test_core.Contracts.test_broken_ref) ... ok\ntest_callbacks (test_core.Contracts.test_callbacks) ... ok\ntest_duplicate_id (test_core.Contracts.test_duplicate_id) ... ok\ntest_external_origin_refused (test_core.Contracts.test_external_origin_refused) ... ok\ntest_external_ref (test_core.Contracts.test_external_ref) ... ok\ntest_identity_mismatch (test_core.Contracts.test_identity_mismatch) ... ok\ntest_identity_success (test_core.Contracts.test_identity_success) ... ok\ntest_incomplete_checklist (test_core.Contracts.test_incomplete_checklist) ... ok\ntest_incomplete_manifest (test_core.Contracts.test_incomplete_manifest) ... ok\ntest_intersection_requires_live_and_review (test_core.Contracts.test_intersection_requires_live_and_review) ... ok\ntest_invalid_version (test_core.Contracts.test_invalid_version) ... ok\ntest_methods_distinct (test_core.Contracts.test_methods_distinct) ... ok\ntest_missing_docker_assets (test_core.Contracts.test_missing_docker_assets) ... ok\ntest_missing_path_parameter (test_core.Contracts.test_missing_path_parameter) ... ok\ntest_missing_server (test_core.Contracts.test_missing_server) ... ok\ntest_normalization (test_core.Contracts.test_normalization) ... ok\ntest_optional_path_parameter (test_core.Contracts.test_optional_path_parameter) ... ok\ntest_parameters (test_core.Contracts.test_parameters) ... ok\ntest_path_server_override (test_core.Contracts.test_path_server_override) ... ok\ntest_readiness (test_core.Contracts.test_readiness) ... ok\ntest_real_specs_full (test_core.Contracts.test_real_specs_full) ... ok\ntest_save_preserves_existing (test_core.Contracts.test_save_preserves_existing) ... ok\ntest_server_variables (test_core.Contracts.test_server_variables) ... ok\ntest_template_ambiguity (test_core.Contracts.test_template_ambiguity) ... ok\ntest_template_mapping (test_core.Contracts.test_template_mapping) ... ok\ntest_unknown_auth (test_core.Contracts.test_unknown_auth) ... ok\ntest_valid_full (test_core.Contracts.test_valid_full) ... ok\ntest_wrong_method_capture (test_core.Contracts.test_wrong_method_capture) ... ok\ntest_all_target_manifests (test_core.ManifestArtifacts.test_all_target_manifests) ... ok\ntest_false_ready (test_core.ManifestArtifacts.test_false_ready) ... ok\ntest_hash_mismatch (test_core.ManifestArtifacts.test_hash_mismatch) ... ok\ntest_manifest_hashes (test_core.ManifestArtifacts.test_manifest_hashes) ... ok\ntest_version_mismatch (test_core.ManifestArtifacts.test_version_mismatch) ... ok\n\n----------------------------------------------------------------------\nRan 36 tests in 1.409s\n\nOK\n",
+    "stdout": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "baselines/zap/tests",
+      "-q"
+    ],
+    "exit_code": 0,
+    "stderr": "----------------------------------------------------------------------\nRan 72 tests in 2.626s\n\nOK\n",
+    "stdout": ""
+  },
+  {
+    "argv": [
+      "docker",
+      "run",
+      "--rm",
+      "--network",
+      "none",
+      "--mount",
+      "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent,target=/phase4/src,readonly",
+      "--workdir",
+      "/tmp",
+      "--entrypoint",
+      "python",
+      "penagent-sis:local",
+      "-B",
+      "-m",
+      "pytest",
+      "/phase4/src/c1-spec-ingestion/tests/test_graph_builder.py",
+      "/phase4/src/c1-spec-ingestion/tests/test_tagger.py",
+      "/phase4/src/c1-spec-ingestion/tests/test_storage_drift.py",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "....                                                                     [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.11/site-packages/fastapi/testclient.py:1\n  /usr/local/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n4 passed, 1 warning in 1.31s\n"
+  }
+]

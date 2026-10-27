@@ -1,0 +1,13 @@
+{
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/b2b/v2/orders"
+    }
+  ],
+  "rule": "Concrete path examples map to exactly one documented method/template; raw capture retained",
+  "source": "specs/validation/zap-b2b.json",
+  "source_sha256": "89c33b506021a5aa55f5fdbcf5328448fc5d47b485fa4240b45947bae56c53cc",
+  "transformation": "Only servers[0].url replaced with capture loopback origin, preserving base path",
+  "transformed_specification_sha256": "e9d3124c086f15601bead4431fde4eb4eee731b725a959ab772c927f11171641"
+}

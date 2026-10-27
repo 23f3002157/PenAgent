@@ -1,0 +1,365 @@
+{
+  "active_scans": 0,
+  "cleanup_reserve_seconds": 10,
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{\"id\":{{json .Id}},\"image\":{{json .Image}},\"running\":{{json .State.Running}},\"networks\":{{json .NetworkSettings.Networks}},\"ports\":{{json .NetworkSettings.Ports}}}",
+        "penagent-phase4-juice20-r1-target-1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c\",\"image\":\"sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f\",\"running\":true,\"networks\":{\"penagent-phase4-juice20-r1_isolated\":{\"Aliases\":[\"penagent-phase4-juice20-r1-target-1\",\"target\"],\"DNSNames\":[\"penagent-phase4-juice20-r1-target-1\",\"target\",\"0710d10e33c5\"],\"DriverOpts\":null,\"EndpointID\":\"01657ba90fd6f7e56ffe86d2e8d122a83d0ee48e24faf89c793425a52f1201aa\",\"Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"GwPriority\":0,\"IPAMConfig\":null,\"IPAddress\":\"172.24.0.2\",\"IPPrefixLen\":16,\"IPv6Gateway\":\"\",\"Links\":null,\"MacAddress\":\"36:6d:8e:09:fc:20\",\"NetworkID\":\"e4b38d4a8c6f3ffff0d287f5fb03e560ff19eb4b903b7151b736d14318dd4e7e\"}},\"ports\":{\"3000/tcp\":[]}}\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "--format",
+        "{{json .RepoDigests}}",
+        "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "[\"bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f\"]\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "network",
+        "inspect",
+        "--format",
+        "{{json .Internal}}",
+        "penagent-phase4-juice20-r1_isolated"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "true\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{\"id\":{{json .Id}},\"image\":{{json .Image}},\"running\":{{json .State.Running}},\"networks\":{{json .NetworkSettings.Networks}},\"ports\":{{json .NetworkSettings.Ports}}}",
+        "blissful_chebyshev"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"0356c18439557ca2fed64e8c69f73035c4b485ca069b6f961b1de038f17d9ac3\",\"image\":\"sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f\",\"running\":true,\"networks\":{\"bridge\":{\"Aliases\":null,\"DNSNames\":null,\"DriverOpts\":null,\"EndpointID\":\"8935c3fca2588db762115516230d7b59c12aabaa5ba92d4a19a140176c78b6aa\",\"Gateway\":\"172.17.0.1\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"GwPriority\":0,\"IPAMConfig\":null,\"IPAddress\":\"172.17.0.2\",\"IPPrefixLen\":16,\"IPv6Gateway\":\"\",\"Links\":null,\"MacAddress\":\"4a:ae:74:da:76:f3\",\"NetworkID\":\"1054d0c0034f5cbb749cea9c86516ab29179e8ccb7c19a3850e5946f82b58e78\"}},\"ports\":{\"3000/tcp\":[{\"HostIp\":\"0.0.0.0\",\"HostPort\":\"3000\"},{\"HostIp\":\"::\",\"HostPort\":\"3000\"}]}}\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "network",
+        "create",
+        "--internal",
+        "--opt",
+        "com.docker.network.bridge.gateway_mode_ipv4=isolated",
+        "--label",
+        "penagent.phase4b=connectivity-r1",
+        "penagent-phase4b-tools-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "50f1cdd51866688c8a856a8bcda1d446ae1966d68e40caa1149ec47ef2d4d5fc\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "penagent-phase4b-gateway-r1",
+        "--label",
+        "penagent.phase4b=connectivity-r1",
+        "--network",
+        "penagent-phase4-juice20-r1_isolated",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "256m",
+        "--cpus",
+        ".5",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks,target=/benchmarks,readonly",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\local\\phase4b\\connectivity-runtime,target=/phase4b",
+        "--entrypoint",
+        "python",
+        "ghcr.io/zaproxy/zaproxy@sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6",
+        "-B",
+        "/benchmarks/phase4b/gateway.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "46d3ed3ebfaee38c45ee04fa05a9ab156bd0271e5199944dd9ad59ce58c71f82\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "network",
+        "connect",
+        "--alias",
+        "benchmark-gateway",
+        "penagent-phase4b-tools-r1",
+        "penagent-phase4b-gateway-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{\"id\":{{json .Id}},\"image\":{{json .Image}},\"running\":{{json .State.Running}},\"networks\":{{json .NetworkSettings.Networks}},\"ports\":{{json .NetworkSettings.Ports}}}",
+        "penagent-phase4b-gateway-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"46d3ed3ebfaee38c45ee04fa05a9ab156bd0271e5199944dd9ad59ce58c71f82\",\"image\":\"sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6\",\"running\":true,\"networks\":{\"penagent-phase4-juice20-r1_isolated\":{\"Aliases\":null,\"DNSNames\":[\"penagent-phase4b-gateway-r1\",\"46d3ed3ebfae\"],\"DriverOpts\":null,\"EndpointID\":\"c956777dadcb25f0ba56d386f76f02a7931fa3f94b633e07bad0288db359f8eb\",\"Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"GwPriority\":0,\"IPAMConfig\":null,\"IPAddress\":\"172.24.0.3\",\"IPPrefixLen\":16,\"IPv6Gateway\":\"\",\"Links\":null,\"MacAddress\":\"d2:28:6a:b1:74:0c\",\"NetworkID\":\"e4b38d4a8c6f3ffff0d287f5fb03e560ff19eb4b903b7151b736d14318dd4e7e\"},\"penagent-phase4b-tools-r1\":{\"Aliases\":[\"benchmark-gateway\"],\"DNSNames\":[\"penagent-phase4b-gateway-r1\",\"benchmark-gateway\",\"46d3ed3ebfae\"],\"DriverOpts\":{},\"EndpointID\":\"885f2a7594125b966dec8f369f586a827e31f4b3f1d29e9f81875fd35e08c58a\",\"Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"GwPriority\":0,\"IPAMConfig\":{},\"IPAddress\":\"172.25.0.1\",\"IPPrefixLen\":16,\"IPv6Gateway\":\"\",\"Links\":null,\"MacAddress\":\"aa:de:c9:32:7f:47\",\"NetworkID\":\"50f1cdd51866688c8a856a8bcda1d446ae1966d68e40caa1149ec47ef2d4d5fc\"}},\"ports\":{}}\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "network",
+        "inspect",
+        "--format",
+        "{\"internal\":{{json .Internal}},\"options\":{{json .Options}},\"ipam\":{{json .IPAM.Config}}}",
+        "penagent-phase4b-tools-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"internal\":true,\"options\":{\"com.docker.network.bridge.gateway_mode_ipv4\":\"isolated\",\"com.docker.network.enable_ipv4\":\"true\",\"com.docker.network.enable_ipv6\":\"false\"},\"ipam\":[{\"Subnet\":\"172.25.0.0/16\"}]}\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--name",
+        "penagent-phase4b-penagent-r1",
+        "--label",
+        "penagent.phase4b=connectivity-r1",
+        "--network",
+        "penagent-phase4b-tools-r1",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "512m",
+        "--cpus",
+        "1",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks,target=/benchmarks,readonly",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\phase4b\\evidence,target=/benchmarks/phase4b/evidence",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\local\\phase4b,target=/benchmarks/local/phase4b",
+        "--entrypoint",
+        "python",
+        "sha256:6b81fdd4e95f2106202bb33f1d5022696538f8dd1ad81f6818c1d29f17fc1561",
+        "-B",
+        "/benchmarks/phase4b/connectivity_client.py",
+        "penagent"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "cd67b89bb094fa36cae450e593aa81eef168653dfdbbfdd7f5dfa3685cfb980c\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{\"id\":{{json .Id}},\"image\":{{json .Image}},\"running\":{{json .State.Running}},\"networks\":{{json .NetworkSettings.Networks}},\"ports\":{{json .NetworkSettings.Ports}}}",
+        "penagent-phase4b-penagent-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"cd67b89bb094fa36cae450e593aa81eef168653dfdbbfdd7f5dfa3685cfb980c\",\"image\":\"sha256:6b81fdd4e95f2106202bb33f1d5022696538f8dd1ad81f6818c1d29f17fc1561\",\"running\":false,\"networks\":{\"penagent-phase4b-tools-r1\":{\"Aliases\":null,\"DNSNames\":null,\"DriverOpts\":null,\"EndpointID\":\"\",\"Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"GwPriority\":0,\"IPAMConfig\":null,\"IPAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"Links\":null,\"MacAddress\":\"\",\"NetworkID\":\"\"}},\"ports\":{}}\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "penagent-phase4b-penagent-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "penagent: five benign GETs verified, three gateway denials, isolation checks passed\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{\"exit\":{{json .State.ExitCode}},\"oom\":{{json .State.OOMKilled}}}",
+        "penagent-phase4b-penagent-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"exit\":0,\"oom\":false}\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--name",
+        "penagent-phase4b-zap-r1",
+        "--label",
+        "penagent.phase4b=connectivity-r1",
+        "--network",
+        "penagent-phase4b-tools-r1",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "2g",
+        "--cpus",
+        "1",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks,target=/benchmarks,readonly",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\phase4b\\evidence,target=/benchmarks/phase4b/evidence",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\local\\phase4b,target=/benchmarks/local/phase4b",
+        "--entrypoint",
+        "python",
+        "ghcr.io/zaproxy/zaproxy@sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6",
+        "-B",
+        "/benchmarks/phase4b/connectivity_client.py",
+        "zap"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "18e0337a896e6ff7e8e33acb1be5ceee001e2177ac5fce346ad8f1edbeaf0c48\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{\"id\":{{json .Id}},\"image\":{{json .Image}},\"running\":{{json .State.Running}},\"networks\":{{json .NetworkSettings.Networks}},\"ports\":{{json .NetworkSettings.Ports}}}",
+        "penagent-phase4b-zap-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"18e0337a896e6ff7e8e33acb1be5ceee001e2177ac5fce346ad8f1edbeaf0c48\",\"image\":\"sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6\",\"running\":false,\"networks\":{\"penagent-phase4b-tools-r1\":{\"Aliases\":null,\"DNSNames\":null,\"DriverOpts\":null,\"EndpointID\":\"\",\"Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"GwPriority\":0,\"IPAMConfig\":null,\"IPAddress\":\"\",\"IPPrefixLen\":0,\"IPv6Gateway\":\"\",\"Links\":null,\"MacAddress\":\"\",\"NetworkID\":\"\"}},\"ports\":{}}\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "penagent-phase4b-zap-r1"
+      ],
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/benchmarks/phase4b/connectivity_client.py\", line 89, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/benchmarks/phase4b/connectivity_client.py\", line 41, in main\n    else:raise RuntimeError('ZAP not ready')\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: ZAP not ready\n",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{index .Config.Labels \"penagent.phase4b\"}}",
+        "penagent-phase4b-zap-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "connectivity-r1\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Running}}",
+        "penagent-phase4b-zap-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "false\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{index .Config.Labels \"penagent.phase4b\"}}",
+        "penagent-phase4b-penagent-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "connectivity-r1\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Running}}",
+        "penagent-phase4b-penagent-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "false\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{index .Config.Labels \"penagent.phase4b\"}}",
+        "penagent-phase4b-gateway-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "connectivity-r1\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.State.Running}}",
+        "penagent-phase4b-gateway-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "true\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "kill",
+        "penagent-phase4b-gateway-r1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "penagent-phase4b-gateway-r1\n"
+    }
+  ],
+  "elapsed_seconds": 42.54700000002049,
+  "error": "RuntimeError: {'argv': ['docker', 'start', '--attach', 'penagent-phase4b-zap-r1'], 'exit_code': 1, 'stdout': '', 'stderr': 'Traceback (most recent call last):\\n  File \"/benchmarks/phase4b/connectivity_client.py\", line 89, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ^^^^^^\\n  File \"/benchmarks/phase4b/connectivity_client.py\", line 41, in main\\n    else:raise RuntimeError(\\'ZAP not ready\\')\\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nRuntimeError: ZAP not ready\\n'}",
+  "network_retained": "penagent-phase4b-tools-r1",
+  "note": "Stopped run-owned gateway/clients; retained their containers/network and all existing targets. No scan APIs called.",
+  "overall_seconds": 180,
+  "owned_containers": [
+    "penagent-phase4b-gateway-r1",
+    "penagent-phase4b-penagent-r1",
+    "penagent-phase4b-zap-r1"
+  ],
+  "penagent_probes": 0
+}

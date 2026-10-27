@@ -1,0 +1,46 @@
+{
+  "missing_openapi": true,
+  "not_an_openapi_specification": true,
+  "note": "Do not fabricate a deployable OpenAPI document from partial paths, unspecified schemas or title-only scenarios",
+  "source_explicit_examples": [
+    {
+      "method": "POST",
+      "path": "/auth/v1/exchange-token",
+      "scenario_id": "SRE-01",
+      "status": "Source description only; no executable contract"
+    },
+    {
+      "method": "GET",
+      "path": "/users/v1/profile/usr_102",
+      "scenario_id": "SRE-01",
+      "status": "Source description only; no executable contract"
+    },
+    {
+      "method": "GET",
+      "path": "/vault/v1/documents/doc_002",
+      "scenario_id": "SRE-01",
+      "status": "Source description only; no executable contract"
+    },
+    {
+      "method": "GET",
+      "path": "/vault/v1/documents/doc_admin",
+      "scenario_id": "SRE-02",
+      "status": "Source description only; no executable contract"
+    },
+    {
+      "method": "PUT",
+      "path": "/users/v1/profile",
+      "scenario_id": "SRE-03",
+      "status": "Source description only; no executable contract"
+    },
+    {
+      "method": "GET",
+      "path": "/auth/v1/jwks",
+      "query": {
+        "format": "pkcs1"
+      },
+      "scenario_id": "SRE-12",
+      "status": "Source description only; no executable contract"
+    }
+  ]
+}

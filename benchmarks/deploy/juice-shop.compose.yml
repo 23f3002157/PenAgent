@@ -1,0 +1,16 @@
+name: penagent-phase4-juice20-r1
+services:
+  target:
+    image: bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f
+    pull_policy: never
+    ports:
+      - '127.0.0.1:18001:3000'
+    networks: [isolated]
+    restart: 'no'
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    cpus: 1
+    mem_limit: 1g
+networks:
+  isolated:
+    internal: true

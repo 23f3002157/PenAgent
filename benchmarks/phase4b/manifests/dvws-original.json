@@ -1,0 +1,67 @@
+{
+  "adopted": true,
+  "approval_required": false,
+  "authentication": {
+    "description": "JWT exercises exist; no runtime/login verification",
+    "verified_roles": []
+  },
+  "clean_state": {
+    "repeatable_state_verified": false,
+    "reset_existing": false,
+    "strategy": "Original setup PHP/database schema plus fresh pinned local MySQL/socket topology; blocked before build"
+  },
+  "deployment": {
+    "configuration": "phase4b/deploy/dvws-original.Dockerfile.proposed",
+    "image_digest": null,
+    "reason": "Exact official PHP runtime pull failed before build; no application deployed",
+    "running": false
+  },
+  "family": "dvws",
+  "ground_truth": {
+    "sources": "Upstream exercise descriptions; not operation-level adjudicated labels",
+    "verified": false
+  },
+  "id": "dvws-original",
+  "inventory": {
+    "missing_reason": null,
+    "path": "phase4b/evidence/dvws-original-review.json",
+    "sha256": "cd8ea988fb3e61bb4f254f5a0deebfcd8ef77f82894ac49d691367eae895b385",
+    "valid": false
+  },
+  "label": "Original DVWS",
+  "limitations": [
+    "Legacy image retrieval/extraction failure",
+    "Mixed mysql/mysqli and incomplete write branches require compatibility review",
+    "Exact historical citation attribution unconfirmed",
+    "README GPL-3 versus LICENSE Apache-2.0 conflict"
+  ],
+  "network_scope": {
+    "proposed": "Internal isolated target with gateway-only access; no host legacy installation",
+    "published_ports": []
+  },
+  "penagent": {
+    "status": "NOT EXECUTED; no valid original spec/runtime"
+  },
+  "readiness": {
+    "eligible_operations": [],
+    "shared_live_access_verified": false,
+    "status": "BLOCKED"
+  },
+  "source": {
+    "beebs_2019_attribution_verified": false,
+    "provenance_verified": true,
+    "repository": "https://github.com/snoopysecurity/dvws",
+    "revision": "25a5a03aa1b13d8e647da66784c3e8445726e578"
+  },
+  "source_type": "ORIGINAL",
+  "specification": {
+    "missing_reason": "No authoritative original OpenAPI in pinned source; no derived contracts fabricated",
+    "path": null,
+    "sha256": null,
+    "valid": false
+  },
+  "version": "25a5a03aa1b13d8e647da66784c3e8445726e578",
+  "zap": {
+    "status": "NOT EXECUTED; no valid original spec/runtime"
+  }
+}

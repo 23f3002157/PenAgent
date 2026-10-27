@@ -1,0 +1,12 @@
+{
+  "adopted": false,
+  "c1_parsed": 52,
+  "c1_server_base_path_preserved": false,
+  "deployed": false,
+  "documented": 52,
+  "schema_valid": false,
+  "shared_live_eligible": 0,
+  "warning": "Permissive tool parsing of an invalid OpenAPI document is not valid benchmark readiness",
+  "zap_fixture_requests": 52,
+  "zap_imported_mapped": 52
+}

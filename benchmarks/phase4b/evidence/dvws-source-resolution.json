@@ -1,0 +1,29 @@
+{
+  "beebs_2019_attribution_verified": false,
+  "blocker": "Pinned official runtime retrieval/extraction failed; no application deployed or code compatibility patches applied",
+  "build_proposal": "phase4b/deploy/dvws-original.Dockerfile.proposed",
+  "future_dependencies": [
+    "Verified usable exact PHP base or audited rebuild",
+    "Digest-pinned MySQL and isolated localhost/socket compatibility",
+    "Source-review of mixed mysqli/mysql API and undefined $set branches without altering intended vulnerability behavior",
+    "License metadata conflict resolved before redistribution"
+  ],
+  "history_query": "https://api.github.com/repos/snoopysecurity/dvws/commits?until=2019-12-31T23:59:59Z&per_page=1",
+  "installed_last_compatible_version": null,
+  "latest_archived_commit": "25a5a03aa1b13d8e647da66784c3e8445726e578",
+  "latest_pre_2020_commit": [
+    {
+      "date": "2016-12-03T17:35:29Z",
+      "message": "Duplicate index file\n\nDuplicate index file",
+      "sha": "7a4af27dbcd40c6c7aeee84bb388ff209203be6e"
+    }
+  ],
+  "operator_clarification": "Original project and successor URL confirmed; exact Beebs (2019) attribution remains unconfirmed",
+  "project_identity_verified": true,
+  "recommendation": "Prioritize original if faithful runtime can be restored; otherwise seek explicit approval for separately versioned DVWS-Node candidate",
+  "relationship_to_successor_verified": true,
+  "runtime_requirement": "PHP 5.5.38 per upstream; not an experimentally verified last compatible version",
+  "source_created": "2016-01-12",
+  "source_type": "ORIGINAL",
+  "verified_original_repository": "https://github.com/snoopysecurity/dvws"
+}

@@ -1,0 +1,70 @@
+{
+  "adopted": false,
+  "approval_required": true,
+  "authentication": {
+    "description": "Bearer middleware and known mutable GET behavior reviewed statically; no accounts/tokens used",
+    "verified_roles": []
+  },
+  "clean_state": {
+    "repeatable_state_verified": false,
+    "reset_existing": false,
+    "strategy": "Dedicated fresh Mongo/MySQL volumes; seed script drops DB/data so must never point at existing resources"
+  },
+  "deployment": {
+    "configuration": "phase4b/deploy/dvws-node.compose.proposed.yml",
+    "image_digest": null,
+    "reason": "Not adopted; no candidate build/pull/seed/deployment executed",
+    "running": false
+  },
+  "family": "dvws",
+  "ground_truth": {
+    "sources": "Upstream exercise descriptions; not operation-level adjudicated labels",
+    "verified": false
+  },
+  "id": "dvws-node-proposed",
+  "inventory": {
+    "missing_reason": null,
+    "path": "phase4b/candidates/dvws-node-inventory.json",
+    "sha256": "59f7932818179097c6a5644c79497721357219a1f42c057203a786b2b9a5e486",
+    "valid": false
+  },
+  "label": "DVWS-Node \u2014 proposed successor benchmark",
+  "limitations": [
+    "Separate successor, not equivalent to original findings",
+    "Official candidate spec has an invalid Swagger-style body parameter in an OAS3 document",
+    "Tool parser acceptance does not cure invalid schema",
+    "Unverified deployment/auth/state",
+    "GPL-3 LICENSE versus MIT package metadata conflict"
+  ],
+  "network_scope": {
+    "proposed": "Internal isolated target with gateway-only access; no host legacy installation",
+    "published_ports": []
+  },
+  "penagent": {
+    "note": "Ignores /api server base",
+    "parsed_operations": 52
+  },
+  "readiness": {
+    "eligible_operations": [],
+    "shared_live_access_verified": false,
+    "status": "REQUIRES APPROVAL"
+  },
+  "source": {
+    "provenance_verified": true,
+    "repository": "https://github.com/snoopysecurity/dvws-node",
+    "revision": "35f999505028f580dd6acc8bb7ddecfb87fe4bf6"
+  },
+  "source_type": "SUCCESSOR",
+  "specification": {
+    "missing_reason": null,
+    "path": "phase4b/candidates/dvws-node-upstream-raw.json",
+    "sha256": "421f91b26a53222e078bbc926aad1d9cab30924dda379e381dccd22a8c67504d",
+    "valid": false
+  },
+  "version": "35f999505028f580dd6acc8bb7ddecfb87fe4bf6",
+  "zap": {
+    "mapped_operations": 52,
+    "note": "Network-none fixture only",
+    "target_requests": 0
+  }
+}

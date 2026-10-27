@@ -1,0 +1,46 @@
+{
+  "dvws-original": {
+    "eligible_operations": 0,
+    "failed_checks": [
+      "authentication",
+      "enforceable_scope",
+      "identity",
+      "isolated",
+      "known_operations",
+      "operation_risks",
+      "reproducible_deployment",
+      "reset_strategy",
+      "shared_operations",
+      "spec_version_provenance",
+      "valid_spec",
+      "version_pin"
+    ],
+    "status": "BLOCKED"
+  },
+  "juice-shop-20.0.0": {
+    "eligible_operations": 0,
+    "failed_checks": [
+      "enforceable_scope",
+      "shared_operations"
+    ],
+    "status": "PARTIALLY READY"
+  },
+  "srebench-api": {
+    "eligible_operations": 0,
+    "failed_checks": [
+      "authentication",
+      "enforceable_scope",
+      "identity",
+      "isolated",
+      "known_operations",
+      "operation_risks",
+      "reproducible_deployment",
+      "reset_strategy",
+      "shared_operations",
+      "spec_version_provenance",
+      "valid_spec",
+      "version_pin"
+    ],
+    "status": "BLOCKED"
+  }
+}

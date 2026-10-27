@@ -1,0 +1,111 @@
+{
+  "tool": "actual C1 normalizer and graph builder",
+  "network": "none",
+  "database_written": false,
+  "canonical_spec_hash": "e546bdb41af8ce2968c1354fe3fc6bb79972f5420f376f89c64c91de4cabb096",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/rest/admin/application-version",
+      "node_id": "op_getapplicationversion",
+      "parameters": [],
+      "request_body": null,
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/rest/country-mapping",
+      "node_id": "op_getcountrymapping",
+      "parameters": [],
+      "request_body": null,
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/rest/languages",
+      "node_id": "op_getlanguages",
+      "parameters": [],
+      "request_body": null,
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/search",
+      "node_id": "op_searchproducts",
+      "parameters": [
+        {
+          "name": "q",
+          "in": "query",
+          "required": false,
+          "schema_type": "string",
+          "schema_raw": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "description": "Optional product-search string; benign validation uses apple. Source truncates at 200 characters."
+        }
+      ],
+      "request_body": null,
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/{id}/reviews",
+      "node_id": "op_getproductreviews",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema_type": "string",
+          "schema_raw": {
+            "maxLength": 40,
+            "type": "string"
+          },
+          "description": "Source route accepts a string and conditionally coerces it. Only benign numeric ID 1 was live-checked."
+        }
+      ],
+      "request_body": null,
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    }
+  ],
+  "missing_spec_operations": [],
+  "unexpected_spec_operations": [],
+  "stable_operation_ids": true,
+  "original_server": [
+    {
+      "url": "http://127.0.0.1:18001"
+    }
+  ],
+  "note": "C1 graph paths do not include OpenAPI 3 server base path"
+}

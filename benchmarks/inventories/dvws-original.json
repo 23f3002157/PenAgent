@@ -1,0 +1,6 @@
+{
+  "benchmark_id": "dvws-original",
+  "operations": null,
+  "reason": "Beebs (2019) attribution unresolved; archived legacy PHP 5.5.38/XAMPP target. No authoritative container/OpenAPI or reproducible compatible deployment established.",
+  "schema_version": 1
+}

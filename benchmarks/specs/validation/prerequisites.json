@@ -1,0 +1,11 @@
+{
+  "active_scan_executed": false,
+  "assets": {
+    "deploy/juice-shop.compose.yml": true,
+    "manifests/dvws-original.json": true,
+    "manifests/juice-shop-20.0.0.json": true,
+    "manifests/srebench-api.json": true,
+    "specs/original/juice-shop-20.0.0-b2b.yml": true,
+    "specs/prepared/juice-shop-20.0.0-readonly-host.json": true
+  }
+}

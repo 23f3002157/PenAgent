@@ -1,0 +1,7 @@
+local/
+results/
+specs/original/
+specs/prepared/
+__pycache__/
+*.log
+*.session*

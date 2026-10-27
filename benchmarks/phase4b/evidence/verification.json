@@ -1,0 +1,195 @@
+{
+  "active_scans": 0,
+  "changed_or_missing": [],
+  "commands": [
+    {
+      "argv": [
+        "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "benchmarks.phase4b.test_gateway",
+        "benchmarks.phase4b.test_readiness",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stderr": "test_arm_cannot_extend_once_loaded (benchmarks.phase4b.test_gateway.GatewayTests.test_arm_cannot_extend_once_loaded) ... ok\ntest_authority_and_encoding_denied (benchmarks.phase4b.test_gateway.GatewayTests.test_authority_and_encoding_denied) ... ok\ntest_exact_benign_examples (benchmarks.phase4b.test_gateway.GatewayTests.test_exact_benign_examples) ... ok\ntest_exact_deadline (benchmarks.phase4b.test_gateway.GatewayTests.test_exact_deadline) ... ok\ntest_expired_deadline (benchmarks.phase4b.test_gateway.GatewayTests.test_expired_deadline) ... ok\ntest_initially_disarmed (benchmarks.phase4b.test_gateway.GatewayTests.test_initially_disarmed) ... ok\ntest_no_credentials_or_bodies (benchmarks.phase4b.test_gateway.GatewayTests.test_no_credentials_or_bodies) ... ok\ntest_other_methods_denied (benchmarks.phase4b.test_gateway.GatewayTests.test_other_methods_denied) ... ok\ntest_query_restricted (benchmarks.phase4b.test_gateway.GatewayTests.test_query_restricted) ... ok\ntest_revocation (benchmarks.phase4b.test_gateway.GatewayTests.test_revocation) ... ok\ntest_template_restricted_to_reviewed_id (benchmarks.phase4b.test_gateway.GatewayTests.test_template_restricted_to_reviewed_id) ... ok\ntest_wrong_nonce (benchmarks.phase4b.test_gateway.GatewayTests.test_wrong_nonce) ... ok\ntest_actual_gateway_counts (benchmarks.phase4b.test_readiness.ReadinessTests.test_actual_gateway_counts) ... ok\ntest_actual_shared_route_proof (benchmarks.phase4b.test_readiness.ReadinessTests.test_actual_shared_route_proof) ... ok\ntest_digest_must_be_immutable (benchmarks.phase4b.test_readiness.ReadinessTests.test_digest_must_be_immutable) ... ok\ntest_exact_four_juice_candidates (benchmarks.phase4b.test_readiness.ReadinessTests.test_exact_four_juice_candidates) ... ok\ntest_false_ready_state_refused (benchmarks.phase4b.test_readiness.ReadinessTests.test_false_ready_state_refused) ... ok\ntest_hash_mismatch_refused (benchmarks.phase4b.test_readiness.ReadinessTests.test_hash_mismatch_refused) ... ok\ntest_legacy_runtime_failure_not_a_deployment_success (benchmarks.phase4b.test_readiness.ReadinessTests.test_legacy_runtime_failure_not_a_deployment_success) ... ok\ntest_missing_asset_requires_reason (benchmarks.phase4b.test_readiness.ReadinessTests.test_missing_asset_requires_reason) ... ok\ntest_missing_family_rejected (benchmarks.phase4b.test_readiness.ReadinessTests.test_missing_family_rejected) ... ok\ntest_no_ground_truth_claims (benchmarks.phase4b.test_readiness.ReadinessTests.test_no_ground_truth_claims) ... ok\ntest_original_dvws_cannot_be_silently_replaced (benchmarks.phase4b.test_readiness.ReadinessTests.test_original_dvws_cannot_be_silently_replaced) ... ok\ntest_original_identity_and_citation_separated (benchmarks.phase4b.test_readiness.ReadinessTests.test_original_identity_and_citation_separated) ... ok\ntest_permissive_import_does_not_hide_schema_failure (benchmarks.phase4b.test_readiness.ReadinessTests.test_permissive_import_does_not_hide_schema_failure) ... ok\ntest_proposed_successor_label_required (benchmarks.phase4b.test_readiness.ReadinessTests.test_proposed_successor_label_required) ... ok\ntest_registry_has_all_three_families (benchmarks.phase4b.test_readiness.ReadinessTests.test_registry_has_all_three_families) ... ok\ntest_reproducible_configuration_is_private_and_pinned (benchmarks.phase4b.test_readiness.ReadinessTests.test_reproducible_configuration_is_private_and_pinned) ... ok\ntest_reproduction_not_official (benchmarks.phase4b.test_readiness.ReadinessTests.test_reproduction_not_official) ... ok\ntest_reproduction_services_remain_unimplemented (benchmarks.phase4b.test_readiness.ReadinessTests.test_reproduction_services_remain_unimplemented) ... ok\ntest_scenario_traceability_and_no_invented_paths (benchmarks.phase4b.test_readiness.ReadinessTests.test_scenario_traceability_and_no_invented_paths) ... ok\ntest_successor_not_adopted (benchmarks.phase4b.test_readiness.ReadinessTests.test_successor_not_adopted) ... ok\ntest_twenty_source_scenarios (benchmarks.phase4b.test_readiness.ReadinessTests.test_twenty_source_scenarios) ... ok\ntest_upstream_raw_bytes_provenance (benchmarks.phase4b.test_readiness.ReadinessTests.test_upstream_raw_bytes_provenance) ... ok\n\n----------------------------------------------------------------------\nRan 34 tests in 0.427s\n\nOK\n",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "benchmarks/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stderr": "test_auth (test_core.Contracts.test_auth) ... C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\local\\validation-deps\\openapi_spec_validator\\shortcuts.py:66: DeprecationWarning: validate_spec shortcut is deprecated. Use validate instead.\n  warnings.warn(\nok\ntest_base_path_retained (test_core.Contracts.test_base_path_retained) ... ok\ntest_body (test_core.Contracts.test_body) ... ok\ntest_broken_ref (test_core.Contracts.test_broken_ref) ... ok\ntest_callbacks (test_core.Contracts.test_callbacks) ... ok\ntest_duplicate_id (test_core.Contracts.test_duplicate_id) ... ok\ntest_external_origin_refused (test_core.Contracts.test_external_origin_refused) ... ok\ntest_external_ref (test_core.Contracts.test_external_ref) ... ok\ntest_identity_mismatch (test_core.Contracts.test_identity_mismatch) ... ok\ntest_identity_success (test_core.Contracts.test_identity_success) ... ok\ntest_incomplete_checklist (test_core.Contracts.test_incomplete_checklist) ... ok\ntest_incomplete_manifest (test_core.Contracts.test_incomplete_manifest) ... ok\ntest_intersection_requires_live_and_review (test_core.Contracts.test_intersection_requires_live_and_review) ... ok\ntest_invalid_version (test_core.Contracts.test_invalid_version) ... ok\ntest_methods_distinct (test_core.Contracts.test_methods_distinct) ... ok\ntest_missing_docker_assets (test_core.Contracts.test_missing_docker_assets) ... ok\ntest_missing_path_parameter (test_core.Contracts.test_missing_path_parameter) ... ok\ntest_missing_server (test_core.Contracts.test_missing_server) ... ok\ntest_normalization (test_core.Contracts.test_normalization) ... ok\ntest_optional_path_parameter (test_core.Contracts.test_optional_path_parameter) ... ok\ntest_parameters (test_core.Contracts.test_parameters) ... ok\ntest_path_server_override (test_core.Contracts.test_path_server_override) ... ok\ntest_readiness (test_core.Contracts.test_readiness) ... ok\ntest_real_specs_full (test_core.Contracts.test_real_specs_full) ... ok\ntest_save_preserves_existing (test_core.Contracts.test_save_preserves_existing) ... ok\ntest_server_variables (test_core.Contracts.test_server_variables) ... ok\ntest_template_ambiguity (test_core.Contracts.test_template_ambiguity) ... ok\ntest_template_mapping (test_core.Contracts.test_template_mapping) ... ok\ntest_unknown_auth (test_core.Contracts.test_unknown_auth) ... ok\ntest_valid_full (test_core.Contracts.test_valid_full) ... ok\ntest_wrong_method_capture (test_core.Contracts.test_wrong_method_capture) ... ok\ntest_all_target_manifests (test_core.ManifestArtifacts.test_all_target_manifests) ... ok\ntest_false_ready (test_core.ManifestArtifacts.test_false_ready) ... ok\ntest_hash_mismatch (test_core.ManifestArtifacts.test_hash_mismatch) ... ok\ntest_manifest_hashes (test_core.ManifestArtifacts.test_manifest_hashes) ... ok\ntest_version_mismatch (test_core.ManifestArtifacts.test_version_mismatch) ... ok\n\n----------------------------------------------------------------------\nRan 36 tests in 1.211s\n\nOK\n",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "baselines/zap/tests",
+        "-q"
+      ],
+      "exit_code": 0,
+      "stderr": "----------------------------------------------------------------------\nRan 72 tests in 2.511s\n\nOK\n",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--mount",
+        "type=bind,source=C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent,target=/phase4/src,readonly",
+        "--workdir",
+        "/tmp",
+        "--entrypoint",
+        "python",
+        "penagent-sis:local",
+        "-B",
+        "-m",
+        "pytest",
+        "/phase4/src/c1-spec-ingestion/tests/test_graph_builder.py",
+        "/phase4/src/c1-spec-ingestion/tests/test_tagger.py",
+        "/phase4/src/c1-spec-ingestion/tests/test_storage_drift.py",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "....                                                                     [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.11/site-packages/fastapi/testclient.py:1\n  /usr/local/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n4 passed, 1 warning in 1.27s\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "compose",
+        "-f",
+        "benchmarks/phase4b/deploy/juice-fresh.compose.yml",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{\"id\":{{json .Id}},\"image\":{{json .Image}},\"running\":{{json .State.Running}},\"networks\":{{json .NetworkSettings.Networks}},\"ports\":{{json .NetworkSettings.Ports}}}",
+        "blissful_chebyshev"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"0356c18439557ca2fed64e8c69f73035c4b485ca069b6f961b1de038f17d9ac3\",\"image\":\"sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f\",\"running\":true,\"networks\":{\"bridge\":{\"Aliases\":null,\"DNSNames\":null,\"DriverOpts\":null,\"EndpointID\":\"8935c3fca2588db762115516230d7b59c12aabaa5ba92d4a19a140176c78b6aa\",\"Gateway\":\"172.17.0.1\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"GwPriority\":0,\"IPAMConfig\":null,\"IPAddress\":\"172.17.0.2\",\"IPPrefixLen\":16,\"IPv6Gateway\":\"\",\"Links\":null,\"MacAddress\":\"4a:ae:74:da:76:f3\",\"NetworkID\":\"1054d0c0034f5cbb749cea9c86516ab29179e8ccb7c19a3850e5946f82b58e78\"}},\"ports\":{\"3000/tcp\":[{\"HostIp\":\"0.0.0.0\",\"HostPort\":\"3000\"},{\"HostIp\":\"::\",\"HostPort\":\"3000\"}]}}\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{\"id\":{{json .Id}},\"image\":{{json .Image}},\"running\":{{json .State.Running}},\"networks\":{{json .NetworkSettings.Networks}},\"ports\":{{json .NetworkSettings.Ports}}}",
+        "penagent-phase4-juice20-r1-target-1"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c\",\"image\":\"sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f\",\"running\":true,\"networks\":{\"penagent-phase4-juice20-r1_isolated\":{\"Aliases\":[\"penagent-phase4-juice20-r1-target-1\",\"target\"],\"DNSNames\":[\"penagent-phase4-juice20-r1-target-1\",\"target\",\"0710d10e33c5\"],\"DriverOpts\":null,\"EndpointID\":\"01657ba90fd6f7e56ffe86d2e8d122a83d0ee48e24faf89c793425a52f1201aa\",\"Gateway\":\"\",\"GlobalIPv6Address\":\"\",\"GlobalIPv6PrefixLen\":0,\"GwPriority\":0,\"IPAMConfig\":null,\"IPAddress\":\"172.24.0.2\",\"IPPrefixLen\":16,\"IPv6Gateway\":\"\",\"Links\":null,\"MacAddress\":\"36:6d:8e:09:fc:20\",\"NetworkID\":\"e4b38d4a8c6f3ffff0d287f5fb03e560ff19eb4b903b7151b736d14318dd4e7e\"}},\"ports\":{\"3000/tcp\":[]}}\n"
+    }
+  ],
+  "existing_targets_deleted_or_reset": false,
+  "new_python_syntax_checks": 16,
+  "note": "Compose config only; no fresh target/volume or candidate deployment started. Offline regression Docker containers use --rm.",
+  "penagent_probes": 0,
+  "preserved_files_checked": 208,
+  "registry_validated": true,
+  "target_identities": [
+    {
+      "id": "0356c18439557ca2fed64e8c69f73035c4b485ca069b6f961b1de038f17d9ac3",
+      "image": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+      "name": "blissful_chebyshev",
+      "networks": {
+        "bridge": {
+          "Aliases": null,
+          "DNSNames": null,
+          "DriverOpts": null,
+          "EndpointID": "8935c3fca2588db762115516230d7b59c12aabaa5ba92d4a19a140176c78b6aa",
+          "Gateway": "172.17.0.1",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "172.17.0.2",
+          "IPPrefixLen": 16,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "4a:ae:74:da:76:f3",
+          "NetworkID": "1054d0c0034f5cbb749cea9c86516ab29179e8ccb7c19a3850e5946f82b58e78"
+        }
+      },
+      "ports": {
+        "3000/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "3000"
+          },
+          {
+            "HostIp": "::",
+            "HostPort": "3000"
+          }
+        ]
+      },
+      "running": true
+    },
+    {
+      "id": "0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c",
+      "image": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+      "name": "penagent-phase4-juice20-r1-target-1",
+      "networks": {
+        "penagent-phase4-juice20-r1_isolated": {
+          "Aliases": [
+            "penagent-phase4-juice20-r1-target-1",
+            "target"
+          ],
+          "DNSNames": [
+            "penagent-phase4-juice20-r1-target-1",
+            "target",
+            "0710d10e33c5"
+          ],
+          "DriverOpts": null,
+          "EndpointID": "01657ba90fd6f7e56ffe86d2e8d122a83d0ee48e24faf89c793425a52f1201aa",
+          "Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "172.24.0.2",
+          "IPPrefixLen": 16,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "36:6d:8e:09:fc:20",
+          "NetworkID": "e4b38d4a8c6f3ffff0d287f5fb03e560ff19eb4b903b7151b736d14318dd4e7e"
+        }
+      },
+      "ports": {
+        "3000/tcp": []
+      },
+      "running": true
+    }
+  ]
+}

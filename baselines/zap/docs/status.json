@@ -1,0 +1,82 @@
+{
+  "date": "2026-10-25",
+  "timezone": "Asia/Calcutta",
+  "status": "IMPLEMENTED AND SCAN VERIFIED",
+  "status_scope": "Exactly one root-only full-web active smoke completed; full API benchmark remains unready",
+  "real_active_scan_executed": true,
+  "real_approval_recorded": true,
+  "unit_tests": {
+    "passed": 72,
+    "failed": 0,
+    "seconds": 2.496,
+    "runtime": "Python 3.12.14",
+    "execution": "approved outside sandbox; initial socket permission failure retained in verification narrative"
+  },
+  "docker": {
+    "engine": "29.4.3",
+    "desktop": "4.73.1",
+    "compose": "5.1.3"
+  },
+  "zap": {
+    "version": "2.17.0",
+    "image": "ghcr.io/zaproxy/zaproxy@sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6",
+    "help_verified": true,
+    "configuration_hooks_verified_offline": true,
+    "offline_active_scans": 0
+  },
+  "target": {
+    "name": "OWASP Juice Shop",
+    "container": "blissful_chebyshev",
+    "version": "20.0.0",
+    "host_origin": "http://127.0.0.1:3000",
+    "container_origin": "http://host.docker.internal:3000",
+    "root_get": 200,
+    "usable_openapi": false
+  },
+  "scanner_isolation_verified": true,
+  "actual_scan_reports": [
+    "baselines\\zap\\local\\juice-smoke-r1\\zap.json",
+    "baselines\\zap\\local\\juice-smoke-r1\\zap.xml",
+    "baselines\\zap\\local\\juice-smoke-r1\\zap.html"
+  ],
+  "actual_normalized_scan_results": [
+    "baselines\\zap\\local\\juice-smoke-r1\\normalized.json",
+    "baselines\\zap\\local\\juice-smoke-r1\\normalized-from-xml.json"
+  ],
+  "missing": [
+    "Authoritative deployed-version API definitions",
+    "DVWS and SREBench deployments",
+    "Verified eligible benchmark ground truth",
+    "Equivalent fresh-state/reset records"
+  ],
+  "committed": false,
+  "pushed": false,
+  "operator_approval_received": true,
+  "approval_condition_satisfied": false,
+  "preflight_failure_record": "local/approved-smoke-preflight/final-run-manifest.json",
+  "deadline_regression": {
+    "passed": true,
+    "setup_seconds": 181,
+    "scanner_launches": 0,
+    "scanner_waits": 0,
+    "real_scan_executed": false
+  },
+  "new_scan_approval_required": true,
+  "smoke": {
+    "single_run_id": "1e3d015cb9ea4bdebd16fdab8bc4f1ae",
+    "status": "completed",
+    "duration_seconds": 62.671999999904074,
+    "forwarded_requests": 3,
+    "blocked_requests": 22,
+    "raw_alert_types_by_severity": {
+      "medium": 2,
+      "low": 2,
+      "informational": 1
+    },
+    "normalized_record_count": 13,
+    "json_import_success": true,
+    "xml_import_success": true,
+    "active_rule_alerts": 0,
+    "additional_scan_authorized": false
+  }
+}

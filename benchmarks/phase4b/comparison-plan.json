@@ -1,0 +1,32 @@
+{
+  "authentication": "anonymous, same role for both tools",
+  "blocker": "Existing baseline runner accepts host.docker.internal upstream only. A separately reviewed private-network runner adapter and active-input scope are still needed.",
+  "budgets_proposed_for_review": {
+    "cleanup_reserve_seconds": 10,
+    "concurrency": 1,
+    "delay_ms": 100,
+    "max_forwarded_requests": 100,
+    "wall_seconds": 180
+  },
+  "eligible_operation_candidates": [
+    "juice20_c338475ca634dc32cb17",
+    "juice20_64d1cc2f77500db19365",
+    "juice20_4925e9b86c6c89429d9c",
+    "juice20_ada13ac6c6645589cb40"
+  ],
+  "exclusions": [
+    "B2B order POST",
+    "CTF country mapping",
+    "All operations outside this documented subset",
+    "All authenticated/state-changing workflows"
+  ],
+  "execution_authorized": false,
+  "findings": "Retain original tool artifacts; normalize separately, do not equate an alert to ground truth",
+  "independent_repeats_proposed": 3,
+  "initial_state": "Fresh independently named container and volume per tool/repeat; verify seed state equivalence first",
+  "repeats_executed": 0,
+  "schema_version": 1,
+  "scope_warning": "The Phase 4B connectivity gateway is intentionally unsuitable for active scanning; it blocks all parameter mutations.",
+  "target_image_digest": "bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+  "traffic": "Gateway method/path/status/counts/deadline, target identity, request/response hashes and raw tool evidence per run"
+}

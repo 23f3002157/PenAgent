@@ -1,0 +1,35 @@
+{
+  "approval_status": "REQUIRES APPROVAL",
+  "architecture": {
+    "external_dependencies": "Use isolated local dependency simulators only after explicit fidelity review; never real cloud metadata, payments or live IdPs",
+    "gateway": "Separate experiment scope gateway; source-scenario gateway behavior belongs inside target, not the safety gateway",
+    "health": "Proposed non-mutating infrastructure-only check, excluded from vulnerability operation counts",
+    "initialization": "Versioned deterministic seed plan per approved scenario; independent fresh per-run volumes and explicit user/tenant balances",
+    "proposal": "Isolated scenario services with explicit boundaries, not one synthetic route pretending to be all microservices",
+    "public_ports": [],
+    "reset": "Privileged orchestrator operation only outside tool allowlist; never exposed as a scanner-accessible route",
+    "roles": "Only source-supported identities; all additional accounts/roles require documented interpretation approval",
+    "target_network": "internal isolated; no host/model/provider access",
+    "tool_network": "internal isolated; only experiment gateway reachable",
+    "traceability": "Every endpoint, state rule and success predicate links to scenario ID, PDF pages/hash and approved interpretation record",
+    "vulnerability_toggles": "Source supplies no toggle semantics; disabled/fixed variants are not assumed or implemented"
+  },
+  "executable": false,
+  "ground_truth_adjudicated": false,
+  "implementation_gate": {
+    "deploy_allowed": false,
+    "matrix_approval": false,
+    "methodology_approval": false,
+    "missing_contracts_resolved": false
+  },
+  "label": "Local reproduction based on the research proposal",
+  "services_implemented": false,
+  "source_type": "REPRODUCTION",
+  "test_plan": [
+    "Validate contracts/schemas and source traceability offline",
+    "Verify fresh-state seed equivalence without probing vulnerabilities",
+    "Verify auth metadata and gateway routes with explicitly harmless inputs",
+    "Separate infrastructure failures from intended vulnerable behavior",
+    "Preserve state snapshots and raw traffic per independent tool run"
+  ]
+}

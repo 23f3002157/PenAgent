@@ -1,0 +1,66 @@
+{
+  "adopted": false,
+  "approval_required": true,
+  "authentication": {
+    "description": "Source-described identities only; remaining roles/contracts unresolved",
+    "verified_roles": []
+  },
+  "clean_state": {
+    "repeatable_state_verified": false,
+    "reset_existing": false,
+    "strategy": "Proposed deterministic per-scenario seeds/fresh volumes; not implemented"
+  },
+  "deployment": {
+    "configuration": "phase4b/srebench/reproduction-plan.json",
+    "image_digest": null,
+    "reason": "Non-executable design only; services require explicit approval",
+    "running": false
+  },
+  "family": "srebench_api",
+  "ground_truth": {
+    "sources": "Provided scenario descriptions only; source claims are not executable adjudication",
+    "verified": false
+  },
+  "id": "srebench-api-reproduction-proposal",
+  "inventory": {
+    "missing_reason": null,
+    "path": "phase4b/srebench/scenario-matrix.json",
+    "sha256": "5240443291e5d576efbb25a845a4e83cd6b675e02b46521a9e8607a229ae7d8b",
+    "valid": false
+  },
+  "label": "Local reproduction based on the research proposal",
+  "limitations": [
+    "20 actual catalog rows; 5 require interpretation, 15 insufficient information",
+    "Claimed image manifests inaccessible without authentication; not proof image does not exist",
+    "No vulnerable services, fabricated endpoints or ground truth implemented"
+  ],
+  "network_scope": {
+    "proposed": "Internal isolated target with gateway-only access; no host legacy installation",
+    "published_ports": []
+  },
+  "penagent": {
+    "status": "NOT EXECUTED; no executable spec"
+  },
+  "readiness": {
+    "eligible_operations": [],
+    "shared_live_access_verified": false,
+    "status": "REQUIRES APPROVAL"
+  },
+  "source": {
+    "official_runnable_assets_verified": false,
+    "provenance_verified": true,
+    "repository": null,
+    "revision": "provided-scenario-pdf-sha256:bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+  },
+  "source_type": "REPRODUCTION",
+  "specification": {
+    "missing_reason": "Partial source path examples only; no genuine released OpenAPI accessible; do not invent complete contracts",
+    "path": null,
+    "sha256": null,
+    "valid": false
+  },
+  "version": "proposal-only; no executable version",
+  "zap": {
+    "status": "NOT EXECUTED; no executable spec"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "server.ts": {
+    "exact_bytes_equal": true
+  },
+  "swagger.yml": {
+    "exact_bytes_equal": true
+  },
+  "routes/appVersion.ts": {
+    "exact_bytes_equal": true
+  },
+  "routes/languages.ts": {
+    "exact_bytes_equal": true
+  },
+  "routes/search.ts": {
+    "exact_bytes_equal": true
+  },
+  "routes/showProductReviews.ts": {
+    "exact_bytes_equal": true
+  }
+}

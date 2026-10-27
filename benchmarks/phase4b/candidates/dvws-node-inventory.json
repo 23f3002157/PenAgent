@@ -1,0 +1,1546 @@
+{
+  "commit": "35f999505028f580dd6acc8bb7ddecfb87fe4bf6",
+  "label": "DVWS-Node \u2014 proposed successor benchmark",
+  "operations": [
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users",
+      "stable_id": "dvwsnode_832e61f6522554dbc4ed",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "password": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users",
+      "stable_id": "dvwsnode_628c7b0988e26860ea74",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/users/checkadmin",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/checkadmin",
+      "stable_id": "dvwsnode_b133c344c8f93df5c6ee",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/users/profile",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/profile",
+      "stable_id": "dvwsnode_f18de112d0001d46b3cc",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "PUT",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users/profile/bio",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "bio": {
+                  "maxLength": 2000,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bio"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      },
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/profile/bio",
+      "stable_id": "dvwsnode_bdab640244d71528a26d",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users/profile-sharing",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/profile-sharing",
+      "stable_id": "dvwsnode_3aab7522526daf73ddb4",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "PUT",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users/profile-sharing",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "fields": {
+                  "items": {
+                    "enum": [
+                      "username",
+                      "email",
+                      "homeAddress"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "partnerOrigin": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled",
+                "partnerOrigin",
+                "fields"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/profile-sharing",
+      "stable_id": "dvwsnode_a158bd47d9d6a55c8398",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "query",
+          "name": "callback",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/profile-sharing/jsonp",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/profile-sharing/jsonp",
+      "stable_id": "dvwsnode_6d3a2a78c980a3534815",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/users/{id}/profile-details",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/{id}/profile-details",
+      "stable_id": "dvwsnode_d0e79968829b4a07e782",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/account-recovery/lookup",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/account-recovery/lookup",
+      "stable_id": "dvwsnode_1c3b80eb84b16496474f",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/account-recovery/reset",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "newPassword": {
+                  "example": "any"
+                },
+                "userId": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/account-recovery/reset",
+      "stable_id": "dvwsnode_62da77d161ac0099f645",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users/change-password",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "currentPassword": {
+                  "example": "any"
+                },
+                "newPassword": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/change-password",
+      "stable_id": "dvwsnode_00fe3e9613302a09beb1",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/notifications",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notifications",
+      "stable_id": "dvwsnode_8530c0f18fdff067b546",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/notifications/{id}/read",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notifications/{id}/read",
+      "stable_id": "dvwsnode_b12ca14f6b27dd66d769",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "PUT",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/notifications/{id}/read",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notifications/{id}/read",
+      "stable_id": "dvwsnode_87c350362249562d61c2",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/admin/logs",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/admin/logs",
+      "stable_id": "dvwsnode_625e33bb2745409e3921",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "redirect",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/users/logout/{redirect}",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/logout/{redirect}",
+      "stable_id": "dvwsnode_4cbbc794a06cccdb898f",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "query",
+          "name": "username",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "password",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/login",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/login",
+      "stable_id": "dvwsnode_457246898b044633a8d1",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "x-forwarded-for",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/login",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "password": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/login",
+      "stable_id": "dvwsnode_a25eae2a075ee5808d88",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users/profile/export/xml",
+      "request_body": null,
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/profile/export/xml",
+      "stable_id": "dvwsnode_590ee26bff71b04ea9c3",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users/profile/restore/xml",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "signature": {
+                  "type": "string"
+                },
+                "xml": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "xml",
+                "signature"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      },
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/profile/restore/xml",
+      "stable_id": "dvwsnode_d64c6b19cd3757f1c363",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users/profile/import/xml",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "xml": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/profile/import/xml",
+      "stable_id": "dvwsnode_d693a17dcc6f11fcc389",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "header",
+          "name": "cookie",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/admin/create-user",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "admin": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/admin/create-user",
+      "stable_id": "dvwsnode_16de9e3dd6191fb8f974",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "query",
+          "name": "user",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/users/ldap-search",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/ldap-search",
+      "stable_id": "dvwsnode_06e38d64a077635059fd",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "query",
+          "name": "user",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/users/ldap-search",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "user": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/ldap-search",
+      "stable_id": "dvwsnode_e572a76a838add04a3d4",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v1/info",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v1/info",
+      "stable_id": "dvwsnode_d8ec787048dccfe611ac",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/info",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/info",
+      "stable_id": "dvwsnode_906c5dcff990a513a09f",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "release",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/release/{release}",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/release/{release}",
+      "stable_id": "dvwsnode_53676600d8b421de8ff4",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "query",
+          "name": "name",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/greeter",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/greeter",
+      "stable_id": "dvwsnode_93e3a66f32893b0e7114",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "command",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/sysinfo/{command}",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/sysinfo/{command}",
+      "stable_id": "dvwsnode_478880ace7dbffd102ba",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/notes",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notes",
+      "stable_id": "dvwsnode_dc8d7b11af43b285c838",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/notes",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "req": {
+                  "example": "any"
+                },
+                "type": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notes",
+      "stable_id": "dvwsnode_c39929e17174e553af86",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "noteId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/notes/{noteId}",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notes/{noteId}",
+      "stable_id": "dvwsnode_0ab0e803cf39a79df29a",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "PUT",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "noteId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/notes/{noteId}",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notes/{noteId}",
+      "stable_id": "dvwsnode_2ec93af6555784992571",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "DELETE",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "noteId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/notes/{noteId}",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notes/{noteId}",
+      "stable_id": "dvwsnode_dc0a306aad60936e0d3d",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/notesearch",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "search": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notesearch",
+      "stable_id": "dvwsnode_b731fbc65a9e371d0994",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/notesearch/all",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notesearch/all",
+      "stable_id": "dvwsnode_746a2231499cb7c030cc",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/notes/import/xml",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "xml": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/notes/import/xml",
+      "stable_id": "dvwsnode_b2453bcd38b7746af0e9",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/passphrase",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "passphrase": {
+                  "example": "any"
+                },
+                "reminder": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/passphrase",
+      "stable_id": "dvwsnode_1e6ebb85ef96b7c2a1ed",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/export",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "data": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/export",
+      "stable_id": "dvwsnode_2d9352a8a16e36a8c856",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "path",
+          "name": "username",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/passphrase/{username}",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/passphrase/{username}",
+      "stable_id": "dvwsnode_68424c3a8acf05f2ec07",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/upload",
+      "request_body": {
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "properties": {
+                "file": {
+                  "format": "binary",
+                  "type": "string"
+                },
+                "metadata": {
+                  "example": "{\"__proto__\":{\"allowedExtension\":\".html\"}}",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/upload",
+      "stable_id": "dvwsnode_e3be35422aa8c665f676",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/upload",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/upload",
+      "stable_id": "dvwsnode_f8fda1445c78f57263f5",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "authorization",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/download",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "filename": {
+                  "example": "any"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/download",
+      "stable_id": "dvwsnode_22b1a5293453127fd3a4",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/integrations/supplier-orders/import",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/integrations/supplier-orders/import",
+      "stable_id": "dvwsnode_3a5eb1d2fe357b91c07b",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "description": "Statement month in YYYY-MM format.",
+          "in": "query",
+          "name": "period",
+          "schema": {
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/reports/monthly",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/reports/monthly",
+      "stable_id": "dvwsnode_0842f2718037f61ce9b1",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [
+        {
+          "description": "Maximum number of recorded account events to return",
+          "in": "query",
+          "name": "limit",
+          "required": false,
+          "schema": {
+            "default": 20,
+            "maximum": 5000,
+            "minimum": 1,
+            "type": "integer"
+          }
+        }
+      ],
+      "path": "/api/v2/reports/activity",
+      "request_body": null,
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/reports/activity",
+      "stable_id": "dvwsnode_74d2bb771a94389c8ba0",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "in": "header",
+          "name": "X-HTTP-Method-Override",
+          "required": true,
+          "schema": {
+            "enum": [
+              "PUT"
+            ],
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/api/v2/users/notification-preferences",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/notification-preferences",
+      "stable_id": "dvwsnode_00d9ccd54685f122bbc9",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "PUT",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/users/notification-preferences",
+      "request_body": null,
+      "security": [],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/users/notification-preferences",
+      "stable_id": "dvwsnode_237532490b1bf319aeba",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "GET",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/resource-store",
+      "request_body": null,
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/resource-store",
+      "stable_id": "dvwsnode_2e3f868a323b530800a5",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [],
+      "path": "/api/v2/resource-store/promotions/redeem",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "code": {
+                  "maxLength": 100,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      },
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/resource-store/promotions/redeem",
+      "stable_id": "dvwsnode_58b619d4d253c8bbe689",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    },
+    {
+      "authentication_status": "Source middleware review required; specification metadata alone is insufficient",
+      "eligible": false,
+      "exclusion": "Successor adoption not approved; no deployment/identity/auth/reset validation",
+      "live_status": "NOT EXECUTED",
+      "method": "POST",
+      "operation_id": null,
+      "parameters": [
+        {
+          "description": "quantity must be a non-zero integer from -1000 to 1000. Negative quantities increase the caller's credits.",
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "properties": {
+              "itemId": {
+                "enum": [
+                  "api-monitor",
+                  "build-runner",
+                  "log-retention"
+                ],
+                "type": "string"
+              },
+              "quantity": {
+                "description": "Negative values increase the caller's credits.",
+                "maximum": 1000,
+                "minimum": -1000,
+                "not": {
+                  "enum": [
+                    0
+                  ]
+                },
+                "type": "integer"
+              }
+            },
+            "required": [
+              "itemId",
+              "quantity"
+            ],
+            "type": "object"
+          }
+        }
+      ],
+      "path": "/api/v2/resource-store/orders",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "itemId": {
+                  "enum": [
+                    "api-monitor",
+                    "build-runner",
+                    "log-retention"
+                  ],
+                  "type": "string"
+                },
+                "quantity": {
+                  "description": "Negative values increase the caller's credits.",
+                  "maximum": 1000,
+                  "minimum": -1000,
+                  "not": {
+                    "enum": [
+                      0
+                    ]
+                  },
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "itemId",
+                "quantity"
+              ],
+              "type": "object"
+            }
+          }
+        }
+      },
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json",
+      "spec_path": "/v2/resource-store/orders",
+      "stable_id": "dvwsnode_ca55cfe60ca4dd48e4e6",
+      "state_changing": "UNREVIEWED; GET can change state in this source"
+    }
+  ],
+  "shared_eligible_operations": [],
+  "source_type": "SUCCESSOR"
+}

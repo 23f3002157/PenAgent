@@ -1,0 +1,97 @@
+[
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "benchmarks",
+      "validate-spec",
+      "benchmarks/specs/prepared/juice-shop-20.0.0-b2b-host.json",
+      "--full"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "{\"operations\": 1, \"full_schema_validation\": true, \"warnings\": []}\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "benchmarks",
+      "validate-spec",
+      "benchmarks/specs/prepared/juice-shop-20.0.0-b2b-docker.json",
+      "--full"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "{\"operations\": 1, \"full_schema_validation\": true, \"warnings\": []}\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "benchmarks",
+      "validate-spec",
+      "benchmarks/specs/prepared/juice-shop-20.0.0-readonly-host.json",
+      "--full"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "{\"operations\": 5, \"full_schema_validation\": true, \"warnings\": []}\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "benchmarks",
+      "validate-spec",
+      "benchmarks/specs/prepared/juice-shop-20.0.0-readonly-docker.json",
+      "--full"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "{\"operations\": 5, \"full_schema_validation\": true, \"warnings\": []}\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "benchmarks",
+      "validate-manifest",
+      "benchmarks/manifests/juice-shop-20.0.0.json"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "juice-shop-20.0.0: PARTIALLY READY\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "benchmarks",
+      "validate-manifest",
+      "benchmarks/manifests/dvws-original.json"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "dvws-original: BLOCKED\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\Kushi KKS\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "-m",
+      "benchmarks",
+      "validate-manifest",
+      "benchmarks/manifests/srebench-api.json"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "srebench-api: BLOCKED\n"
+  }
+]

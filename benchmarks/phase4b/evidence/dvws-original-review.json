@@ -1,0 +1,95 @@
+{
+  "approval_blocker": "Confirm intended original repository/version; no successor is automatically adopted",
+  "candidate": "snoopysecurity/dvws",
+  "commit": "25a5a03aa1b13d8e647da66784c3e8445726e578",
+  "compatibility_patches_applied": [],
+  "deployment_status": "BLOCKED; official pinned PHP image retrieval/extraction failed locally",
+  "documented_php_entrypoints": [
+    "vulnerabilities/cmdi/client.php",
+    "vulnerabilities/cmdi/jsonRPCClient.php",
+    "vulnerabilities/cmdi/jsonRPCServer.php",
+    "vulnerabilities/cmdi/process.php",
+    "vulnerabilities/cmdi/restrictedExample.php",
+    "vulnerabilities/cmdi/server.php",
+    "vulnerabilities/cors/client.php",
+    "vulnerabilities/cors/server.php",
+    "vulnerabilities/jwt/api.php",
+    "vulnerabilities/jwt/auth.php",
+    "vulnerabilities/jwt/login.php",
+    "vulnerabilities/jwt/login_token.php",
+    "vulnerabilities/some/index.php",
+    "vulnerabilities/some/token_generator.php",
+    "vulnerabilities/sqli/api.php",
+    "vulnerabilities/sqli/index.php",
+    "vulnerabilities/ssrf/index.php",
+    "vulnerabilities/ssrf/server.php",
+    "vulnerabilities/wsdlenum/functions.php",
+    "vulnerabilities/wsdlenum/index.php",
+    "vulnerabilities/wsdlenum/service.php",
+    "vulnerabilities/xmlbomb/process.php",
+    "vulnerabilities/xmlbomb/xmlbomb.php",
+    "vulnerabilities/xpath/xpath.php",
+    "vulnerabilities/xst/xst.php",
+    "vulnerabilities/xxe/index.php",
+    "vulnerabilities/xxe2/index.php",
+    "vulnerabilities/xxe2/server.php"
+  ],
+  "intended_citation_verified": false,
+  "license": "LICENSE Apache-2.0; README GPL-3 conflict; do not redistribute a derived image until clarified",
+  "maintainer": "Sam Sanoop (snoopysecurity GitHub profile)",
+  "operation_note": "PHP entrypoint filenames are not a validated method/path inventory",
+  "operations": null,
+  "release": "No tagged release established; use commit identity, not a fabricated application version",
+  "requirements": [
+    "PHP 5.5.38 per README",
+    "Apache/PHP execution",
+    "MySQL local DB dvws",
+    "Legacy mysql AND mysqli extensions; source mixes both APIs",
+    "Vendored NuSOAP and XML-RPC implementations"
+  ],
+  "runtime_evidence": "phase4b/evidence/legacy-runtime.json",
+  "source_evidence": [
+    {
+      "file": "README.md",
+      "sha256": "3af0513f77424ce3c7a49f11a244be3f03121548be22d07165c6808b4755cbe5",
+      "url": "https://github.com/snoopysecurity/dvws/blob/25a5a03aa1b13d8e647da66784c3e8445726e578/README.md"
+    },
+    {
+      "file": "LICENSE",
+      "sha256": "681692b11642c647e7e4ec50c897d3ddad625b037891b7486283c57cea54807d",
+      "url": "https://github.com/snoopysecurity/dvws/blob/25a5a03aa1b13d8e647da66784c3e8445726e578/LICENSE"
+    },
+    {
+      "file": "instructions.php",
+      "sha256": "a7334b9d8b502146bce7b75e4bf9126bad440a142d31bc6ead087cb9beb0d7bc",
+      "url": "https://github.com/snoopysecurity/dvws/blob/25a5a03aa1b13d8e647da66784c3e8445726e578/instructions.php"
+    },
+    {
+      "file": "vulnerabilities/sqli/api.php",
+      "sha256": "0b20f7004e59deda50c547e8da1cb079b538b51667163740ef7b06e1b873020b",
+      "url": "https://github.com/snoopysecurity/dvws/blob/25a5a03aa1b13d8e647da66784c3e8445726e578/vulnerabilities/sqli/api.php"
+    },
+    {
+      "file": "vulnerabilities/jwt/api.php",
+      "sha256": "aeb63fb9c6225826d6d59fcda622294a11f33b1c567be3c490941061ea1af421",
+      "url": "https://github.com/snoopysecurity/dvws/blob/25a5a03aa1b13d8e647da66784c3e8445726e578/vulnerabilities/jwt/api.php"
+    },
+    {
+      "file": "vulnerabilities/cmdi/server.php",
+      "sha256": "37460a231f1287809c0dc05e207d150c812782eac8e99654f3b81165e59e2d2a",
+      "url": "https://github.com/snoopysecurity/dvws/blob/25a5a03aa1b13d8e647da66784c3e8445726e578/vulnerabilities/cmdi/server.php"
+    },
+    {
+      "file": "vulnerabilities/wsdlenum/service.php",
+      "sha256": "f3c19c78cea7eee840c454ebcbb944508cc382210fb73a86a69f456129818a86",
+      "url": "https://github.com/snoopysecurity/dvws/blob/25a5a03aa1b13d8e647da66784c3e8445726e578/vulnerabilities/wsdlenum/service.php"
+    }
+  ],
+  "source_facts": [
+    "SQL API uses PATH_INFO and GET/PUT/POST/DELETE switches",
+    "SQL API opens mysqli but later invokes mysql_select_db/mysql_query; PUT/POST reference undefined $set",
+    "Setup PHP creates DB/users table and inserts fixed seed rows; this was not executed",
+    "SOAP/JSON-RPC/XML/JWT exercise source is present; no official OpenAPI in complete pinned tree"
+  ],
+  "source_type": "ORIGINAL"
+}

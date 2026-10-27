@@ -1,0 +1,55 @@
+{
+  "authentication": {
+    "status": "NOT VERIFIED"
+  },
+  "benchmark_id": "dvws-original",
+  "checks": {
+    "authentication": false,
+    "enforceable_scope": false,
+    "identity": false,
+    "isolated": false,
+    "known_operations": false,
+    "operation_risks": false,
+    "reproducible_deployment": false,
+    "reset_strategy": false,
+    "shared_operations": false,
+    "spec_version_provenance": false,
+    "valid_spec": false,
+    "version_pin": false
+  },
+  "container_origin": null,
+  "deployment": {
+    "available": true,
+    "reason": "Beebs (2019) attribution unresolved; archived legacy PHP 5.5.38/XAMPP target. No authoritative container/OpenAPI or reproducible compatible deployment established.",
+    "runnable_available": false
+  },
+  "eligible_operations": [],
+  "excluded_operations": [],
+  "ground_truth": {
+    "status": "Scenario descriptions are not adjudicated vulnerability labels",
+    "verified": false
+  },
+  "host_origin": null,
+  "image_digest": null,
+  "inventory": "inventories/dvws-original.json",
+  "limitations": [
+    "Beebs (2019) attribution unresolved; archived legacy PHP 5.5.38/XAMPP target. No authoritative container/OpenAPI or reproducible compatible deployment established."
+  ],
+  "penagent": {
+    "status": "NOT EXECUTED; missing assets"
+  },
+  "project": "Original DVWS candidate",
+  "readiness": "BLOCKED",
+  "requires_approval": false,
+  "reset": {
+    "executed": false,
+    "strategy": "Unavailable; no target deployed"
+  },
+  "schema_version": 1,
+  "source_repository": "https://github.com/snoopysecurity/dvws",
+  "specifications": [],
+  "target_version": null,
+  "zap": {
+    "status": "NOT EXECUTED; missing assets"
+  }
+}

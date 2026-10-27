@@ -1,0 +1,55 @@
+{
+  "authentication": {
+    "status": "NOT VERIFIED"
+  },
+  "benchmark_id": "srebench-api",
+  "checks": {
+    "authentication": false,
+    "enforceable_scope": false,
+    "identity": false,
+    "isolated": false,
+    "known_operations": false,
+    "operation_risks": false,
+    "reproducible_deployment": false,
+    "reset_strategy": false,
+    "shared_operations": false,
+    "spec_version_provenance": false,
+    "valid_spec": false,
+    "version_pin": false
+  },
+  "container_origin": null,
+  "deployment": {
+    "available": true,
+    "reason": "Proposal and scanned scenario descriptions only; no authoritative executable repository, image, version or OpenAPI located. NEEDS IMPLEMENTATION or supplied assets.",
+    "runnable_available": false
+  },
+  "eligible_operations": [],
+  "excluded_operations": [],
+  "ground_truth": {
+    "status": "Scenario descriptions are not adjudicated vulnerability labels",
+    "verified": false
+  },
+  "host_origin": null,
+  "image_digest": null,
+  "inventory": "inventories/srebench-api.json",
+  "limitations": [
+    "Proposal and scanned scenario descriptions only; no authoritative executable repository, image, version or OpenAPI located. NEEDS IMPLEMENTATION or supplied assets."
+  ],
+  "penagent": {
+    "status": "NOT EXECUTED; missing assets"
+  },
+  "project": "SREBench-API",
+  "readiness": "BLOCKED",
+  "requires_approval": false,
+  "reset": {
+    "executed": false,
+    "strategy": "Unavailable; no target deployed"
+  },
+  "schema_version": 1,
+  "source_repository": null,
+  "specifications": [],
+  "target_version": null,
+  "zap": {
+    "status": "NOT EXECUTED; missing assets"
+  }
+}

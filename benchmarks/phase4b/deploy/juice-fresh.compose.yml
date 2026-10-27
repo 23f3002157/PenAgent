@@ -1,0 +1,43 @@
+# Prepared fresh-run topology, not started. No ports or existing container names.
+# Supply a NEW project name and NEW seed volume name for each independent tool run.
+name: ${PHASE4B_FRESH_PROJECT:?Unique fresh project name required}
+services:
+  target:
+    image: bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f
+    pull_policy: never
+    networks: [target]
+    volumes: [seed:/juice-shop/data]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: 'no'
+    mem_limit: 1g
+    cpus: 1
+    healthcheck:
+      test: [CMD, /nodejs/bin/node, --input-type=module, -e, "const r=await fetch('http://127.0.0.1:3000/rest/admin/application-version',{signal:AbortSignal.timeout(2000)});if(!r.ok||(await r.json()).version!=='20.0.0')process.exit(1)"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+  gateway:
+    image: ghcr.io/zaproxy/zaproxy@sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6
+    pull_policy: never
+    profiles: [explicit-connectivity-check]
+    entrypoint: [python, -B, /benchmarks/phase4b/gateway.py]
+    networks: [target, tools]
+    volumes:
+      - ${PHASE4B_BENCHMARKS_DIR:?Absolute benchmarks path required}:/benchmarks:ro
+      - ${PHASE4B_FRESH_CONTROL:?New identity-bound control directory required}:/phase4b
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: 'no'
+networks:
+  target:
+    internal: true
+    driver_opts:
+      com.docker.network.bridge.gateway_mode_ipv4: isolated
+  tools:
+    internal: true
+    driver_opts:
+      com.docker.network.bridge.gateway_mode_ipv4: isolated
+volumes:
+  seed:
+    name: ${PHASE4B_FRESH_VOLUME:?New independent seed volume required}

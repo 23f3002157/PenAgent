@@ -1,0 +1,115 @@
+{
+  "client": "penagent",
+  "origin": "http://172.26.0.1:8088",
+  "network": "penagent-phase4b-tools-r2",
+  "negative_connections": [
+    {
+      "host": "172.24.0.2",
+      "port": 3000,
+      "reachable": false
+    },
+    {
+      "host": "172.17.0.2",
+      "port": 3000,
+      "reachable": false
+    },
+    {
+      "host": "172.24.0.1",
+      "port": 3000,
+      "reachable": false
+    },
+    {
+      "host": "172.24.0.1",
+      "port": 9003,
+      "reachable": false
+    },
+    {
+      "host": "host.docker.internal",
+      "port": 3000,
+      "reachable": false
+    },
+    {
+      "host": "host.docker.internal",
+      "port": 18001,
+      "reachable": false
+    },
+    {
+      "host": "1.1.1.1",
+      "port": 443,
+      "reachable": false
+    },
+    {
+      "host": "host.docker.internal",
+      "port": 9001,
+      "reachable": false
+    },
+    {
+      "host": "host.docker.internal",
+      "port": 9002,
+      "reachable": false
+    },
+    {
+      "host": "host.docker.internal",
+      "port": 9003,
+      "reachable": false
+    },
+    {
+      "host": "host.docker.internal",
+      "port": 9004,
+      "reachable": false
+    }
+  ],
+  "operations": [
+    {
+      "method": "GET",
+      "request_path": "/rest/admin/application-version",
+      "status": 200,
+      "response_sha256": "42ee4966d8b6c01cdd2ade54c60e33bead0e8ace9abe79c172e1b377b1b76185"
+    },
+    {
+      "method": "GET",
+      "request_path": "/rest/languages",
+      "status": 200,
+      "response_sha256": "9966f88d84b202e1f123059ba907678012b4c0f7eaeaeae7b14353ebcaa6edf5"
+    },
+    {
+      "method": "GET",
+      "request_path": "/rest/products/search?q=apple",
+      "status": 200,
+      "response_sha256": "18f0cd831052af35503eafa7f6a2aa36c6351fd97fb7a5b23f2f76d9750e140d"
+    },
+    {
+      "method": "GET",
+      "request_path": "/rest/products/1/reviews",
+      "status": 200,
+      "response_sha256": "4b3bf055712a6118c9ef65e790d5ae6f8b2af621da62d88eefd06df64594fc53"
+    },
+    {
+      "method": "GET",
+      "request_path": "/rest/country-mapping",
+      "status": 500,
+      "response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "denied_requests": [
+    {
+      "method": "GET",
+      "path": "/__phase4b_outside_allowlist",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "path": "/rest/admin/application-version",
+      "status": 403
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/search?q=apple&extra=1",
+      "status": 403
+    }
+  ],
+  "active_scans": 0,
+  "penagent_probes": 0,
+  "crawls": 0,
+  "client_library": "httpx; same transport configuration as C3; no Executor.execute invocation"
+}

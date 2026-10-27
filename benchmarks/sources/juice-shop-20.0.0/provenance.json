@@ -1,0 +1,55 @@
+{
+  "origin": "Read-only copy from verified deployed image",
+  "version": "20.0.0",
+  "image_digest": "bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+  "files": {
+    "server.ts": {
+      "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/server.ts"
+    },
+    "package.json": {
+      "sha256": "57b2d89c1b3500dfc04674b00c9ba374e1ef423ababb64e814b39f90fe87c933",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/package.json"
+    },
+    "LICENSE": {
+      "sha256": "fa4ca6d61009e537c953f1c0b8455dd66d69f810888546c48db8ea05f0713093",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/LICENSE"
+    },
+    "README.md": {
+      "sha256": "f2e28e8484676c5d8e030fddb2c1f58e37da2d029aebb578a707b4498a63ec81",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/README.md"
+    },
+    "swagger.yml": {
+      "sha256": "9f62e2bc687604ffebb64d93530c304aef7b1d83f324d774e739b2d5c1709309",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/swagger.yml"
+    },
+    "routes/appVersion.ts": {
+      "sha256": "228178b1ba2557a26c9f09a0f4cff6e9b2dd9bddd879c3d1fa9eb72cbb2fe5fb",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/routes/appVersion.ts"
+    },
+    "routes/countryMapping.ts": {
+      "sha256": "03194b853301e71a0e0605cb724435147c85f7ff0294a1c507752cb521b4376d",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/routes/countryMapping.ts"
+    },
+    "routes/languages.ts": {
+      "sha256": "5a995c3d9bf22d3bfcf8af275e63256ac6b2af812626d32f51a699bebe08f863",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/routes/languages.ts"
+    },
+    "routes/search.ts": {
+      "sha256": "0c23e746dfe31ec29aa6477e076a0a4d55d27afd90446e668b1dc10b88416967",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/routes/search.ts"
+    },
+    "routes/showProductReviews.ts": {
+      "sha256": "a34940049e48624b8d47c99b80d55d3652bcaa22385fd969d7e7d21361a1d481",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/routes/showProductReviews.ts"
+    },
+    "routes/b2bOrder.ts": {
+      "sha256": "5e4affbd4072fae7d98737ef2b78cabcd039b157fec879d59308e5c0fde32f48",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/routes/b2bOrder.ts"
+    },
+    "routes/login.ts": {
+      "sha256": "a75800151ddeda7b18ad683cd3c75fecadf48d23b507c5e531426285a1feb67a",
+      "authoritative_tag_url": "https://github.com/juice-shop/juice-shop/blob/v20.0.0/routes/login.ts"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "adopted": false,
+  "deployed": false,
+  "error": "Invalid parameter location/name",
+  "error_type": "ValueError",
+  "note": "No schema weakening or source repair applied",
+  "original_sha256": "63fffb481087ab799afc35fcd082979d2c197435742f50d09abf2acdcd3b002b",
+  "package_version": "0.0.1",
+  "prepared_sha256": "271562a7a250594723777081940b12af81f58fc2e054a600827096a04b797bfb",
+  "source": {
+    "file": "docs/openapi/openapi.json",
+    "sha256": "421f91b26a53222e078bbc926aad1d9cab30924dda379e381dccd22a8c67504d",
+    "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json"
+  },
+  "source_type": "SUCCESSOR",
+  "spec_api_version": "0.1",
+  "status": "FAILED",
+  "transformation": "Only server URL changed to proposed local origin, preserving /api; no target running"
+}

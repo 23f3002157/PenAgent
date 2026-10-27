@@ -1,0 +1,854 @@
+{
+  "snoopysecurity/dvws": {
+    "archive_sha256": "de34fd9a0f2269e2c0db7835e83b3b374d3e5af1a0cb907858469f22fd4aa2b4",
+    "archive_url": "https://codeload.github.com/snoopysecurity/dvws/zip/25a5a03aa1b13d8e647da66784c3e8445726e578",
+    "commit": "25a5a03aa1b13d8e647da66784c3e8445726e578",
+    "executed": false,
+    "files": [
+      {
+        "path": "LICENSE",
+        "sha256": "681692b11642c647e7e4ec50c897d3ddad625b037891b7486283c57cea54807d"
+      },
+      {
+        "path": "README.md",
+        "sha256": "3af0513f77424ce3c7a49f11a244be3f03121548be22d07165c6808b4755cbe5"
+      },
+      {
+        "path": "about.php",
+        "sha256": "e9fdb382f2cecf58d5d1bbd2ea819b6beb286e2dda43dc26393274cc06a80c5c"
+      },
+      {
+        "path": "about/index.php",
+        "sha256": "a19c69715e0479102a10689d34b331fe71754a67146172b967025ccccce7cf33"
+      },
+      {
+        "path": "about/instructions.php",
+        "sha256": "58ed0aac346d30c0fb13e4cf7bc6e434c371d7818b977eb97a4a970ed2d214d5"
+      },
+      {
+        "path": "appinfo.php",
+        "sha256": "6a4d836158cdeb1efc81de35185cf96a3872c2806506e2588cba64b9c838b3e9"
+      },
+      {
+        "path": "bootstrap.php",
+        "sha256": "22d9e31dc1c3c1004e3b0bc831007e54ea796b92866ba87c7e6d5359bc89a6ef"
+      },
+      {
+        "path": "css/bootstrap.css",
+        "sha256": "ad850187e2746ffcc60b36c6d36c0986277e9dc1f277406ca146298cb2d2a309"
+      },
+      {
+        "path": "css/bootstrap.min.css",
+        "sha256": "eece6e0c65b7007ab0eb1b4998d36dafe381449525824349128efc3f86f4c91c"
+      },
+      {
+        "path": "css/simple-sidebar.css",
+        "sha256": "5a61e73cbd02a266e86b97988a318fb7945eb1e947e807028653e973a4e0e8ad"
+      },
+      {
+        "path": "favicon.ico",
+        "sha256": "b917464eef0448a0969946da8a69474c62ffef25f6d1a312205332cd8420a5b9"
+      },
+      {
+        "path": "fonts/glyphicons-halflings-regular.eot",
+        "sha256": "13634da87d9e23f8c3ed9108ce1724d183a39ad072e73e1b3d8cbf646d2d0407"
+      },
+      {
+        "path": "fonts/glyphicons-halflings-regular.svg",
+        "sha256": "42f60659d265c1a3c30f9fa42abcbb56bd4a53af4d83d316d6dd7a36903c43e5"
+      },
+      {
+        "path": "fonts/glyphicons-halflings-regular.ttf",
+        "sha256": "e395044093757d82afcb138957d06a1ea9361bdcf0b442d06a18a8051af57456"
+      },
+      {
+        "path": "fonts/glyphicons-halflings-regular.woff",
+        "sha256": "a26394f7ede100ca118eff2eda08596275a9839b959c226e15439557a5a80742"
+      },
+      {
+        "path": "fonts/glyphicons-halflings-regular.woff2",
+        "sha256": "fe185d11a49676890d47bb783312a0cda5a44c4039214094e7957b4c040ef11c"
+      },
+      {
+        "path": "index.php",
+        "sha256": "c88106b68223dfd4bd3e7b6e40d04a31c28d9e93629f9feaa1b9de730730d79d"
+      },
+      {
+        "path": "instructions.php",
+        "sha256": "a7334b9d8b502146bce7b75e4bf9126bad440a142d31bc6ead087cb9beb0d7bc"
+      },
+      {
+        "path": "js/bootstrap.js",
+        "sha256": "defc39740ac1859d8e2785ed473208409627e87addd5f78f2deaacb93a12d51d"
+      },
+      {
+        "path": "js/bootstrap.min.js",
+        "sha256": "2979f9a6e32fc42c3e7406339ee9fe76b31d1b52059776a02b4a7fa6a4fd280a"
+      },
+      {
+        "path": "js/jquery.js",
+        "sha256": "24262baafef17092927c3dafe764aaa52a2a371b83ed2249cca7e414df99fac1"
+      },
+      {
+        "path": "sidebar.php",
+        "sha256": "92b235e43c20c910147e83fa2fd520db5fb3169f1ea2f0db47e772a40e4eb81a"
+      },
+      {
+        "path": "vulnerabilities/cmdi/client.php",
+        "sha256": "bf55397ecb11dd2dd41543e62501d050a2a98ecb4a13c83c179aedef551ac767"
+      },
+      {
+        "path": "vulnerabilities/cmdi/jsonRPCClient.php",
+        "sha256": "4a2e80250ef5fc1026307c46f4f120b3ad823dae411a5554868f56a8df3bbbe3"
+      },
+      {
+        "path": "vulnerabilities/cmdi/jsonRPCServer.php",
+        "sha256": "89649433ff9cd97551519919e51addb8afc61d0f70e62f507ef7a7e5dd931214"
+      },
+      {
+        "path": "vulnerabilities/cmdi/process.php",
+        "sha256": "fe638424a810fc226fcb7e989f0410bb344d8feb9b093e415c7629f73c90f757"
+      },
+      {
+        "path": "vulnerabilities/cmdi/restrictedExample.php",
+        "sha256": "23c03aa2fd610ed083ff206bb2f223da3fdbc20c6bc8fdb95963332a15cdf8c9"
+      },
+      {
+        "path": "vulnerabilities/cmdi/server.php",
+        "sha256": "37460a231f1287809c0dc05e207d150c812782eac8e99654f3b81165e59e2d2a"
+      },
+      {
+        "path": "vulnerabilities/cors/client.php",
+        "sha256": "59b0ece6ff1ab37a5da0d7cccdb1974519a8a86efc7967d747dcf6553780490c"
+      },
+      {
+        "path": "vulnerabilities/cors/server.php",
+        "sha256": "2401dc13c91eba0cf12293e4520e11e9f71043549606bb4e8f68a2d520f5cc2c"
+      },
+      {
+        "path": "vulnerabilities/hiddendir/secretsolutions.txt",
+        "sha256": "0d2ab10803e04dc69efc80a4d82ae467c429495542c333f1217f806fb79fea02"
+      },
+      {
+        "path": "vulnerabilities/jwt/api.php",
+        "sha256": "aeb63fb9c6225826d6d59fcda622294a11f33b1c567be3c490941061ea1af421"
+      },
+      {
+        "path": "vulnerabilities/jwt/auth.php",
+        "sha256": "2dc97216c27ade142a536d7a8a4bab3c3d09830dd2f7d5546ea857f5b3c0576c"
+      },
+      {
+        "path": "vulnerabilities/jwt/jwt_flow.png",
+        "sha256": "60fdb2c7e8c94c4e4b2331bbbc2a977f832947d52142ced80ad484f1e0c7869e"
+      },
+      {
+        "path": "vulnerabilities/jwt/login.php",
+        "sha256": "eab42470cf567da6f1bc2a7570f26bbfda0953a15fe33f0655225d32ea3ddb19"
+      },
+      {
+        "path": "vulnerabilities/jwt/login_token.php",
+        "sha256": "491936fbf7a89c78ee29bb271ca4392b4c2471b6efb120c3637f756627b1746c"
+      },
+      {
+        "path": "vulnerabilities/some/index.php",
+        "sha256": "2567225fe541ddd8f0df03c083e37cd032ad244d1742cdd9c67362b7753c964f"
+      },
+      {
+        "path": "vulnerabilities/some/token_generator.php",
+        "sha256": "eb2d2dfab96dd3a334805b232bcbdac2f09fd5346d746eede356b6a1fc0650c6"
+      },
+      {
+        "path": "vulnerabilities/sqli/api.php",
+        "sha256": "0b20f7004e59deda50c547e8da1cb079b538b51667163740ef7b06e1b873020b"
+      },
+      {
+        "path": "vulnerabilities/sqli/index.php",
+        "sha256": "235651dc78e962a10325fddb4e9176e2d8c3752f56abcb77628508221ab4c72c"
+      },
+      {
+        "path": "vulnerabilities/ssrf/index.php",
+        "sha256": "fcb9c6763c84730cc2bfe7056d14b3a11a00df4b5da46ad66bcc884d520c9d77"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/compat/array_key_exists.php",
+        "sha256": "a959de1e56cf0db61eac55a3b5ae774aed1efad6c4998e79b451cee60b9370a3"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/compat/is_a.php",
+        "sha256": "d290d8b1b90bc7c63f8217f34a7d769ab47ca9a3f1ff7003494df7c900f5d5af"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/compat/is_callable.php",
+        "sha256": "279e830081b7efdca07100b1a2dfb1a596b1d961e2256eeb76311b8fae0c3b41"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/compat/is_scalar.php",
+        "sha256": "4c9c61e7949b6b57b1e3782f5f79a9cece580d624803a3587fd04c6c8c018d89"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/compat/var_export.php",
+        "sha256": "1ffcb238235b02627b8fe6ab55342139240e6b1a6d3e8392b28231ea56555bac"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/compat/version_compare.php",
+        "sha256": "8df91e82d48108dec0b4542d9d194fc8a5eb839e58dde57850ff294e3e1767ad"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/xmlrpc.inc",
+        "sha256": "7cf811c7e97058232f506535ff2ccebaa2c37df40dae830ee628d436ded540dd"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/xmlrpc_wrappers.inc",
+        "sha256": "d07bde5e9914d14b18d2073b5dde23d7102073df7040837588536f347ebd1743"
+      },
+      {
+        "path": "vulnerabilities/ssrf/lib/xmlrpcs.inc",
+        "sha256": "45408d41d6c38e4ad771a431313d2b412f689e52e87eef86a707b00f6f320f53"
+      },
+      {
+        "path": "vulnerabilities/ssrf/owasptop10.txt",
+        "sha256": "67ef42619144039b84acd229ca4a7133ae4832b8ee8a11814b2348a070a334d7"
+      },
+      {
+        "path": "vulnerabilities/ssrf/readme.txt",
+        "sha256": "55cabe293c2a279b44e50e2ae7160b77a842b5332b9808e2f41ecc4c3d15aa2f"
+      },
+      {
+        "path": "vulnerabilities/ssrf/server.php",
+        "sha256": "76461208b203b3af9fad2faf6f94d4fd406e0e06b72fefa2341f0808203618f4"
+      },
+      {
+        "path": "vulnerabilities/ssrf/usernames.txt",
+        "sha256": "c6f0080531e97f76f4c47fb5d881d3e6db2b2d20b960ae010aea62959514ba08"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/functions.php",
+        "sha256": "843dcb7494256b70ab9e563f2d6556918c07962d262b99783906b99d1815d967"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/index.php",
+        "sha256": "1eeaf592112e1d6a60c52ee61f04a1aa7a70df5cba2d65c0a5fd1256e24796e6"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/changelog",
+        "sha256": "30f8a30630ae79b6f8d975914e4bd1ba2490322537f2c3ec766b946bd2545786"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.nusoap_base.php",
+        "sha256": "ef516f130c724fbdad82863efdfd3e0f7ab96030b27306dbd4a00f4ff915e8ec"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.soap_fault.php",
+        "sha256": "eae8925f95c6a566a62afd56e0f07ca594417c1d04f58078fe38f917910c06be"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.soap_parser.php",
+        "sha256": "71e971c8c613a49c0993ba6feebf97ca4f49514aa1d0e2c3eae4aa04fdb91122"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.soap_server.php",
+        "sha256": "bede20eec259e71a5577c82ed37dd6fc60f847ce533f6848d7741e11d1e6a107"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.soap_transport_http.php",
+        "sha256": "6c7165aeff0324a0dd6ab47d431fda6ef025eec03a9091c2c1a0e8b3039dc51c"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.soap_val.php",
+        "sha256": "1ea12fba0d2bf15dfcbaaa65cf5e6f8cad99b48c562702fecebdb86236af91c3"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.soapclient.php",
+        "sha256": "b0ee6ca9f2f844a3fb6d49e1c84ea11947d83552d206cea974906f12d23779fd"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.wsdl.php",
+        "sha256": "d22fb8cffcf64368a7f9f3fc9fbe376e514a08d2d1b6d8a3c2e4bd8521623bf3"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.wsdlcache.php",
+        "sha256": "00d3a66115ece814ac4d16c81990899610153abfad618b85f5a8e1fed387fffb"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/class.xmlschema.php",
+        "sha256": "6659bf368de1f2c7caac2e5c9a22ed5d6dcaec2a5fb1007f78897eeb76d59638"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/nusoap.php",
+        "sha256": "052e771a8b4e6c76dfc02c45dc95ee6844044cb11195af4bc115e706182c376a"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/lib/nusoapmime.php",
+        "sha256": "dd512667a149a916a40b2078d67c61af1a18f90c39212fbc71c81508461636b3"
+      },
+      {
+        "path": "vulnerabilities/wsdlenum/service.php",
+        "sha256": "f3c19c78cea7eee840c454ebcbb944508cc382210fb73a86a69f456129818a86"
+      },
+      {
+        "path": "vulnerabilities/xmlbomb/process.php",
+        "sha256": "550d0883ddab5dcf8de14089a7dd5f122f98f6b189cf1a449ecec0f24a45b8c4"
+      },
+      {
+        "path": "vulnerabilities/xmlbomb/xmlbomb.php",
+        "sha256": "f462842e70e8c75c6332ab9d2695e47a109aaf98565b7d3c03135bed1d9c71a6"
+      },
+      {
+        "path": "vulnerabilities/xpath/accountinfo.xml",
+        "sha256": "0c8c541c5bbd0e7b67fd748681e57ff1219e731ea3354763bdc9892445670c02"
+      },
+      {
+        "path": "vulnerabilities/xpath/xpath.php",
+        "sha256": "9b3aef8f2fd883958e6f9fb981382b4b478be6d9329eb6767d7302ddf343319a"
+      },
+      {
+        "path": "vulnerabilities/xst/xst.php",
+        "sha256": "7eccab066fb1d6481a9638cb5fff508e8af7a7d4834a6df310d6990d84bdf2d7"
+      },
+      {
+        "path": "vulnerabilities/xxe/index.php",
+        "sha256": "2f596db16b2108e59ac12c0c5cea741a4f0bdeab545c4ae26ba0d1d39791dc00"
+      },
+      {
+        "path": "vulnerabilities/xxe2/index.php",
+        "sha256": "3904d0ee9c49dd0c24ae4cffc68ded8736967b5f5c3e6ef31e83e5011703a71f"
+      },
+      {
+        "path": "vulnerabilities/xxe2/server.php",
+        "sha256": "e269245d69a895c81f2395c275d1522ff0f720db3e835ce0dfefcbed91682ae9"
+      }
+    ],
+    "local_source": "C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\local\\phase4b\\upstream\\snoopysecurity_dvws\\source",
+    "repository": "https://github.com/snoopysecurity/dvws"
+  },
+  "snoopysecurity/dvws-node": {
+    "archive_sha256": "7ba68a9eee287f3f81aa973850677a95832878f7dec926ecdcb88058ff2f7e4e",
+    "archive_url": "https://codeload.github.com/snoopysecurity/dvws-node/zip/35f999505028f580dd6acc8bb7ddecfb87fe4bf6",
+    "commit": "35f999505028f580dd6acc8bb7ddecfb87fe4bf6",
+    "executed": false,
+    "files": [
+      {
+        "path": ".dockerignore",
+        "sha256": "e0c760f04f949418022696c50da00b748b4697775eb0a9b7307071c7b0b23ac2"
+      },
+      {
+        "path": ".env",
+        "sha256": "5b830a397d8e5ae0a33d5165a9416c3a74b6a20ba9dfb0eeca50178473a7bae9"
+      },
+      {
+        "path": ".github/workflows/ci.yml",
+        "sha256": "fec3913d14ed4045f265b8b98140daac0362a48e9a3d3b75f420c31f5d02a0d9"
+      },
+      {
+        "path": ".gitignore",
+        "sha256": "761e291b5501fdabfd49378848787658346594320b575b41c11495bb49f15a4b"
+      },
+      {
+        "path": ".gitpod.yml",
+        "sha256": "f3823f08fc68a01a64d0bf05609ca00f6de3281fe63c201c223502ec30986b69"
+      },
+      {
+        "path": ".nvmrc",
+        "sha256": "f14b4987904bcb5814e4459a057ed4d20f58a633152288a761214dcd28780b56"
+      },
+      {
+        "path": "CHALLENGES.md",
+        "sha256": "cf118225185bec56a9545a98085d5c2bafc6251950901de68721a7160c3ade81"
+      },
+      {
+        "path": "Dockerfile",
+        "sha256": "b02d85026a7de8624408070af4a74133525a8922b22606333521c4e34b61ac24"
+      },
+      {
+        "path": "LICENSE",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "path": "README.md",
+        "sha256": "83f4f1d5d8cdd150c8ba3811363de410fa6cfd2432fa2b1ea2eabfba8a78e30d"
+      },
+      {
+        "path": "config/operations.xml",
+        "sha256": "861e15188fdb0d3fa32664bfbf6aad372a0d2404ebf37319f7166ca1c0266bc7"
+      },
+      {
+        "path": "docker-compose.tls.yml",
+        "sha256": "f9a9c474af130103ed25f2b722c73ec0ee10648b21a747364f788874d8033ef8"
+      },
+      {
+        "path": "docker-compose.yml",
+        "sha256": "57dc2b77ec2b0fd259ca934265d3585f2bb4e91ba0dd3c981ec602e4e3f3c2e1"
+      },
+      {
+        "path": "docs/openapi/openapi.json",
+        "sha256": "421f91b26a53222e078bbc926aad1d9cab30924dda379e381dccd22a8c67504d"
+      },
+      {
+        "path": "docs/openapi/swagger-source.js",
+        "sha256": "d1763465c8ebf897b5ee60184dc8168fae90e778e05fdfc9fa61c7fc3b8e6baa"
+      },
+      {
+        "path": "fixtures/xml/test.xml",
+        "sha256": "8a4dc1405e7596be2e69f513fd0258c9a218eabc77e68574f7fec46ed1f4deb7"
+      },
+      {
+        "path": "frontend/.gitignore",
+        "sha256": "d1aec8becdfa546cbb4ed193ffd576dd7f353c742cb9f361be4b2697ecefe992"
+      },
+      {
+        "path": "frontend/.npmrc",
+        "sha256": "7151cf397def0c2cb0ab65643701d27d335a72c90f775675b5f826bc7005818a"
+      },
+      {
+        "path": "frontend/.vscode/extensions.json",
+        "sha256": "613d3fbe180f7d0ef4381a7c5cd15e7ff5a7f35313cfe4d96b82c2215c3c796a"
+      },
+      {
+        "path": "frontend/README.md",
+        "sha256": "b0c6de7b4b323315e2dafa0cda5b48f21a224414495340984154ac9ffc531174"
+      },
+      {
+        "path": "frontend/SECURITY.md",
+        "sha256": "e7215fb61c1ae6f4ab72d00ee85a3bcaf12f1b0842e86dc668ddfcbaf694316e"
+      },
+      {
+        "path": "frontend/package-lock.json",
+        "sha256": "7464d40dffc59347a6b4cb07cd5fa0bcd8434b7667f2ae334faa65640472f32f"
+      },
+      {
+        "path": "frontend/package.json",
+        "sha256": "fd2d73b338eb7f7d2ac7d7f465c94c2d6ed09489c0d9de4d3af0c1c4349d9088"
+      },
+      {
+        "path": "frontend/postcss.config.js",
+        "sha256": "4cae941be9bc3bee9a6905e47ea7a51aee216d587d34a8cc4ae48f78fd6d8159"
+      },
+      {
+        "path": "frontend/src/app.css",
+        "sha256": "448e82af5ed68dbe2a49075ccc5e5fb0aa5b55a2ab4d4d12a261600a3c53cd0c"
+      },
+      {
+        "path": "frontend/src/app.d.ts",
+        "sha256": "3d450fc2fc7b0f10b6a9493a682769aac34f8b612f0f5d1bc4845a7b0bfe9f0a"
+      },
+      {
+        "path": "frontend/src/app.html",
+        "sha256": "824aebe3df873b559437d5e9dbf97f09f35c3b006608950cb582bcfbeae85faa"
+      },
+      {
+        "path": "frontend/src/lib/api/client.ts",
+        "sha256": "4cf4c2104b06144b1ef618389e49ef216843f5538d6cb6febb046cb57f4cd92c"
+      },
+      {
+        "path": "frontend/src/lib/assets/favicon.svg",
+        "sha256": "d7d9227f0fe5bfb4189fb6ba4dd9e2d524f6a1dfd02bd901c65330987675c0b3"
+      },
+      {
+        "path": "frontend/src/lib/components/layout/AppShell.svelte",
+        "sha256": "65fd63d2c845186501ddabfaecb399587b16f04e81aa8efc7d97657b2f28b1ab"
+      },
+      {
+        "path": "frontend/src/lib/components/layout/Sidebar.svelte",
+        "sha256": "74867108b30d6bf4710f8d8398cf5a768964a364e0db15973d7dd0b925dd42a4"
+      },
+      {
+        "path": "frontend/src/lib/components/layout/TopBar.svelte",
+        "sha256": "8f14068c86ade388da6d55fdd88f1a37e7ecc6981d7f92cd399172cc4c6f7c19"
+      },
+      {
+        "path": "frontend/src/lib/components/ui/Button.svelte",
+        "sha256": "6a7f18b9db19e52f1d167c063e1f7c7999d976044d056f574b37eac0e609ed36"
+      },
+      {
+        "path": "frontend/src/lib/components/ui/Card.svelte",
+        "sha256": "5b67d0571389867c44d54b62b83da2b49c295411d54fb9cdc4f5048296a534c1"
+      },
+      {
+        "path": "frontend/src/lib/components/ui/Icon.svelte",
+        "sha256": "70fec1188b7fa7b73d6bf48f7ae30064d58d70e666581558be75de4d9b71a995"
+      },
+      {
+        "path": "frontend/src/lib/components/ui/Input.svelte",
+        "sha256": "5ab1a1073c25f28cc5869b96a8e072e6a3271fffff479ad351bb13c6e92025e6"
+      },
+      {
+        "path": "frontend/src/lib/components/ui/StatusMessage.svelte",
+        "sha256": "4e27f21253bbbdbfe50448388d4e8faba77a0a4841cdf7504248baadfc2cb63b"
+      },
+      {
+        "path": "frontend/src/lib/components/vulnerable/ReceiverIframe.svelte",
+        "sha256": "b0989397597411a35593623ce3431235fa094d7ddc5073baf8ff886946247c0a"
+      },
+      {
+        "path": "frontend/src/lib/components/vulnerable/UnsafeHTML.svelte",
+        "sha256": "9b1834c3d044b97243723481b8a7c1eeb21b78348b15ecd7e00b5ee25a80b33f"
+      },
+      {
+        "path": "frontend/src/lib/index.ts",
+        "sha256": "4beec0ade3bea5be651939b305bccf69d48506c74eda0a1a50a0dd6c79c4e91a"
+      },
+      {
+        "path": "frontend/src/lib/stores/auth.ts",
+        "sha256": "0a2f2f953cc8750387fe9b7e866049a36e431db6e92383955a35df16fe6d662b"
+      },
+      {
+        "path": "frontend/src/lib/stores/notifications.ts",
+        "sha256": "f7ee93635de5b1f8fbe92caa1f1428ecb358a47318fd65369b9fd8d58fbeaae6"
+      },
+      {
+        "path": "frontend/src/lib/types/index.ts",
+        "sha256": "bb6bc54ce959de77cea9c24229ef88f9e873d7610e8c927b8a50cf81de424cd0"
+      },
+      {
+        "path": "frontend/src/lib/utils/errorHandler.ts",
+        "sha256": "5f477d5c4a59587fe09207b7eada9b3b07be535beabccb925b49657f214363c2"
+      },
+      {
+        "path": "frontend/src/lib/utils/passgen.js",
+        "sha256": "0324c1bcaa531dae5ffa312dfe4a699666f8f550a4ec7542c862f898c032b8e0"
+      },
+      {
+        "path": "frontend/src/routes/(app)/+layout.svelte",
+        "sha256": "19670bcb36a5b9f6c4c45e32fa1dcd63ce96619bc5c0b1742a0929f5c65c424f"
+      },
+      {
+        "path": "frontend/src/routes/(app)/+layout.ts",
+        "sha256": "58ca28942740b2ff08d6416473a2e8038f8a660017ce0b8b0d9ab3bb44453659"
+      },
+      {
+        "path": "frontend/src/routes/(app)/admin/+page.svelte",
+        "sha256": "6f89d5f59683878352d6a9d9fc4ea8f3f5a90f0de7d014c6608da8ce81f39371"
+      },
+      {
+        "path": "frontend/src/routes/(app)/admin/users/create/+page.svelte",
+        "sha256": "dd507a126799667b63608e74275c9e477e935b6d8966b1b36707ece5f7c7e128"
+      },
+      {
+        "path": "frontend/src/routes/(app)/admin/users/status/+page.svelte",
+        "sha256": "246b40133c4768258d47df5c63ef0625a8b2ee8c6219115c8c777d4603d34b74"
+      },
+      {
+        "path": "frontend/src/routes/(app)/dashboard/+page.svelte",
+        "sha256": "bd6308d2dff0bc3c3d1ae650801b4d5a1b15bb6bb92f726757cb552af044b1de"
+      },
+      {
+        "path": "frontend/src/routes/(app)/files/+page.svelte",
+        "sha256": "634b4bed1a117fc9a0419b07db43ade02ec94ce17028e8dbeca6db3343df36e5"
+      },
+      {
+        "path": "frontend/src/routes/(app)/notes/+page.svelte",
+        "sha256": "9dc345fbebdb572705b12ea5e7546095b5ef959ec83453d781bdbb5d60cd6d00"
+      },
+      {
+        "path": "frontend/src/routes/(app)/notes/import/+page.svelte",
+        "sha256": "49cb5ed4c782c39b22a722e11895753fa2cff78e9e72a0bdfdc5c55706f3d55b"
+      },
+      {
+        "path": "frontend/src/routes/(app)/passphrase/+page.svelte",
+        "sha256": "8de727efba0f402702823731f1059523617ebad4fda627b897e498d30f4f9e53"
+      },
+      {
+        "path": "frontend/src/routes/(app)/profile/+page.svelte",
+        "sha256": "24f8c4ac4887a83715a811231edc46ba2e1e32fb15b878c0cedc8c5016ecb747"
+      },
+      {
+        "path": "frontend/src/routes/(app)/resource-store/+page.svelte",
+        "sha256": "ad17e07d871e64612243c92aec9930e72361a0fd670100a51d9ce76593b22bab"
+      },
+      {
+        "path": "frontend/src/routes/(app)/search/+page.svelte",
+        "sha256": "1f26f0623184f7be7d56fb74326944cf3d07084b270459015f70ba55c76476c0"
+      },
+      {
+        "path": "frontend/src/routes/+layout.svelte",
+        "sha256": "d7f54e49e25515fd8e50e28ade2740abbe1c46aaff2b59f1a156042c7576bd52"
+      },
+      {
+        "path": "frontend/src/routes/+layout.ts",
+        "sha256": "58ca28942740b2ff08d6416473a2e8038f8a660017ce0b8b0d9ab3bb44453659"
+      },
+      {
+        "path": "frontend/src/routes/+page.svelte",
+        "sha256": "eac5102dbb84044884de50fd283cc9b385b88df798e2ff932e8fcdc8c2710370"
+      },
+      {
+        "path": "frontend/src/routes/logout/+page.svelte",
+        "sha256": "c0279305597c0f8465f47d700092e1ddeb9285a380d22c9819642e9482915ad9"
+      },
+      {
+        "path": "frontend/static/robots.txt",
+        "sha256": "b033243267bcbdab84cb01e940811d6d77a894d78f0470faaf0eb43f8e4efcc9"
+      },
+      {
+        "path": "frontend/tailwind.config.js",
+        "sha256": "928516f84d0f93fd43ecd1a5cd58fd9a2844e5de9c85942c0112561fc8fc8ae2"
+      },
+      {
+        "path": "frontend/tsconfig.json",
+        "sha256": "7a19bf2d57ef51ed3d7ddb0ed6ac3c4aa89025ab1cc2b0271132477905763134"
+      },
+      {
+        "path": "frontend/vite.config.ts",
+        "sha256": "ef289a072edef8b5c3274206948187232550b84e01c81c119a75287efc1de51f"
+      },
+      {
+        "path": "index.html",
+        "sha256": "3f24990158a77e8d3923b42ccdd0e54641d4ce6ee655f812268870d30cdbeaac"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "8c764f984bbd1043cea960a4183a29f5dc3eafddd283f4c4bb11f6aa2c7b94ca"
+      },
+      {
+        "path": "package.json",
+        "sha256": "ea2da98861804e209c8d18ca8cf2d909cc5858bd23fb9a88733981b911eabe1e"
+      },
+      {
+        "path": "public/attacker-lab.html",
+        "sha256": "55d752903b36d58aec30f3f87110d18cbb9afd9a925f4dfaf21daa56ea37976c"
+      },
+      {
+        "path": "public/index.html",
+        "sha256": "0199317475c7e1cb7b7efbdaca1ae2d3f255b089b4f31e849636b64402f09beb"
+      },
+      {
+        "path": "public/robots.txt",
+        "sha256": "b033243267bcbdab84cb01e940811d6d77a894d78f0470faaf0eb43f8e4efcc9"
+      },
+      {
+        "path": "scripts/generate-openapi.js",
+        "sha256": "d6a3ed010218998a4514c912a4cfb73e6ecb08b88e76ef59221326f5590b8b60"
+      },
+      {
+        "path": "scripts/seed-database.js",
+        "sha256": "28af43ab1981ab54c71d85861243af42e97ca31e19132ac9bed75fa49a78b252"
+      },
+      {
+        "path": "src/controllers/files.js",
+        "sha256": "98309ac8d52765abc06b37ae7d0f5eb039d283a88a08d4804a9a4fa0ba7578ae"
+      },
+      {
+        "path": "src/controllers/integrations.js",
+        "sha256": "06b0f281d768d0c992fb26af71129cc436728fdaef4c3fa07be6d05149cdc1f2"
+      },
+      {
+        "path": "src/controllers/notes.js",
+        "sha256": "b85bde92c16bf6dbd93bdb63bd505fde55bc50a5d2b818db5f37b5277ca66a61"
+      },
+      {
+        "path": "src/controllers/passphrase.js",
+        "sha256": "0f8daf052036cb49e02cad409972c477bc29fe41b65a8c27b2c868bbc4693479"
+      },
+      {
+        "path": "src/controllers/support-tickets.js",
+        "sha256": "e6812153c49e44b9af2051f10fec0921f4b5060a8a0e0f4becd45df15f8846b3"
+      },
+      {
+        "path": "src/controllers/users.js",
+        "sha256": "42b8a0a0d646e3953c8c17333b03820c564b61604f441e5a349979decb0801b5"
+      },
+      {
+        "path": "src/graphql/schema.js",
+        "sha256": "d1f224363e6d7ea14f1c3731940957f9dc034bce7e87f96554efcf150740131d"
+      },
+      {
+        "path": "src/middleware/auth.js",
+        "sha256": "df21c7f624e45428dbcae6c09db09ed36b5003d0e43ff1de43f04c7e86976aca"
+      },
+      {
+        "path": "src/middleware/rate-limiter.js",
+        "sha256": "56c260577d8b2b073001438572aef9df404f99f21d02ee50ca90d488fa95758e"
+      },
+      {
+        "path": "src/models/activity-event.js",
+        "sha256": "71e6013d009363d29d28acd3dd4bb64955a53911253b5cabef7fac64545666c2"
+      },
+      {
+        "path": "src/models/auto-increment.js",
+        "sha256": "ad2fd4c39fd4b41e67cd8c6eb3d4544162bb71bbc908365941ce54459911c4b0"
+      },
+      {
+        "path": "src/models/db.js",
+        "sha256": "440fbd28f7412e324eaab9b3fac79f1b060205bd36ed6404d44ceff8a249c0a3"
+      },
+      {
+        "path": "src/models/note.js",
+        "sha256": "a2c7307755ce6f67132031cab9f0a33a491cca010f26c27baf8e40abb37ce0ff"
+      },
+      {
+        "path": "src/models/notification.js",
+        "sha256": "ba2f70601e9aed6c8ada0f913d758ee69869aaa8ea9b8ba9db674b07c1573c12"
+      },
+      {
+        "path": "src/models/passphrase.js",
+        "sha256": "6b0ff1518b2f076970c77389583dae873bbb03bea14776d4a5a5fa348aa1a491"
+      },
+      {
+        "path": "src/models/resource-store-order.js",
+        "sha256": "e73060f00176ef416ec22d5834300d29634867fa969ace556f4f6b0e209652d5"
+      },
+      {
+        "path": "src/models/resource-store-wallet.js",
+        "sha256": "947c35049987a2a1696e808dc2ecefcc95fbcc673d460ed57c0b3c2e984aec59"
+      },
+      {
+        "path": "src/models/support-ticket.js",
+        "sha256": "453047b1127c92139b15961915135808c83e861840f71da467c691e84f9bf81f"
+      },
+      {
+        "path": "src/models/user.js",
+        "sha256": "d4ea6d4de5559437d54d23553a33efb76989d91dd1e2d75ee62ecb85ae39c814"
+      },
+      {
+        "path": "src/routes/files.js",
+        "sha256": "9d0541bca7a435b849a86924ab7aaecf0d6a6b81b9fd1327183d6e8c34fb9633"
+      },
+      {
+        "path": "src/routes/index.js",
+        "sha256": "defec0820b5a300ce4f6a4407dcb2d06878afbdfc94fae47b6332e3a53b3c824"
+      },
+      {
+        "path": "src/routes/integrations.js",
+        "sha256": "58ad4a04356421f26a6410b2f041cd1334b62cef31bba11d6e531bc58c8961ca"
+      },
+      {
+        "path": "src/routes/notes.js",
+        "sha256": "34dba8a1f388aa369473397fc980db6ea898e3b249689619027358170d1a8fb8"
+      },
+      {
+        "path": "src/routes/passphrase.js",
+        "sha256": "950b0cd9c6c6bebb8cec93fe9434adbe45df4a2cc8dd13d9b72aa4f0d2a254e2"
+      },
+      {
+        "path": "src/routes/resource-store.js",
+        "sha256": "fef2790d95b31524f146e4f9a713498d4255baa6f4a60d551e0bbc78e7c30f81"
+      },
+      {
+        "path": "src/routes/support-tickets.js",
+        "sha256": "08c4ddbbc6c924ea37066fbdd999f68128c3f3d81a77d9156e38565311487bd7"
+      },
+      {
+        "path": "src/routes/users.js",
+        "sha256": "31307036f63f9f46e8d425a90096b0f6fc84acca82316032cf35733d85c5b9df"
+      },
+      {
+        "path": "src/server.js",
+        "sha256": "da7d0017e25adc4de912f3f1b2a454d05c584b5fc9f036b7c472fcea75ba4edd"
+      },
+      {
+        "path": "src/services/account-directory.js",
+        "sha256": "5ce031d2eb8b2550c497c7c2f602b77c338f8ece449d4dd13a8d44adba3cdebd"
+      },
+      {
+        "path": "src/services/activity-events.js",
+        "sha256": "1a6f4ae01c331ae36f55eb08700ddebd7ed1b696eab42a7beaa88a3727442610"
+      },
+      {
+        "path": "src/services/monthly-report-cache.js",
+        "sha256": "23cd6fe95c4d23f297c5a0d61b3197f5461cd4de5676ae4d6e90bb370b39fca9"
+      },
+      {
+        "path": "src/services/notifications.js",
+        "sha256": "8615d1b2956ab0fab41bffb64a1d1ca6618d9e3ee9563e00072761dac08831ca"
+      },
+      {
+        "path": "src/services/operational-config.js",
+        "sha256": "63ec1f94f877c4598149df198a47cbbc7a90fdab1bd5ff5a31ca9b984d0c99d0"
+      },
+      {
+        "path": "src/services/soap/user-service.js",
+        "sha256": "c1752541d2fe76a45670355f422e40e366e45f43e6258cc1eda3faa45534c94b"
+      },
+      {
+        "path": "src/services/soap/user-service.wsdl",
+        "sha256": "100fbd7304bddc1f3ead9635874b152fa45bbb79903ebf8318bc4a70b16027c4"
+      },
+      {
+        "path": "src/services/uuid-v1.js",
+        "sha256": "fe2e4c4e3fdd13fae70b8e1815382889519f7b40f3b073b9e770a67249717b4d"
+      },
+      {
+        "path": "src/services/websocket-notifications.js",
+        "sha256": "d6bbbcd4fc3fd11016af2adf5cc67820901257c64e9c4783e80c2850352154f4"
+      },
+      {
+        "path": "src/services/xml-rpc/server.js",
+        "sha256": "0abf7cac22df332170f91d263cb788b812b723c232a633a4c3a6fb1b2e5b4052"
+      },
+      {
+        "path": "src/utils/vulnerable-xml.js",
+        "sha256": "01c5e8099f0fb1652b555324eaebad67309f9c56f11e07e72076f6c1337b662a"
+      },
+      {
+        "path": "test/README.md",
+        "sha256": "d43a19cdaddd92be19fce0b1f35fc90b44c981e177f4f16202fb662cbb009f5a"
+      },
+      {
+        "path": "test/api-protocol-vulnerabilities.test.js",
+        "sha256": "ab70368655ff03166209dc5bb07f1a7a846d83b1facdafbf2a50b17873d7fadd"
+      },
+      {
+        "path": "test/browser-challenges.test.js",
+        "sha256": "2dd1dc9df9c72718986516c8d80dfc2a55200725ae5b6505af778ddf8d639f97"
+      },
+      {
+        "path": "test/capital-challenges.test.js",
+        "sha256": "7d321c2dee7114803b3ff364c32623cec1fa02c2a6fc8acb6e025979aa27b087"
+      },
+      {
+        "path": "test/dvws.test.js",
+        "sha256": "8e495a315bd62c9e50efd5792c91a60a75042dd208d9d900f770a8dde5636912"
+      },
+      {
+        "path": "test/graphql-batch-rate-limit.test.js",
+        "sha256": "39f5be8154aa62dc60a0cf4ff0719e07bdb558c8bfda5adb5c8013901c061752"
+      },
+      {
+        "path": "test/helpers/base-url.js",
+        "sha256": "913ce370984885066744bc6ff14140dbf3e9922ed84d7617c83ac51c161c91cb"
+      },
+      {
+        "path": "test/inspired-challenges.test.js",
+        "sha256": "102fc2869b75d126e2b10561c20d7cd93683c84cd3637425999d326a9871c043"
+      },
+      {
+        "path": "test/jwt-key-lab.test.js",
+        "sha256": "b41524c5977f8df890da48347134a95847f1d24b437dc7dddd95b0ec94bceb33"
+      },
+      {
+        "path": "test/openapi.test.js",
+        "sha256": "db84cb6e82f4aa4e310f87dd71c24c2b87fc4ab6b26e1e94789e7c2c7fd2071e"
+      },
+      {
+        "path": "test/pp.test.js",
+        "sha256": "8646f44e91e5732c0d676201342370649346f59e88b4971ca65db1a9bf0dc647"
+      },
+      {
+        "path": "test/resource-store.test.js",
+        "sha256": "9454289e5a22f345b4e374e273f5b46395ec4150c0a0701a9d6159bcf760ad70"
+      },
+      {
+        "path": "test/support-tickets.test.js",
+        "sha256": "c23fe29f4b3013638f91a23cc36cd66f7a2cabd8320b96426f55537450c1bb18"
+      },
+      {
+        "path": "test/vulnerabilities.test.js",
+        "sha256": "87723479f18f6b0423671d0cabe932cacf02934f4a7e4d4c3da692c5ed05fa62"
+      },
+      {
+        "path": "test/xml-profile-export.test.js",
+        "sha256": "e09e2bbb49f7a5f01f0cbbd873e1ad190444d800b278d54f2907887380992315"
+      },
+      {
+        "path": "test/xpath-promotion.test.js",
+        "sha256": "88ed4187638f756ee74873a12e2933f146a79e5243741989e8e2c1f72c1cf734"
+      },
+      {
+        "path": "test/xxe-parser.test.js",
+        "sha256": "c2c24db5cb2a11459e72a70e07463f7da1a801c18036dd413db39c5645b3f326"
+      }
+    ],
+    "local_source": "C:\\Users\\Kushi KKS\\PenAgentGenAi\\PenAgent\\benchmarks\\local\\phase4b\\upstream\\snoopysecurity_dvws-node\\source",
+    "repository": "https://github.com/snoopysecurity/dvws-node"
+  }
+}

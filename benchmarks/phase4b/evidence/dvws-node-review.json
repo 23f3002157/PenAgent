@@ -1,0 +1,79 @@
+{
+  "adopted": false,
+  "approval": "Explicitly adopt this separately versioned successor, not the unresolved Beebs (2019) target",
+  "auth": "Bearer middleware deliberately allows HS256/none and ignores expiration; no credentials or tokens verified",
+  "commit": "35f999505028f580dd6acc8bb7ddecfb87fe4bf6",
+  "label": "DVWS-Node \u2014 proposed successor benchmark",
+  "license": "LICENSE GPL-3.0; package.json says MIT; unresolved metadata conflict",
+  "official_spec_documented_operations": 52,
+  "requirements": [
+    "Node >=22 <23",
+    "MongoDB",
+    "MySQL",
+    "Frontend npm build",
+    "Locked npm dependencies require separate reproducibility review"
+  ],
+  "scope_warning": "GET login, notification-read and logout routes may mutate state; GET is not inherently safe",
+  "seed": "Upstream seed script drops/recreates dvws_sqldb and deletes Mongo data; only fresh dedicated per-run volumes permitted",
+  "source_evidence": [
+    {
+      "file": "README.md",
+      "sha256": "83f4f1d5d8cdd150c8ba3811363de410fa6cfd2432fa2b1ea2eabfba8a78e30d",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/README.md"
+    },
+    {
+      "file": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/LICENSE"
+    },
+    {
+      "file": "package.json",
+      "sha256": "ea2da98861804e209c8d18ca8cf2d909cc5858bd23fb9a88733981b911eabe1e",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/package.json"
+    },
+    {
+      "file": "Dockerfile",
+      "sha256": "b02d85026a7de8624408070af4a74133525a8922b22606333521c4e34b61ac24",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/Dockerfile"
+    },
+    {
+      "file": "docker-compose.yml",
+      "sha256": "57dc2b77ec2b0fd259ca934265d3585f2bb4e91ba0dd3c981ec602e4e3f3c2e1",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docker-compose.yml"
+    },
+    {
+      "file": "scripts/seed-database.js",
+      "sha256": "28af43ab1981ab54c71d85861243af42e97ca31e19132ac9bed75fa49a78b252",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/scripts/seed-database.js"
+    },
+    {
+      "file": "src/server.js",
+      "sha256": "da7d0017e25adc4de912f3f1b2a454d05c584b5fc9f036b7c472fcea75ba4edd",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/src/server.js"
+    },
+    {
+      "file": "src/routes/users.js",
+      "sha256": "31307036f63f9f46e8d425a90096b0f6fc84acca82316032cf35733d85c5b9df",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/src/routes/users.js"
+    },
+    {
+      "file": "src/middleware/auth.js",
+      "sha256": "df21c7f624e45428dbcae6c09db09ed36b5003d0e43ff1de43f04c7e86976aca",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/src/middleware/auth.js"
+    },
+    {
+      "file": "docs/openapi/openapi.json",
+      "sha256": "421f91b26a53222e078bbc926aad1d9cab30924dda379e381dccd22a8c67504d",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/docs/openapi/openapi.json"
+    },
+    {
+      "file": "CHALLENGES.md",
+      "sha256": "cf118225185bec56a9545a98085d5c2bafc6251950901de68721a7160c3ade81",
+      "url": "https://github.com/snoopysecurity/dvws-node/blob/35f999505028f580dd6acc8bb7ddecfb87fe4bf6/CHALLENGES.md"
+    }
+  ],
+  "source_repository": "https://github.com/snoopysecurity/dvws-node",
+  "source_type": "SUCCESSOR",
+  "spec_validation": "FAILED",
+  "status": "REQUIRES APPROVAL"
+}

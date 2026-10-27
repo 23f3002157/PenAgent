@@ -1,0 +1,40 @@
+{
+  "dvws-original": {
+    "documented": null,
+    "reason": "No verified specification/deployment"
+  },
+  "juice-shop-20.0.0": {
+    "candidate_after_connectivity_and_scope_fix": 4,
+    "documented": 6,
+    "excluded": 6,
+    "live_failed": 1,
+    "live_successful": 4,
+    "not_live_exercised": 1,
+    "penagent_parsed": 6,
+    "penagent_public_path_equivalent": 5,
+    "shared_eligible": 0,
+    "zap_imported": 6
+  },
+  "srebench-api": {
+    "documented": null,
+    "reason": "No executable assets or specification"
+  },
+  "subsets": [
+    {
+      "documented": 1,
+      "live_successful": 0,
+      "penagent_parsed": 1,
+      "penagent_public_path_equivalent": 0,
+      "subset": "b2b",
+      "zap_imported": 1
+    },
+    {
+      "documented": 5,
+      "live_successful": 4,
+      "penagent_parsed": 5,
+      "penagent_public_path_equivalent": 5,
+      "subset": "readonly",
+      "zap_imported": 5
+    }
+  ]
+}

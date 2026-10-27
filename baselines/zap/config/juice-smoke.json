@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "experiment_id": "juice-full-web-smoke-r1",
+  "condition_id": "juice20-unauth-full-web-root-smoke",
+  "repeat": 1,
+  "target": {
+    "id": "juice_shop", "name": "OWASP Juice Shop", "version": "20.0.0",
+    "container": "blissful_chebyshev",
+    "container_id": "0356c18439557ca2fed64e8c69f73035c4b485ca069b6f961b1de038f17d9ac3",
+    "image_digest": "bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+    "image_id": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+    "host_origin": "http://127.0.0.1:3000", "docker_origin": "http://host.docker.internal:3000",
+    "identity_verified": true
+  },
+  "scanner": {"image": "ghcr.io/zaproxy/zaproxy@sha256:5ccfff9a411743ab2615136a2edd7416bec9ce41572fa94e935df38c14adb2b6", "version": "2.17.0", "help_verified": true},
+  "scan_mode": "full_web", "openapi": null,
+  "allowed_operations": ["GET /"],
+  "excluded_operations": ["POST /", "PUT /", "PATCH /", "DELETE /"],
+  "reviewed_operations": ["GET /"],
+  "authentication": {"mode": "none", "role": "anonymous", "verified": true, "verification_ref": "2026-10-25 root GET returned HTTP 200 without credentials", "secret_file": null},
+  "policy": {"name": "penagent-restricted-smoke", "attack_strength": "LOW", "alert_threshold": "MEDIUM", "enabled_active_rules": [40018], "reviewed": true, "disabled_rule_policy": "disable_all_then_enable_allowlist"},
+  "budgets": {"wall_seconds": 180, "max_requests": 100, "concurrency": 1, "delay_ms": 250, "timeout_seconds": 5, "memory_mb": 2048, "cpus": 1},
+  "crawl": {"spider_minutes": 1, "max_depth": 1, "modern_spider": false},
+  "reset_record": null, "ground_truth_version": null,
+  "penagent_commit": "fa6f8872622d60844027d3693572af44daf1c310",
+  "status": "planned", "started_at": null, "ended_at": null, "result_hashes": {}
+}

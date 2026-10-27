@@ -1,0 +1,19 @@
+{
+  "error_count": 1,
+  "errors": [
+    {
+      "message": "{'name': 'body', 'in': 'body', 'required': True, 'description': \"quantity must be a non-zero integer from -1000 to 1000. Negative quantities increase the caller's credits.\", 'schema': {'type': 'object', 'required': ['itemId', 'quantity'], 'properties': {'itemId': {'type': 'string', 'enum': ['api-monitor', 'build-runner', 'log-retention']}, 'quantity': {'type': 'integer', 'minimum': -1000, 'maximum': 1000, 'not': {'enum': [0]}, 'description': \"Negative values increase the caller's credits.\"}}}} is not valid under any of the given schemas",
+      "path": [
+        "paths",
+        "/v2/resource-store/orders",
+        "post",
+        "parameters",
+        0
+      ]
+    }
+  ],
+  "note": "Original/prepared JSON semantic copies retain source defects; raw upstream bytes are separately preserved. No corrections applied.",
+  "raw_upstream_sha256": "421f91b26a53222e078bbc926aad1d9cab30924dda379e381dccd22a8c67504d",
+  "schema_valid": false,
+  "validator": "openapi-spec-validator 0.7.2 OpenAPIV30SpecValidator"
+}

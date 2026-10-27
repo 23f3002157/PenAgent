@@ -1,0 +1,1496 @@
+{
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "API Used for DVWS Application",
+    "title": "DVWS API",
+    "version": "0.1"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/download": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "filename": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/upload": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "Uploads a file into the authenticated user's directory. Metadata is recursively merged into an object and affects the upload extension policy; prototype pollution can allow extensions beyond the default XML policy.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "example": "{\"__proto__\":{\"allowedExtension\":\".html\"}}",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/info": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/account-recovery/lookup": {
+      "post": {
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/account-recovery/reset": {
+      "post": {
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "newPassword": {
+                    "example": "any"
+                  },
+                  "userId": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/admin/create-user": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "cookie",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "admin": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  },
+                  "username": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/admin/logs": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v2/export": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "data": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  },
+                  "username": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/greeter": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/v2/info": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/v2/integrations/supplier-orders/import": {
+      "post": {
+        "description": "Imports supplier order lines into the authenticated account's Resource Store order history. Supplier YAML is parsed with an unsafe executable function tag, and its postImport hook runs during import.",
+        "responses": {
+          "201": {
+            "description": "Supplier orders were persisted and their IDs and normalized details are returned."
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/v2/login": {
+      "get": {
+        "description": "Accepts credentials in query parameters.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-forwarded-for",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "password": {
+                    "example": "any"
+                  },
+                  "username": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v2/notes": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "req": {
+                    "example": "any"
+                  },
+                  "type": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v2/notes/import/xml": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "xml": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/notes/{noteId}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "noteId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "noteId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "noteId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v2/notesearch": {
+      "post": {
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "search": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v2/notesearch/all": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/notifications": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/notifications/{id}/read": {
+      "get": {
+        "description": "Mark a notification as read using GET.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/v2/passphrase": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "passphrase": {
+                    "example": "any"
+                  },
+                  "reminder": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/passphrase/{username}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v2/profile-sharing/jsonp": {
+      "get": {
+        "description": "Returns the selected fields as JSONP when profile sharing is enabled. This endpoint intentionally does not validate the request origin.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "callback",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JavaScript callback with selected profile fields"
+          },
+          "400": {
+            "description": "Invalid callback"
+          },
+          "401": {
+            "description": "Invalid or missing auth_token cookie"
+          },
+          "403": {
+            "description": "Sharing is disabled"
+          }
+        }
+      }
+    },
+    "/v2/release/{release}": {
+      "get": {
+        "description": "Look up the current release in the operational XML configuration. The release value is interpolated into XPath.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "release",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/reports/activity": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "description": "Maximum number of recorded account events to return",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 5000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/reports/monthly": {
+      "get": {
+        "description": "Generates and caches a monthly statement from the authenticated account's profile and Resource Store orders. The period is joined into the account-specific file path without a containment check; authenticated responses are marked public-cacheable.",
+        "parameters": [
+          {
+            "description": "Statement month in YYYY-MM format.",
+            "in": "query",
+            "name": "period",
+            "schema": {
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/resource-store": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Read the caller\\'s resource store balance, catalogue, and recent orders",
+        "tags": [
+          "Resource Store"
+        ]
+      }
+    },
+    "/v2/resource-store/orders": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "description": "quantity must be a non-zero integer from -1000 to 1000. Negative quantities increase the caller's credits.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "itemId": {
+                  "enum": [
+                    "api-monitor",
+                    "build-runner",
+                    "log-retention"
+                  ],
+                  "type": "string"
+                },
+                "quantity": {
+                  "description": "Negative values increase the caller's credits.",
+                  "maximum": 1000,
+                  "minimum": -1000,
+                  "not": {
+                    "enum": [
+                      0
+                    ]
+                  },
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "itemId",
+                "quantity"
+              ],
+              "type": "object"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "itemId": {
+                    "enum": [
+                      "api-monitor",
+                      "build-runner",
+                      "log-retention"
+                    ],
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "description": "Negative values increase the caller's credits.",
+                    "maximum": 1000,
+                    "minimum": -1000,
+                    "not": {
+                      "enum": [
+                        0
+                      ]
+                    },
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "itemId",
+                  "quantity"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Place a resource store order using an item ID and integer quantity",
+        "tags": [
+          "Resource Store"
+        ]
+      }
+    },
+    "/v2/resource-store/promotions/redeem": {
+      "post": {
+        "description": "Redeem an active promotion from the operational XML configuration once per account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "code": {
+                    "maxLength": 100,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "code"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Credits applied to the wallet"
+          },
+          "400": {
+            "description": "Invalid code"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Promotion not found"
+          },
+          "409": {
+            "description": "Promotion already redeemed"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Redeem an active promotion code for workspace credits",
+        "tags": [
+          "Resource Store"
+        ]
+      }
+    },
+    "/v2/sysinfo/{command}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "command",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v2/users": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "password": {
+                    "example": "any"
+                  },
+                  "username": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/users/change-password": {
+      "post": {
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "currentPassword": {
+                    "example": "any"
+                  },
+                  "newPassword": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/users/checkadmin": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v2/users/ldap-search": {
+      "get": {
+        "description": "Searches the Mongo-backed account directory. The unescaped user value is interpolated into a directory filter; wildcard and boolean filter injection can enumerate real account fields and permissions.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "Searches the Mongo-backed account directory. The unescaped user value is interpolated into a directory filter; wildcard and boolean filter injection can enumerate real account fields and permissions.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "user": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v2/users/logout/{redirect}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "redirect",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v2/users/notification-preferences": {
+      "post": {
+        "description": "Accepts POST when X-HTTP-Method-Override is PUT.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-HTTP-Method-Override",
+            "required": true,
+            "schema": {
+              "enum": [
+                "PUT"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "405": {
+            "description": "Method Not Allowed"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/users/profile": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/users/profile-sharing": {
+      "get": {
+        "description": "Returns the authenticated account's profile-sharing settings.",
+        "responses": {
+          "200": {
+            "description": "Profile-sharing settings"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "description": "Updates the authenticated account's profile-sharing settings.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "fields": {
+                    "items": {
+                      "enum": [
+                        "username",
+                        "email",
+                        "homeAddress"
+                      ],
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "partnerOrigin": {
+                    "format": "uri",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "enabled",
+                  "partnerOrigin",
+                  "fields"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Settings saved"
+          },
+          "400": {
+            "description": "Invalid settings"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/v2/users/profile/bio": {
+      "put": {
+        "description": "Save the authenticated account's bio before exporting it.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "bio": {
+                    "maxLength": 2000,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "bio"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Saved profile bio"
+          },
+          "400": {
+            "description": "Invalid bio"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/users/profile/export/xml": {
+      "post": {
+        "description": "Export the authenticated account's stored profile as signed XML. The signature is returned in X-Profile-Export-Signature.",
+        "responses": {
+          "200": {
+            "description": "Signed profile XML"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/users/profile/import/xml": {
+      "post": {
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "xml": {
+                    "example": "any"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v2/users/profile/restore/xml": {
+      "post": {
+        "description": "Restore a signed XML profile export to the authenticated account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "signature": {
+                    "type": "string"
+                  },
+                  "xml": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "xml",
+                  "signature"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Profile restored"
+          },
+          "400": {
+            "description": "Invalid export"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Invalid signature"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/users/{id}/profile-details": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:18003/api"
+    }
+  ]
+}

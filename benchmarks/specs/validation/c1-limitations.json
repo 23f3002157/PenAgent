@@ -1,0 +1,14 @@
+{
+  "fixture": "SYNTHETIC parser contract cases only; not benchmark endpoints",
+  "trace_documented": 1,
+  "trace_nodes": 0,
+  "collision_raw_operation_ids": [
+    "A-B",
+    "A_B"
+  ],
+  "collision_generated_node_ids": [
+    "op_a_b",
+    "op_a_b"
+  ],
+  "classification": "PenAgent ingestion limitation"
+}

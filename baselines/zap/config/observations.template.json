@@ -1,0 +1,10 @@
+{
+  "status": "not_run",
+  "duration_seconds": null,
+  "request_count": null,
+  "request_count_definition": null,
+  "exercised_operations": null,
+  "traffic_source": null,
+  "resource_usage": null,
+  "verified_finding_times_seconds": null
+}

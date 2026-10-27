@@ -1,0 +1,949 @@
+{
+  "implemented_scenarios": 0,
+  "label": "Local reproduction based on the research proposal",
+  "official_release": false,
+  "scenarios": [
+    {
+      "ambiguities": [
+        "Mechanism is clear, but public/internal reachability and exact transport/DTO contracts are unspecified."
+      ],
+      "approval_required": true,
+      "authentication": "Auth issues a valid low-privilege JWT; Vault header trust bypass described. Token issuance request/schema, algorithm, expiry and role/tenant mapping absent.",
+      "chain_depth_as_reported": 3,
+      "classification": "REQUIRES INTERPRETATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "medium"
+      },
+      "cvss_as_reported_not_verified": 8.6,
+      "implemented": false,
+      "intended_api_behavior": "Low-privilege user learns another user tenant/document IDs from profile metadata; Vault trusts a client-controlled internal-service header and exposes that document.",
+      "missing_details": [
+        "JWT/request/response contracts",
+        "Profile response field names",
+        "Protected baseline and tenant policy",
+        "Vault verification order",
+        "Initialization/reset rules"
+      ],
+      "observable_success_condition": "Source describes release of Bob's confidential document marker to Alice; future implementation needs a source-approved harmless canary, not a real private key.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Source names Alice usr_101, Bob usr_102, org_alpha and doc_002; exact data model and initial authorization policy omitted.",
+      "scenario_id": "SRE-01",
+      "services_as_listed": [
+        "Auth",
+        "User",
+        "Vault"
+      ],
+      "source_explicit_endpoints": [
+        {
+          "method": "POST",
+          "path": "/auth/v1/exchange-token"
+        },
+        {
+          "method": "GET",
+          "path": "/users/v1/profile/usr_102"
+        },
+        {
+          "method": "GET",
+          "path": "/vault/v1/documents/doc_002"
+        }
+      ],
+      "source_reference": {
+        "pages_1_based": [
+          2,
+          3,
+          4
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog and highlighted mechanism paragraphs",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Cross-Service Trust Header Injection & Secret Leak",
+      "vulnerability_category_as_reported": "API1: BOLA / Trust Flaw"
+    },
+    {
+      "ambiguities": [
+        "Catalog lists three services while gateway behavior is essential; stated PR:N score is not a tested auth contract."
+      ],
+      "approval_required": true,
+      "authentication": "Delegation via X-Forwarded-User is described; token requirements and whether unauthenticated access is intended are ambiguous.",
+      "chain_depth_as_reported": 3,
+      "classification": "REQUIRES INTERPRETATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "medium"
+      },
+      "cvss_as_reported_not_verified": 9.4,
+      "implemented": false,
+      "intended_api_behavior": "User metadata reveals a superadmin identifier; a gateway forwards client-supplied delegated-user identity to Vault without stripping it.",
+      "missing_details": [
+        "Enumeration endpoint",
+        "Gateway contract",
+        "Auth/token prerequisities",
+        "Role hierarchy",
+        "Seed data and reset"
+      ],
+      "observable_success_condition": "Source describes retrieval of an administrative document marker; this is a proposed observation, not an adjudicated finding.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Source names superadmin usr_999 and doc_admin. Enumeration interface and original privileges are not given.",
+      "scenario_id": "SRE-02",
+      "services_as_listed": [
+        "Auth",
+        "User",
+        "Vault"
+      ],
+      "source_explicit_endpoints": [
+        {
+          "method": "GET",
+          "path": "/vault/v1/documents/doc_admin"
+        }
+      ],
+      "source_reference": {
+        "pages_1_based": [
+          2,
+          4
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog and highlighted mechanism paragraphs",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Delegated Superadmin Vault Document Extraction",
+      "vulnerability_category_as_reported": "API5: Broken Function Level Auth"
+    },
+    {
+      "ambiguities": [
+        "Catalog title and detailed heading differ; message-broker alternatives and asynchronous timing are unresolved."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified for profile updates or event consumers; no test-account roles given.",
+      "chain_depth_as_reported": 3,
+      "classification": "REQUIRES INTERPRETATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "medium"
+      },
+      "cvss_as_reported_not_verified": 8.2,
+      "implemented": false,
+      "intended_api_behavior": "User profile accepts extra billing fields; a raw JSON event reaches a background Billing consumer which credits an unearned ledger balance.",
+      "missing_details": [
+        "Request/response schemas",
+        "Broker choice (RabbitMQ or Kafka in source)",
+        "Ledger observation endpoint",
+        "Event format/ordering/idempotency",
+        "Auth and seed balance"
+      ],
+      "observable_success_condition": "Observe an unearned balance increase caused by the profile event, separated from legitimate billing operations; ledger observation endpoint absent.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Requires user profile, event queue and billing ledger with a recorded starting balance. Source does not specify schema or queue delivery model.",
+      "scenario_id": "SRE-03",
+      "services_as_listed": [
+        "User",
+        "Queue Worker",
+        "Billing"
+      ],
+      "source_explicit_endpoints": [
+        {
+          "method": "PUT",
+          "path": "/users/v1/profile"
+        }
+      ],
+      "source_reference": {
+        "pages_1_based": [
+          2,
+          4,
+          5
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog and highlighted mechanism paragraphs",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Asynchronous Event Queue Poisoning & Balance Credit",
+      "vulnerability_category_as_reported": "API3: Mass Assignment / State Inversion"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 4,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 9.1,
+      "implemented": false,
+      "intended_api_behavior": "Gateway path interpretation yields administrative impersonation; title-level description only.",
+      "missing_details": [
+        "Normalization order, routing rules, encodings, admin boundary and observable resource",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-04",
+      "services_as_listed": [
+        "Gateway",
+        "Auth",
+        "Admin Proxy"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          2
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Upstream Gateway Path Normalization Admin Spoof",
+      "vulnerability_category_as_reported": "API7: Server-Side Request Forgery / Gateway"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 8.8,
+      "implemented": false,
+      "intended_api_behavior": "Delegation across mTLS boundaries confuses caller identity; title-level description only.",
+      "missing_details": [
+        "Certificate identities, trust roots, TLS termination, delegation and authorization contracts",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-05",
+      "services_as_listed": [
+        "Client",
+        "Aggregator",
+        "Data Core"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          2
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Confused Deputy mTLS Delegation Bypass",
+      "vulnerability_category_as_reported": "API1: BOLA / Identity Stripping"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 7.9,
+      "implemented": false,
+      "intended_api_behavior": "A temporary signed URL grants broader storage scope; title-level description only.",
+      "missing_details": [
+        "Signing format, object/tenant scope, expiry, token exchange and storage contracts",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-06",
+      "services_as_listed": [
+        "Metadata",
+        "Token Mint",
+        "Object Storage"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          2
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Ephemeral Pre-Signed URL Scope Escalation",
+      "vulnerability_category_as_reported": "API1: Object Level Authorization"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 4,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 8.5,
+      "implemented": false,
+      "intended_api_behavior": "Webhook ownership changes expose another tenant event stream; title-level description only.",
+      "missing_details": [
+        "Webhook lifecycle, reassociation authorization, event delivery and observer contracts",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-07",
+      "services_as_listed": [
+        "Webhook",
+        "Tenant",
+        "Event Stream"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          2
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Cross-Tenant Webhook Re-Association & Event Tap",
+      "vulnerability_category_as_reported": "API1: Cross Tenant Data Leak"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 8.7,
+      "implemented": false,
+      "intended_api_behavior": "Token exchange confuses audiences across two tokens; title-level description only.",
+      "missing_details": [
+        "Token types, audiences, issuer, exchange protocol and protected resource",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-08",
+      "services_as_listed": [
+        "OAuth IdP",
+        "Exchange API",
+        "Resource"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          2
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Dual-Token Audience Confusion in Token Exchange",
+      "vulnerability_category_as_reported": "API2: Broken Authentication"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 4,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 8.4,
+      "implemented": false,
+      "intended_api_behavior": "Idempotency state diverges between ordering, payment and fulfillment; title-level description only.",
+      "missing_details": [
+        "Idempotency-key scope, ownership, payment state machine and charge observation",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-09",
+      "services_as_listed": [
+        "Order",
+        "Payment Gate",
+        "Fulfillment"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          2
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Idempotency Key Desynchronization Charge Hijack",
+      "vulnerability_category_as_reported": "API6: Unrestricted Business Flow"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 7.4,
+      "implemented": false,
+      "intended_api_behavior": "A soft-deleted object is reachable through stale relational pointers; title-level description only.",
+      "missing_details": [
+        "Deletion model, cache TTL/invalidation, object authorization and resurrection criterion",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-10",
+      "services_as_listed": [
+        "Account",
+        "Relational Cache",
+        "Documents"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          2
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Cascading Soft-Delete Pointer Resurrection",
+      "vulnerability_category_as_reported": "API9: Improper Inventory / Zombie Object"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 4,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 7.7,
+      "implemented": false,
+      "intended_api_behavior": "Time-of-check/time-of-use crosses a distributed commit boundary; title-level description only.",
+      "missing_details": [
+        "Two-phase protocol, race schedule, atomicity boundary and resource invariant",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-11",
+      "services_as_listed": [
+        "Inventory",
+        "Cart",
+        "Payment Engine"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          2
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Two-Phase Commit State Decoupling (TOCTOU)",
+      "vulnerability_category_as_reported": "API6: Business Flow Race Condition"
+    },
+    {
+      "ambiguities": [
+        "Modern JWT libraries can reject public-key/HMAC confusion; choosing a library or emulation changes fidelity and requires review."
+      ],
+      "approval_required": true,
+      "authentication": "Source describes an arbitrary admin token; issuer/audience/claims and downstream protected resource are missing.",
+      "chain_depth_as_reported": 3,
+      "classification": "REQUIRES INTERPRETATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "medium"
+      },
+      "cvss_as_reported_not_verified": 9.3,
+      "implemented": false,
+      "intended_api_behavior": "JWKS exposes public key material; downstream verification selects algorithm from the token header instead of a fixed allowlist, permitting the described asymmetric/symmetric confusion.",
+      "missing_details": [
+        "Protected resource operation",
+        "JWT library/version",
+        "Exact key parsing and algorithm behavior",
+        "Claim validation rules",
+        "Seed roles and keys"
+      ],
+      "observable_success_condition": "Source describes downstream acceptance of a token under unintended cryptographic semantics; no protected-resource success endpoint is supplied.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "KMS public keys, interconnect trust and policy-agent privileges; exact key material, rotation and claim validation are unspecified.",
+      "scenario_id": "SRE-12",
+      "services_as_listed": [
+        "KMS",
+        "Interconnect",
+        "Policy Agent"
+      ],
+      "source_explicit_endpoints": [
+        {
+          "method": "GET",
+          "path": "/auth/v1/jwks",
+          "query": {
+            "format": "pkcs1"
+          }
+        }
+      ],
+      "source_reference": {
+        "pages_1_based": [
+          2,
+          5
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog and highlighted mechanism paragraphs",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Asymmetric Cryptographic Handshake Key Downgrade",
+      "vulnerability_category_as_reported": "API2: Broken Authentication / Crypto"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 4,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 9.0,
+      "implemented": false,
+      "intended_api_behavior": "Telemetry/discovery metadata enables a server-side request chain; title-level description only.",
+      "missing_details": [
+        "Discovery tag schema, fetch policy, metadata API and success condition; no real cloud metadata access permitted",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-13",
+      "services_as_listed": [
+        "Telemetry",
+        "Discovery (Consul)",
+        "Cloud Meta"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          3
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Chained Telemetry SSRF via Service Discovery Tag",
+      "vulnerability_category_as_reported": "API7: Server-Side Request Forgery"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 7.1,
+      "implemented": false,
+      "intended_api_behavior": "Backpressure drops an audit trail while a transaction proceeds; title-level description only.",
+      "missing_details": [
+        "Queue capacity/drop policy, transaction type, audit completeness invariant and timing",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-14",
+      "services_as_listed": [
+        "Transaction",
+        "Queue Forwarder",
+        "Audit Store"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          3
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Audit Trail Suppression via Backpressure Drop",
+      "vulnerability_category_as_reported": "API8: Security Misconfiguration / Audit Fail"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 8.3,
+      "implemented": false,
+      "intended_api_behavior": "Cache policy exposes user profile data across service boundaries; title-level description only.",
+      "missing_details": [
+        "Cache key, identity variation, header transformations, victim state and attacker observation",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-15",
+      "services_as_listed": [
+        "Reverse Proxy",
+        "Aggregator",
+        "User Profile"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          3
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Cross-Service Cache-Control Public Header Leak",
+      "vulnerability_category_as_reported": "API8: Sensitive Data Exposure"
+    },
+    {
+      "ambiguities": [
+        "Catalog says Exploit while detail heading says Hijack; four workflow steps versus three named services must be resolved."
+      ],
+      "approval_required": true,
+      "authentication": "Onboarding caller, provisioner identity and IAM authorization rules are unspecified.",
+      "chain_depth_as_reported": 4,
+      "classification": "REQUIRES INTERPRETATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "medium"
+      },
+      "cvss_as_reported_not_verified": 9.5,
+      "implemented": false,
+      "intended_api_behavior": "An onboarding saga rolls back after the third step fails, and compensating logic resets IAM policy to a legacy administrative fallback.",
+      "missing_details": [
+        "All endpoint/method/DTO contracts",
+        "Steps 1, 2 and 4",
+        "Failure/rollback trigger",
+        "IAM policy representation",
+        "Authorization and reset rules"
+      ],
+      "observable_success_condition": "Source describes an unintended administrative role after compensation; no observable API or invariant is specified.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Four-step workflow and IAM policies; source describes step 3 credit-card failure and a default-policy action, but omits other step contracts.",
+      "scenario_id": "SRE-16",
+      "services_as_listed": [
+        "Workflow Engine",
+        "Provisioner",
+        "IAM Service"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          3,
+          5
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog and highlighted mechanism paragraphs",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Saga Orchestrator Compensating Transaction Exploit",
+      "vulnerability_category_as_reported": "API5: Broken Function Level Auth"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 8.6,
+      "implemented": false,
+      "intended_api_behavior": "GraphQL composition weakens permissions across subgraphs; title-level description only.",
+      "missing_details": [
+        "Schema, resolver ownership, query, authorization propagation and order data",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-17",
+      "services_as_listed": [
+        "GraphQL GW",
+        "Subgraph Catalog",
+        "Orders"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          3
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "GraphQL Schema Stitching Permission Smuggling",
+      "vulnerability_category_as_reported": "API5: Authorization Smuggling"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 9.2,
+      "implemented": false,
+      "intended_api_behavior": "A client-supplied sidecar identity header bypasses an internal perimeter; title-level description only.",
+      "missing_details": [
+        "Exact header, sidecar configuration, network trust and core-banking operation",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-18",
+      "services_as_listed": [
+        "Ingress",
+        "Mesh Sidecar",
+        "Core Banking"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          3
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Zero-Trust Sidecar Header Injection (X-Envoy)",
+      "vulnerability_category_as_reported": "API2: Broken Auth / Perimeter Bypass"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 3,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 7.8,
+      "implemented": false,
+      "intended_api_behavior": "Feature-flag/session state diverges and exposes a dark-launched API; title-level description only.",
+      "missing_details": [
+        "Flag semantics, synchronization, session claims, beta authorization and operation",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-19",
+      "services_as_listed": [
+        "Config Service",
+        "Session Manager",
+        "Beta API"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          3
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Feature-Flag Desynchronization Dark Launch Access",
+      "vulnerability_category_as_reported": "API9: Improper Inventory Management"
+    },
+    {
+      "ambiguities": [
+        "Only a title, service chain, depth and category/score are provided."
+      ],
+      "approval_required": true,
+      "authentication": "Not specified in the catalog; do not assume anonymous or invent roles.",
+      "chain_depth_as_reported": 4,
+      "classification": "INSUFFICIENT INFORMATION",
+      "confidence_in_fidelity": {
+        "executable_contract": "low",
+        "faithful_implementation_verified": false,
+        "mechanism": "low"
+      },
+      "cvss_as_reported_not_verified": 7.5,
+      "implemented": false,
+      "intended_api_behavior": "Sharded counters permit evading a distributed lockout; title-level description only.",
+      "missing_details": [
+        "Shard selection/key, counter/window/lockout rules, auth flow and bounded success threshold",
+        "Endpoint methods/paths/schemas",
+        "Accounts/authentication",
+        "Initialization/reset",
+        "Observable success oracle"
+      ],
+      "observable_success_condition": "Not operationally specified; title names an effect but provides no observable contract.",
+      "proposed_review_only": "Resolve listed gaps and approve concrete contracts, behavior and state before implementing. Do not invent a faithful original.",
+      "required_state": "Not specified; service names imply state but exact objects/invariants are absent.",
+      "scenario_id": "SRE-20",
+      "services_as_listed": [
+        "Rate Limiter",
+        "Auth Gate",
+        "User DB"
+      ],
+      "source_explicit_endpoints": [],
+      "source_reference": {
+        "pages_1_based": [
+          3
+        ],
+        "path": "images/SREBench API.pdf",
+        "section": "Catalog only",
+        "sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e"
+      },
+      "source_type": "REPRODUCTION",
+      "title": "Distributed Sharded Rate-Limit Lockout Evasion",
+      "vulnerability_category_as_reported": "API4: Unrestricted Resource Consumption"
+    }
+  ],
+  "schema_version": 1,
+  "source_count_verified": 20,
+  "source_sha256": "bf2ea4a74ce7d6c06c2984de257066ccbcc8db49ffb218626f2b2a66dfc6c79e",
+  "source_type": "REPRODUCTION"
+}

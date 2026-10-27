@@ -1,0 +1,108 @@
+{
+  "authentication": {
+    "anonymous": "Four observed successful GET operations; reviewed inputs only",
+    "bearer": "Official B2B requires bearer; no accounts/tokens created; roles and expiry not verified",
+    "template": "config/credentials.example.json"
+  },
+  "benchmark_id": "juice-shop-20.0.0",
+  "checks": {
+    "authentication": true,
+    "enforceable_scope": false,
+    "identity": true,
+    "isolated": true,
+    "known_operations": true,
+    "operation_risks": true,
+    "reproducible_deployment": true,
+    "reset_strategy": true,
+    "shared_operations": false,
+    "spec_version_provenance": true,
+    "valid_spec": true,
+    "version_pin": true
+  },
+  "container_origin": "http://host.docker.internal:18001 (configured, NOT reachable/verified)",
+  "deployment": {
+    "available": true,
+    "compose": "deploy/juice-shop.compose.yml",
+    "compose_sha256": "26028a6f9dfa000333f2c109cb5d78f8d01fd6a146cc3b5a8004b2a69290335d",
+    "container_id": "0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c",
+    "host_port_published": false,
+    "image_id": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+    "isolated_network": "penagent-phase4-juice20-r1_isolated",
+    "running": true
+  },
+  "eligible_operations": [],
+  "excluded_operations": [
+    "juice20_fab6f8bc7cd3de513d55",
+    "juice20_c338475ca634dc32cb17",
+    "juice20_73f3ee484360f1dafa56",
+    "juice20_64d1cc2f77500db19365",
+    "juice20_4925e9b86c6c89429d9c",
+    "juice20_ada13ac6c6645589cb40"
+  ],
+  "ground_truth": {
+    "phase5": "Map source-seeded challenges to operations and review exploitability independently",
+    "sources": [
+      "https://github.com/juice-shop/juice-shop/tree/v20.0.0/data/static",
+      "https://pwning.owasp-juice.shop/"
+    ],
+    "verified": false
+  },
+  "host_origin": "http://127.0.0.1:18001",
+  "image_digest": "bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+  "inventory": "inventories/juice-shop-20.0.0.json",
+  "limitations": [
+    "Internal network runtime has empty published port bindings; no shared tool access",
+    "No API-level enforced allowlist exists; existing root-only smoke config must stay unchanged",
+    "C1 ignores OpenAPI 3 server base path and loses body required/media metadata",
+    "Official spec is narrow; derived spec deliberately partial; not total application API coverage",
+    "No authenticated workflows, full benchmark, reset, or ground-truth adjudication performed"
+  ],
+  "penagent": {
+    "evidence": "specs/validation/c1-limitations.json",
+    "parsed": 6,
+    "public_path_equivalent": 5
+  },
+  "project": "OWASP Juice Shop",
+  "readiness": "PARTIALLY READY",
+  "requires_approval": false,
+  "reset": {
+    "executed": false,
+    "limitations": "Default DB and in-memory state; challenge progress can change. No clean-state snapshot/reset exercised.",
+    "strategy": "Fresh uniquely named digest-pinned isolated instance per run; do not reset existing containers",
+    "verified_repeatable_state": false
+  },
+  "schema_version": 1,
+  "source_repository": "https://github.com/juice-shop/juice-shop/tree/v20.0.0",
+  "specifications": [
+    {
+      "completeness": "Official B2B order operation only",
+      "docker_prepared": "specs/prepared/juice-shop-20.0.0-b2b-docker.json",
+      "docker_prepared_sha256": "6ae7ada97acb7e65fc927fcad96951e3f8fabd6648688c0f65c7cc5edff9743e",
+      "official": true,
+      "original": "specs/original/juice-shop-20.0.0-b2b.yml",
+      "original_sha256": "9f62e2bc687604ffebb64d93530c304aef7b1d83f324d774e739b2d5c1709309",
+      "prepared": "specs/prepared/juice-shop-20.0.0-b2b-host.json",
+      "prepared_sha256": "a8b5d0b56c2eff6ba6abdcbf892c7d5ecb41ed05974c6c0bff006aec67757636",
+      "target_version": "20.0.0"
+    },
+    {
+      "completeness": "Non-official five-operation subset; response schemas partial",
+      "docker_prepared": "specs/prepared/juice-shop-20.0.0-readonly-docker.json",
+      "docker_prepared_sha256": "f7e9d7f22c5382835e96b0701cdbc0519ab671c3e32769dfdb0899f1d0621051",
+      "official": false,
+      "original": "specs/original/juice-shop-20.0.0-readonly-derived.json",
+      "original_sha256": "48adf896eee5adb2774103e76875ba48a9ab6ee4cd29ede3406a3261d8a4dff7",
+      "prepared": "specs/prepared/juice-shop-20.0.0-readonly-host.json",
+      "prepared_sha256": "48adf896eee5adb2774103e76875ba48a9ab6ee4cd29ede3406a3261d8a4dff7",
+      "target_version": "20.0.0"
+    }
+  ],
+  "target_version": "20.0.0",
+  "zap": {
+    "active_scans": 0,
+    "crawls": 0,
+    "fixture_requests": 6,
+    "imported": 6,
+    "real_target_requests": 0
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "api_info_version": "2.0.0",
+  "original": "specs\\original\\juice-shop-20.0.0-b2b.yml",
+  "original_sha256": "9f62e2bc687604ffebb64d93530c304aef7b1d83f324d774e739b2d5c1709309",
+  "prepared": "specs\\prepared\\juice-shop-20.0.0-b2b-docker.json",
+  "prepared_sha256": "6ae7ada97acb7e65fc927fcad96951e3f8fabd6648688c0f65c7cc5edff9743e",
+  "product_version": "20.0.0",
+  "schemas_and_security_preserved": true,
+  "transformations": [
+    "Parse YAML to JSON",
+    "Resolve relative server /b2b/v2 against verified origin"
+  ]
+}

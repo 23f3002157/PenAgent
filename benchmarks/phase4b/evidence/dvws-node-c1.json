@@ -1,0 +1,636 @@
+{
+  "source_type": "SUCCESSOR",
+  "adopted": false,
+  "network": "none",
+  "database_written": false,
+  "status": "PARSED",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/download",
+      "node_id": "op_download_post_download",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/upload",
+      "node_id": "op_upload_get_upload",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/upload",
+      "node_id": "op_upload_post_upload",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v1/info",
+      "node_id": "op_info_get_v1_info",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account-recovery/lookup",
+      "node_id": "op_account-recovery_post_v2_account-recovery_lookup",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account-recovery/reset",
+      "node_id": "op_account-recovery_post_v2_account-recovery_reset",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/admin/create-user",
+      "node_id": "op_admin_post_v2_admin_create-user",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/admin/logs",
+      "node_id": "op_admin_get_v2_admin_logs",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/export",
+      "node_id": "op_export_post_v2_export",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/greeter",
+      "node_id": "op_greeter_get_v2_greeter",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/info",
+      "node_id": "op_info_get_v2_info",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/integrations/supplier-orders/import",
+      "node_id": "op_integrations_post_v2_integrations_supplier-orders_import",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/login",
+      "node_id": "op_login_get_v2_login",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/login",
+      "node_id": "op_login_post_v2_login",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/notes",
+      "node_id": "op_notes_get_v2_notes",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/notes",
+      "node_id": "op_notes_post_v2_notes",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/notes/import/xml",
+      "node_id": "op_notes_post_v2_notes_import_xml",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/notes/{noteId}",
+      "node_id": "op_notes_get_v2_notes_noteid",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/notes/{noteId}",
+      "node_id": "op_notes_put_v2_notes_noteid",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/notes/{noteId}",
+      "node_id": "op_notes_delete_v2_notes_noteid",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/notesearch",
+      "node_id": "op_notesearch_post_v2_notesearch",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/notesearch/all",
+      "node_id": "op_notesearch_get_v2_notesearch_all",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/notifications",
+      "node_id": "op_notifications_get_v2_notifications",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/notifications/{id}/read",
+      "node_id": "op_notifications_get_v2_notifications_id_read",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/notifications/{id}/read",
+      "node_id": "op_notifications_put_v2_notifications_id_read",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/passphrase",
+      "node_id": "op_passphrase_post_v2_passphrase",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/passphrase/{username}",
+      "node_id": "op_passphrase_get_v2_passphrase_username",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/profile-sharing/jsonp",
+      "node_id": "op_profile-sharing_get_v2_profile-sharing_jsonp",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/release/{release}",
+      "node_id": "op_release_get_v2_release_release",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reports/activity",
+      "node_id": "op_reports_get_v2_reports_activity",
+      "auth": {
+        "type": "bearer",
+        "scopes": [],
+        "header_name": "Authorization",
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reports/monthly",
+      "node_id": "op_reports_get_v2_reports_monthly",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/resource-store",
+      "node_id": "op_resource-store_get_v2_resource-store",
+      "auth": {
+        "type": "bearer",
+        "scopes": [],
+        "header_name": "Authorization",
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/resource-store/orders",
+      "node_id": "op_resource-store_post_v2_resource-store_orders",
+      "auth": {
+        "type": "bearer",
+        "scopes": [],
+        "header_name": "Authorization",
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/resource-store/promotions/redeem",
+      "node_id": "op_resource-store_post_v2_resource-store_promotions_redeem",
+      "auth": {
+        "type": "bearer",
+        "scopes": [],
+        "header_name": "Authorization",
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sysinfo/{command}",
+      "node_id": "op_sysinfo_get_v2_sysinfo_command",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users",
+      "node_id": "op_users_get_v2_users",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/users",
+      "node_id": "op_users_post_v2_users",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/users/change-password",
+      "node_id": "op_users_post_v2_users_change-password",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/checkadmin",
+      "node_id": "op_users_get_v2_users_checkadmin",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/ldap-search",
+      "node_id": "op_users_get_v2_users_ldap-search",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/users/ldap-search",
+      "node_id": "op_users_post_v2_users_ldap-search",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/logout/{redirect}",
+      "node_id": "op_users_get_v2_users_logout_redirect",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/users/notification-preferences",
+      "node_id": "op_users_post_v2_users_notification-preferences",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/users/notification-preferences",
+      "node_id": "op_users_put_v2_users_notification-preferences",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/profile",
+      "node_id": "op_users_get_v2_users_profile",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/profile-sharing",
+      "node_id": "op_users_get_v2_users_profile-sharing",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/users/profile-sharing",
+      "node_id": "op_users_put_v2_users_profile-sharing",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/users/profile/bio",
+      "node_id": "op_users_put_v2_users_profile_bio",
+      "auth": {
+        "type": "bearer",
+        "scopes": [],
+        "header_name": "Authorization",
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/users/profile/export/xml",
+      "node_id": "op_users_post_v2_users_profile_export_xml",
+      "auth": {
+        "type": "bearer",
+        "scopes": [],
+        "header_name": "Authorization",
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/users/profile/import/xml",
+      "node_id": "op_users_post_v2_users_profile_import_xml",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/users/profile/restore/xml",
+      "node_id": "op_users_post_v2_users_profile_restore_xml",
+      "auth": {
+        "type": "bearer",
+        "scopes": [],
+        "header_name": "Authorization",
+        "location": "header",
+        "description": null
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/{id}/profile-details",
+      "node_id": "op_users_get_v2_users_id_profile-details",
+      "auth": {
+        "type": "none",
+        "scopes": [],
+        "header_name": null,
+        "location": "header",
+        "description": null
+      }
+    }
+  ],
+  "canonical_spec_hash": "3b73e2852bc9b366c64de615dd930c5ceb46bd7e87353829cfceba3e89f76287",
+  "duplicate_node_ids": false,
+  "note": "Graph paths omit /api server base; parsing is not executable compatibility"
+}

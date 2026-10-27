@@ -1,0 +1,29 @@
+{
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/rest/admin/application-version"
+    },
+    {
+      "method": "GET",
+      "path": "/rest/country-mapping"
+    },
+    {
+      "method": "GET",
+      "path": "/rest/languages"
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/search"
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/{id}/reviews"
+    }
+  ],
+  "rule": "Concrete path examples map to exactly one documented method/template; raw capture retained",
+  "source": "specs/validation/zap-readonly.json",
+  "source_sha256": "cc40be9d2ebde5b966d6e436d8d23c069102c02240618974742c3ff9ddd4747b",
+  "transformation": "Only servers[0].url replaced with capture loopback origin, preserving base path",
+  "transformed_specification_sha256": "7253e11ef7c5b394f937acf454c8dada19d2bc3ac01383f906bbb3aac71def26"
+}

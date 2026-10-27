@@ -1,0 +1,144 @@
+{
+  "base_path": "",
+  "full_schema_validation": true,
+  "openapi": "3.0.3",
+  "operations": [
+    {
+      "anonymous": true,
+      "method": "GET",
+      "operation_id": "getApplicationVersion",
+      "parameters": [],
+      "path": "/rest/admin/application-version",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/admin/application-version'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/appVersion.ts",
+          "sha256": "228178b1ba2557a26c9f09a0f4cff6e9b2dd9bddd879c3d1fa9eb72cbb2fe5fb"
+        }
+      ],
+      "spec_path": "/rest/admin/application-version"
+    },
+    {
+      "anonymous": true,
+      "method": "GET",
+      "operation_id": "getCountryMapping",
+      "parameters": [],
+      "path": "/rest/country-mapping",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/country-mapping'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/countryMapping.ts",
+          "sha256": "03194b853301e71a0e0605cb724435147c85f7ff0294a1c507752cb521b4376d"
+        }
+      ],
+      "spec_path": "/rest/country-mapping"
+    },
+    {
+      "anonymous": true,
+      "method": "GET",
+      "operation_id": "getLanguages",
+      "parameters": [],
+      "path": "/rest/languages",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/languages'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/languages.ts",
+          "sha256": "5a995c3d9bf22d3bfcf8af275e63256ac6b2af812626d32f51a699bebe08f863"
+        }
+      ],
+      "spec_path": "/rest/languages"
+    },
+    {
+      "anonymous": true,
+      "method": "GET",
+      "operation_id": "searchProducts",
+      "parameters": [
+        {
+          "description": "Optional product-search string; benign validation uses apple. Source truncates at 200 characters.",
+          "example": "apple",
+          "in": "query",
+          "name": "q",
+          "required": false,
+          "schema": {
+            "maxLength": 200,
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/rest/products/search",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/products/search'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/search.ts",
+          "sha256": "0c23e746dfe31ec29aa6477e076a0a4d55d27afd90446e668b1dc10b88416967"
+        }
+      ],
+      "spec_path": "/rest/products/search"
+    },
+    {
+      "anonymous": true,
+      "method": "GET",
+      "operation_id": "getProductReviews",
+      "parameters": [
+        {
+          "description": "Source route accepts a string and conditionally coerces it. Only benign numeric ID 1 was live-checked.",
+          "example": "1",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "maxLength": 40,
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/rest/products/{id}/reviews",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/products/:id/reviews'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/showProductReviews.ts",
+          "sha256": "a34940049e48624b8d47c99b80d55d3652bcaa22385fd969d7e7d21361a1d481"
+        }
+      ],
+      "spec_path": "/rest/products/{id}/reviews"
+    }
+  ],
+  "server": "http://127.0.0.1:18001",
+  "sha256": "48adf896eee5adb2774103e76875ba48a9ab6ee4cd29ede3406a3261d8a4dff7",
+  "warnings": []
+}

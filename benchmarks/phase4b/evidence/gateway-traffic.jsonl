@@ -1,0 +1,8 @@
+{"allowed": true, "method": "GET", "path": "/rest/admin/application-version", "status": 200, "response_sha256": "42ee4966d8b6c01cdd2ade54c60e33bead0e8ace9abe79c172e1b377b1b76185", "upstream_ip": "172.24.0.2"}
+{"allowed": true, "method": "GET", "path": "/rest/languages", "status": 200, "response_sha256": "9966f88d84b202e1f123059ba907678012b4c0f7eaeaeae7b14353ebcaa6edf5", "upstream_ip": "172.24.0.2"}
+{"allowed": true, "method": "GET", "path": "/rest/products/search?q=apple", "status": 200, "response_sha256": "18f0cd831052af35503eafa7f6a2aa36c6351fd97fb7a5b23f2f76d9750e140d", "upstream_ip": "172.24.0.2"}
+{"allowed": true, "method": "GET", "path": "/rest/products/1/reviews", "status": 200, "response_sha256": "4b3bf055712a6118c9ef65e790d5ae6f8b2af621da62d88eefd06df64594fc53", "upstream_ip": "172.24.0.2"}
+{"allowed": true, "method": "GET", "path": "/rest/country-mapping", "status": 500, "response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "upstream_ip": "172.24.0.2"}
+{"allowed": false, "method": "GET", "request_hash": "7096884ba4ee5a525fd4f1eb58405862f0fff4b4653a6e333269eea0ff3ae897"}
+{"allowed": false, "method": "POST", "request_hash": "dcdd175cb8e93362518c51f84ae35810d7a1bd6e7d62f3d74be6ffb2f76807e4"}
+{"allowed": false, "method": "GET", "request_hash": "50e911053a243a15c077452cce6b73822e2bac0b6a020805dcb9713fdfc79c85"}

@@ -1,0 +1,6 @@
+{
+  "benchmark_id": "srebench-api",
+  "operations": null,
+  "reason": "Proposal and scanned scenario descriptions only; no authoritative executable repository, image, version or OpenAPI located. NEEDS IMPLEMENTATION or supplied assets.",
+  "schema_version": 1
+}

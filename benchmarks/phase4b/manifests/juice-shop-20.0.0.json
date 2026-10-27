@@ -1,0 +1,92 @@
+{
+  "adopted": true,
+  "approval_required": false,
+  "authentication": {
+    "authenticated_roles_verified": false,
+    "description": "Four successful anonymous benign examples; B2B bearer excluded",
+    "verified_roles": [
+      "anonymous"
+    ]
+  },
+  "clean_state": {
+    "health": "Version GET, exact version and image/container checks",
+    "initial_state": "Default seeded DB/data of image; volume copy-up/permissions and identical seed snapshots not yet exercised",
+    "repeatable_state_verified": false,
+    "reset": "Allocate a NEW project and NEW volume; never restart/reset the existing target to claim clean state",
+    "reset_existing": false,
+    "strategy": "Fresh uniquely named image-pinned instance and independently named data volume per tool/repeat"
+  },
+  "deployment": {
+    "actual_topology": "Existing isolated Phase 4 target; two new isolated runtime clients through new dual-network gateway; both checks complete, run-owned clients/gateway stopped",
+    "configuration": "phase4b/deploy/juice-fresh.compose.yml",
+    "configuration_executed": false,
+    "container_id": "0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c",
+    "image_digest": "bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+    "running": true
+  },
+  "family": "juice_shop",
+  "ground_truth": {
+    "sources": "Version-pinned source/challenge definitions and official companion guide",
+    "verified": false
+  },
+  "id": "juice-shop-20.0.0",
+  "inventory": {
+    "missing_reason": null,
+    "path": "phase4b/juice-inventory.json",
+    "sha256": "7039733a55d0e63f71c61c29a0928f31cbbfb8494795be8bcf5418569e84a196",
+    "valid": true
+  },
+  "label": "OWASP Juice Shop 20.0.0",
+  "limitations": [
+    "Six-operation collection is not a full API benchmark; only four successful anonymous GET candidates",
+    "B2B C1 base path loss and unverified auth",
+    "Fresh volume reset equivalence not exercised",
+    "Existing baseline runner accepts host.docker.internal upstream only. A separately reviewed private-network runner adapter and active-input scope are still needed.",
+    "The Phase 4B connectivity gateway is intentionally unsuitable for active scanning; it blocks all parameter mutations."
+  ],
+  "network_scope": {
+    "evidence": "phase4b/evidence/connectivity-r2/connectivity-run.json",
+    "fixed_benign_GET_only": true,
+    "gateway_origin": "http://172.26.0.1:8088",
+    "published_ports": [],
+    "target_network": "penagent-phase4-juice20-r1_isolated",
+    "target_origin": "http://172.24.0.2:3000",
+    "tools_network": "penagent-phase4b-tools-r2"
+  },
+  "penagent": {
+    "equivalent_public_paths": 5,
+    "note": "C3 image/httpx transport configuration and numeric-origin guard used; no Executor.execute or live C1 service DB change",
+    "parsed_operations": 6,
+    "shared_benign_GET_examples": 5
+  },
+  "readiness": {
+    "eligible_operations": [
+      "juice20_c338475ca634dc32cb17",
+      "juice20_64d1cc2f77500db19365",
+      "juice20_4925e9b86c6c89429d9c",
+      "juice20_ada13ac6c6645589cb40"
+    ],
+    "phase5_preparation": "Four operations can enter limited source-to-vulnerability mapping; no adjudication performed",
+    "shared_live_access_verified": true,
+    "status": "PARTIALLY READY"
+  },
+  "source": {
+    "provenance_verified": true,
+    "repository": "https://github.com/juice-shop/juice-shop",
+    "revision": "v20.0.0"
+  },
+  "source_type": "ORIGINAL",
+  "specification": {
+    "missing_reason": null,
+    "path": "specs/prepared/juice-shop-20.0.0-readonly-host.json",
+    "sha256": "48adf896eee5adb2774103e76875ba48a9ab6ee4cd29ede3406a3261d8a4dff7",
+    "valid": true
+  },
+  "version": "20.0.0",
+  "zap": {
+    "active_scans": 0,
+    "parsed_operations": 6,
+    "shared_benign_GET_examples": 5,
+    "spider_scans": 0
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "max_requests": 20,
+  "target_container_id": "0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c",
+  "target_image_id": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+  "target_ip": "172.24.0.2",
+  "target_port": 3000,
+  "wall_seconds": 180
+}

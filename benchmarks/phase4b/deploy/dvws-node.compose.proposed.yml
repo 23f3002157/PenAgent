@@ -1,0 +1,42 @@
+# SUCCESSOR proposal only. No image build, pull, seed or deployment authorized here.
+# Every image must be a separately reviewed digest, not an upstream mutable tag.
+name: ${DVWS_CANDIDATE_PROJECT:?Unique candidate project required}
+services:
+  web:
+    image: ${DVWS_REVIEWED_APPLICATION_DIGEST:?Reviewed digest-pinned successor build required}
+    pull_policy: never
+    networks: [target]
+    # Upstream app executes on port 80. Only an internal gateway may reach it.
+    # Configure dedicated .env locally; never copy secrets into the review bundle.
+    env_file: ${DVWS_REVIEWED_LOCAL_ENV:?Ignored candidate environment file required}
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: 'no'
+    mem_limit: 1g
+    cpus: 1
+    profiles: [approved-successor-only]
+  mongo:
+    image: ${DVWS_REVIEWED_MONGO_DIGEST:?Reviewed digest required}
+    pull_policy: never
+    networks: [target]
+    volumes: [mongo-data:/data/db]
+    restart: 'no'
+    profiles: [approved-successor-only]
+  mysql:
+    image: ${DVWS_REVIEWED_MYSQL_DIGEST:?Reviewed digest required}
+    pull_policy: never
+    networks: [target]
+    volumes: [mysql-data:/var/lib/mysql]
+    env_file: ${DVWS_REVIEWED_MYSQL_ENV:?Ignored isolated DB environment required}
+    restart: 'no'
+    profiles: [approved-successor-only]
+networks:
+  target:
+    internal: true
+    driver_opts:
+      com.docker.network.bridge.gateway_mode_ipv4: isolated
+volumes:
+  mongo-data:
+    name: ${DVWS_FRESH_MONGO_VOLUME:?New dedicated volume required}
+  mysql-data:
+    name: ${DVWS_FRESH_MYSQL_VOLUME:?New dedicated volume required}

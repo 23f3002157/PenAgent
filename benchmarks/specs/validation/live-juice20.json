@@ -1,0 +1,99 @@
+{
+  "target": {
+    "id": "0710d10e33c5ff2af7248c6c73e4cb446db4de419255bb7b28d1a9280339116c",
+    "image": "sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+    "running": true,
+    "ports": {
+      "3000/tcp": []
+    },
+    "networks": {
+      "penagent-phase4-juice20-r1_isolated": {
+        "Aliases": [
+          "penagent-phase4-juice20-r1-target-1",
+          "target"
+        ],
+        "DNSNames": [
+          "penagent-phase4-juice20-r1-target-1",
+          "target",
+          "0710d10e33c5"
+        ],
+        "DriverOpts": null,
+        "EndpointID": "01657ba90fd6f7e56ffe86d2e8d122a83d0ee48e24faf89c793425a52f1201aa",
+        "Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "GwPriority": 0,
+        "IPAMConfig": null,
+        "IPAddress": "172.24.0.2",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "Links": null,
+        "MacAddress": "36:6d:8e:09:fc:20",
+        "NetworkID": "e4b38d4a8c6f3ffff0d287f5fb03e560ff19eb4b903b7151b736d14318dd4e7e"
+      }
+    }
+  },
+  "origin": "http://127.0.0.1:18001",
+  "active_scans": 0,
+  "crawls": 0,
+  "observations": [
+    {
+      "method": "GET",
+      "path": "/rest/admin/application-version",
+      "request_path": "/rest/admin/application-version",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "body_sha256": "42ee4966d8b6c01cdd2ade54c60e33bead0e8ace9abe79c172e1b377b1b76185",
+      "response_shape": "dict",
+      "duration_seconds": 3.702999999979511,
+      "verified": true,
+      "version": "20.0.0"
+    },
+    {
+      "method": "GET",
+      "path": "/rest/languages",
+      "request_path": "/rest/languages",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "body_sha256": "9966f88d84b202e1f123059ba907678012b4c0f7eaeaeae7b14353ebcaa6edf5",
+      "response_shape": "list",
+      "duration_seconds": 3.969000000040978,
+      "verified": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/search",
+      "request_path": "/rest/products/search?q=apple",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "body_sha256": "18f0cd831052af35503eafa7f6a2aa36c6351fd97fb7a5b23f2f76d9750e140d",
+      "response_shape": "dict",
+      "duration_seconds": 3.702999999979511,
+      "verified": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/{id}/reviews",
+      "request_path": "/rest/products/1/reviews",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "body_sha256": "4b3bf055712a6118c9ef65e790d5ae6f8b2af621da62d88eefd06df64594fc53",
+      "response_shape": "dict",
+      "duration_seconds": 3.687000000034459,
+      "verified": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/country-mapping",
+      "request_path": "/rest/country-mapping",
+      "http_status": 500,
+      "content_type": null,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "response_shape": "not-json",
+      "duration_seconds": 3.547000000020489,
+      "verified": false
+    }
+  ],
+  "host_port_published": false,
+  "transport": "docker exec node fetch on target loopback; does not prove host/tool connectivity"
+}

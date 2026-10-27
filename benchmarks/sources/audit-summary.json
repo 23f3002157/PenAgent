@@ -1,0 +1,67 @@
+{
+  "juice-shop/juice-shop": {
+    "archived": false,
+    "description": "OWASP Juice Shop: Probably the most modern and sophisticated insecure web application",
+    "html_url": "https://github.com/juice-shop/juice-shop",
+    "latest_observed_commit": "717f5efa886b0417eeecb52378b03cf10567b7e2",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "node_id": "MDc6TGljZW5zZTEz",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushed_at": "2026-10-23T16:26:02Z",
+    "releases": [
+      "v20.3.0",
+      "v20.2.0",
+      "v20.1.1",
+      "v20.1.0",
+      "v20.0.0"
+    ],
+    "tags": [
+      "v20.3.0",
+      "v20.2.0",
+      "v20.1.1",
+      "v20.1.0",
+      "v20.0.0"
+    ]
+  },
+  "notes": {
+    "dvws_license_conflict": "README claims GPL-3; LICENSE bytes are Apache-2.0; unresolved",
+    "dvws_node": "Separate candidate ONLY, not adopted; Dockerfile/Compose/OpenAPI present at pinned commit, no build/deployment/import performed",
+    "srebench_api": "Exact-name searches and provided research did not establish runnable assets; do not substitute unrelated SRE-Bench"
+  },
+  "snoopysecurity/dvws": {
+    "archived": true,
+    "description": "Damn Vulnerable Web Services is an insecure web application with multiple vulnerable web service components that can be used to learn real world web service vulnerabilities.  NOTE: This project is out of date, please use https://github.com/snoopysecurity/dvws-node",
+    "html_url": "https://github.com/snoopysecurity/dvws",
+    "latest_observed_commit": "25a5a03aa1b13d8e647da66784c3e8445726e578",
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "node_id": "MDc6TGljZW5zZTI=",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushed_at": "2021-12-06T00:15:00Z",
+    "releases": [],
+    "tags": []
+  },
+  "snoopysecurity/dvws-node": {
+    "archived": false,
+    "description": "Damn Vulnerable Web Services is a vulnerable application with a web service and an API that can be used to learn about webservices/API related vulnerabilities. ",
+    "html_url": "https://github.com/snoopysecurity/dvws-node",
+    "latest_observed_commit": "35f999505028f580dd6acc8bb7ddecfb87fe4bf6",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "node_id": "MDc6TGljZW5zZTk=",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0"
+    },
+    "pushed_at": "2026-10-25T00:12:42Z",
+    "releases": [],
+    "tags": []
+  }
+}

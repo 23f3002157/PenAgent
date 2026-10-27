@@ -1,0 +1,72 @@
+{
+  "tool": "actual C1 normalizer and graph builder",
+  "network": "none",
+  "database_written": false,
+  "canonical_spec_hash": "b64bfb1b583fc8566308f02705797763ad9241941a47209f0aca033533efc66e",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/orders",
+      "node_id": "op_createcustomerorder",
+      "parameters": [],
+      "request_body": {
+        "properties": {
+          "cid": {
+            "example": "JS0815DE",
+            "type": "string",
+            "uniqueItems": true
+          },
+          "orderLines": {
+            "items": {
+              "description": "Order line in default JSON format",
+              "properties": {
+                "customerReference": {
+                  "example": "PO0000001",
+                  "type": "string"
+                },
+                "productId": {
+                  "example": 8,
+                  "type": "integer"
+                },
+                "quantity": {
+                  "example": 500,
+                  "minimum": 1,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "productId",
+                "quantity"
+              ]
+            },
+            "type": "array"
+          },
+          "orderLinesData": {
+            "description": "Order line(s) in customer specific JSON format",
+            "example": "[{\"productId\": 12,\"quantity\": 10000,\"customerReference\": [\"PO0000001.2\", \"SM20180105|042\"],\"couponCode\": \"pes[Bh.u*t\"},{\"productId\": 13,\"quantity\": 2000,\"customerReference\": \"PO0000003.4\"}]",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cid"
+        ]
+      },
+      "auth": {
+        "type": "bearer",
+        "scopes": [],
+        "header_name": "Authorization",
+        "location": "header",
+        "description": null
+      }
+    }
+  ],
+  "missing_spec_operations": [],
+  "unexpected_spec_operations": [],
+  "stable_operation_ids": true,
+  "original_server": [
+    {
+      "url": "http://127.0.0.1:18001/b2b/v2"
+    }
+  ],
+  "note": "C1 graph paths do not include OpenAPI 3 server base path"
+}

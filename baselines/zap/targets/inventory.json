@@ -1,0 +1,19 @@
+{
+  "observed_on": "2026-10-25",
+  "targets": [
+    {
+      "id": "juice_shop", "name": "OWASP Juice Shop", "version": "20.0.0", "readiness": "running; harmless host/container root GET HTTP 200",
+      "container": "blissful_chebyshev", "container_id": "0356c18439557ca2fed64e8c69f73035c4b485ca069b6f961b1de038f17d9ac3",
+      "image_digest": "bkimminich/juice-shop@sha256:25fd268112350ae9e0ddc7878371f9f12f5b0b546c7bf934d6599aa8e724418f",
+      "host_origin": "http://127.0.0.1:3000", "docker_origin": "http://host.docker.internal:3000", "internal_port": 3000,
+      "original_port_binding": "0.0.0.0:3000 and IPv6 all interfaces; preserved",
+      "openapi_file": null, "documented_candidate": "/assets/public/specs/openapi.json", "candidate_response": "HTTP 200 text/html, not OpenAPI",
+      "authentication": "Anonymous root verified; no authenticated account verified", "test_accounts": "No credentials collected",
+      "eligible_smoke_operations": ["GET /"], "excluded": "Every operation other than exact GET /; no service/fixture scanning",
+      "active_scan_authorized": false, "notes": "Narrow web smoke only; not a representative API benchmark; current mutable state not reset"
+    },
+    {"id": "dvws", "readiness": "not deployed in observed Docker inventory", "version": null, "spec": null, "ground_truth": null, "documented_image": "monisha117/penagent-test-env:latest", "documented_host_port": 18003, "active_scan_authorized": false},
+    {"id": "srebench", "readiness": "not deployed in observed Docker inventory", "version": null, "spec": null, "ground_truth": null, "documented_image": "monisha117/penagent-test-env:latest", "documented_host_port": 18002, "active_scan_authorized": false}
+  ],
+  "excluded_services": {"penagent_ports": [9001, 9002, 9003, 9004], "synthetic_fixture_port": 9010}
+}

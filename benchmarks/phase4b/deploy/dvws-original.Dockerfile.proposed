@@ -1,0 +1,15 @@
+# ORIGINAL source candidate build proposal; NOT BUILT OR EXECUTED.
+# Prerequisite retrieval failed on this Docker runtime. No fallback base is used.
+# Build context, if later feasible: the captured, hash-verified original source.
+FROM php@sha256:be7f9332d3bea49084d74a0718a5400f7b5d128c1937575e76f72df3a41e8eac
+# Bundled extension compilation only. Do not fetch an unpinned legacy apt repo.
+# Toolchain/source availability must be verified before this step is attempted.
+RUN docker-php-ext-install mysql mysqli
+COPY . /var/www/html/dvws/
+# Infrastructure-only port change; no PHP vulnerability logic changes proposed.
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
+ && sed -i 's/:80>/:8080>/' /etc/apache2/sites-available/000-default.conf \
+ && chown -R www-data:www-data /var/run/apache2 /var/lock/apache2 /var/log/apache2 /var/www/html
+USER www-data
+EXPOSE 8080
+CMD ["apache2-foreground"]

@@ -1,0 +1,207 @@
+{
+  "info": {
+    "description": "Non-official and incomplete. Source routes and benign observations, not an official full API specification. Response fields not modeled are intentionally unconstrained.",
+    "title": "NON-OFFICIAL Juice Shop 20.0.0 read-only source-derived subset",
+    "version": "20.0.0-phase4.1"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/rest/admin/application-version": {
+      "get": {
+        "operationId": "getApplicationVersion",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "version"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Source-declared successful response; live verification is recorded separately"
+          }
+        },
+        "security": [],
+        "x-penagent-evidence": [
+          {
+            "path": "sources/juice-shop-20.0.0/server.ts",
+            "route_declaration": "app.get('/rest/admin/application-version'",
+            "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+          },
+          {
+            "path": "sources/juice-shop-20.0.0/routes/appVersion.ts",
+            "sha256": "228178b1ba2557a26c9f09a0f4cff6e9b2dd9bddd879c3d1fa9eb72cbb2fe5fb"
+          }
+        ],
+        "x-schema-assurance": "Parameters directly inspected in source; response schema partial/open, not complete"
+      }
+    },
+    "/rest/country-mapping": {
+      "get": {
+        "operationId": "getCountryMapping",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Source-declared successful response; live verification is recorded separately"
+          },
+          "500": {
+            "description": "Source returns 500 when CTF country mapping is absent"
+          }
+        },
+        "security": [],
+        "x-penagent-evidence": [
+          {
+            "path": "sources/juice-shop-20.0.0/server.ts",
+            "route_declaration": "app.get('/rest/country-mapping'",
+            "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+          },
+          {
+            "path": "sources/juice-shop-20.0.0/routes/countryMapping.ts",
+            "sha256": "03194b853301e71a0e0605cb724435147c85f7ff0294a1c507752cb521b4376d"
+          }
+        ],
+        "x-schema-assurance": "Parameters directly inspected in source; response schema partial/open, not complete"
+      }
+    },
+    "/rest/languages": {
+      "get": {
+        "operationId": "getLanguages",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Source-declared successful response; live verification is recorded separately"
+          }
+        },
+        "security": [],
+        "x-penagent-evidence": [
+          {
+            "path": "sources/juice-shop-20.0.0/server.ts",
+            "route_declaration": "app.get('/rest/languages'",
+            "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+          },
+          {
+            "path": "sources/juice-shop-20.0.0/routes/languages.ts",
+            "sha256": "5a995c3d9bf22d3bfcf8af275e63256ac6b2af812626d32f51a699bebe08f863"
+          }
+        ],
+        "x-schema-assurance": "Parameters directly inspected in source; response schema partial/open, not complete"
+      }
+    },
+    "/rest/products/search": {
+      "get": {
+        "operationId": "searchProducts",
+        "parameters": [
+          {
+            "description": "Optional product-search string; benign validation uses apple. Source truncates at 200 characters.",
+            "example": "apple",
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "maxLength": 200,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Source-declared successful response; live verification is recorded separately"
+          }
+        },
+        "security": [],
+        "x-penagent-evidence": [
+          {
+            "path": "sources/juice-shop-20.0.0/server.ts",
+            "route_declaration": "app.get('/rest/products/search'",
+            "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+          },
+          {
+            "path": "sources/juice-shop-20.0.0/routes/search.ts",
+            "sha256": "0c23e746dfe31ec29aa6477e076a0a4d55d27afd90446e668b1dc10b88416967"
+          }
+        ],
+        "x-schema-assurance": "Parameters directly inspected in source; response schema partial/open, not complete"
+      }
+    },
+    "/rest/products/{id}/reviews": {
+      "get": {
+        "operationId": "getProductReviews",
+        "parameters": [
+          {
+            "description": "Source route accepts a string and conditionally coerces it. Only benign numeric ID 1 was live-checked.",
+            "example": "1",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "maxLength": 40,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Source-declared successful response; live verification is recorded separately"
+          }
+        },
+        "security": [],
+        "x-penagent-evidence": [
+          {
+            "path": "sources/juice-shop-20.0.0/server.ts",
+            "route_declaration": "app.get('/rest/products/:id/reviews'",
+            "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+          },
+          {
+            "path": "sources/juice-shop-20.0.0/routes/showProductReviews.ts",
+            "sha256": "a34940049e48624b8d47c99b80d55d3652bcaa22385fd969d7e7d21361a1d481"
+          }
+        ],
+        "x-schema-assurance": "Parameters directly inspected in source; response schema partial/open, not complete"
+      }
+    }
+  },
+  "security": [],
+  "servers": [
+    {
+      "url": "http://host.docker.internal:18001"
+    }
+  ],
+  "x-penagent-target-version": "20.0.0",
+  "x-specification-origin": "derived-non-official"
+}

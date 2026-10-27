@@ -1,0 +1,354 @@
+{
+  "benchmark_id": "juice-shop-20.0.0",
+  "operations": [
+    {
+      "anonymous": false,
+      "authentication_role": "bearer user, role unverified",
+      "benchmark_id": "juice-shop-20.0.0",
+      "candidate_after_connectivity_and_scope_fix": false,
+      "evidence_sources": [
+        "specs/validation/c1-b2b.json",
+        "specs/validation/zap-b2b-mapped.json",
+        "specs/validation/live-juice20.json"
+      ],
+      "exclusion_reasons": [
+        "State-changing order processing with executable orderLinesData; no request authorized",
+        "Bearer role/token unverified",
+        "C1 drops /b2b/v2 server base path",
+        "Host port not published on internal Docker network; equivalent tool access unverified",
+        "No API-level gateway configuration or active-scan approval exists"
+      ],
+      "included": false,
+      "live_verification": {
+        "status": "NOT EXECUTED; POST not authorized"
+      },
+      "method": "POST",
+      "operation_id": "createCustomerOrder",
+      "parameters": [],
+      "path": "/b2b/v2/orders",
+      "penagent_ingestion": "parsed; public base path mismatch",
+      "penagent_spec_path_imported": true,
+      "potential_destructive_effects": "Order processing / code execution",
+      "request_body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Order"
+            }
+          }
+        },
+        "description": "Customer order to be placed"
+      },
+      "schema_assurance": "official-as-published",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "source_evidence": [],
+      "spec_path": "/orders",
+      "specification": "specs/prepared/juice-shop-20.0.0-b2b-host.json",
+      "stable_id": "juice20_fab6f8bc7cd3de513d55",
+      "state_changing": true,
+      "target_version": "20.0.0",
+      "zap_import": "accepted; capture fixture only"
+    },
+    {
+      "anonymous": true,
+      "authentication_role": "anonymous",
+      "benchmark_id": "juice-shop-20.0.0",
+      "candidate_after_connectivity_and_scope_fix": true,
+      "evidence_sources": [
+        "specs/validation/c1-readonly.json",
+        "specs/validation/zap-readonly-mapped.json",
+        "specs/validation/live-juice20.json"
+      ],
+      "exclusion_reasons": [
+        "Host port not published on internal Docker network; equivalent tool access unverified",
+        "No API-level gateway configuration or active-scan approval exists"
+      ],
+      "included": false,
+      "live_verification": {
+        "body_sha256": "42ee4966d8b6c01cdd2ade54c60e33bead0e8ace9abe79c172e1b377b1b76185",
+        "content_type": "application/json; charset=utf-8",
+        "duration_seconds": 3.702999999979511,
+        "http_status": 200,
+        "method": "GET",
+        "path": "/rest/admin/application-version",
+        "request_path": "/rest/admin/application-version",
+        "response_shape": "dict",
+        "verified": true,
+        "version": "20.0.0"
+      },
+      "method": "GET",
+      "operation_id": "getApplicationVersion",
+      "parameters": [],
+      "path": "/rest/admin/application-version",
+      "penagent_ingestion": "accepted",
+      "penagent_spec_path_imported": true,
+      "potential_destructive_effects": "No intentional mutation for reviewed benign inputs; injected values can trigger challenges",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/admin/application-version'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/appVersion.ts",
+          "sha256": "228178b1ba2557a26c9f09a0f4cff6e9b2dd9bddd879c3d1fa9eb72cbb2fe5fb"
+        }
+      ],
+      "spec_path": "/rest/admin/application-version",
+      "specification": "specs/prepared/juice-shop-20.0.0-readonly-host.json",
+      "stable_id": "juice20_c338475ca634dc32cb17",
+      "state_changing": false,
+      "target_version": "20.0.0",
+      "zap_import": "accepted; capture fixture only"
+    },
+    {
+      "anonymous": true,
+      "authentication_role": "anonymous",
+      "benchmark_id": "juice-shop-20.0.0",
+      "candidate_after_connectivity_and_scope_fix": false,
+      "evidence_sources": [
+        "specs/validation/c1-readonly.json",
+        "specs/validation/zap-readonly-mapped.json",
+        "specs/validation/live-juice20.json"
+      ],
+      "exclusion_reasons": [
+        "Actual route returned HTTP 500 with no CTF country mapping configured",
+        "Host port not published on internal Docker network; equivalent tool access unverified",
+        "No API-level gateway configuration or active-scan approval exists"
+      ],
+      "included": false,
+      "live_verification": {
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "content_type": null,
+        "duration_seconds": 3.547000000020489,
+        "http_status": 500,
+        "method": "GET",
+        "path": "/rest/country-mapping",
+        "request_path": "/rest/country-mapping",
+        "response_shape": "not-json",
+        "verified": false
+      },
+      "method": "GET",
+      "operation_id": "getCountryMapping",
+      "parameters": [],
+      "path": "/rest/country-mapping",
+      "penagent_ingestion": "accepted",
+      "penagent_spec_path_imported": true,
+      "potential_destructive_effects": "No intentional mutation for reviewed benign inputs; injected values can trigger challenges",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/country-mapping'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/countryMapping.ts",
+          "sha256": "03194b853301e71a0e0605cb724435147c85f7ff0294a1c507752cb521b4376d"
+        }
+      ],
+      "spec_path": "/rest/country-mapping",
+      "specification": "specs/prepared/juice-shop-20.0.0-readonly-host.json",
+      "stable_id": "juice20_73f3ee484360f1dafa56",
+      "state_changing": false,
+      "target_version": "20.0.0",
+      "zap_import": "accepted; capture fixture only"
+    },
+    {
+      "anonymous": true,
+      "authentication_role": "anonymous",
+      "benchmark_id": "juice-shop-20.0.0",
+      "candidate_after_connectivity_and_scope_fix": true,
+      "evidence_sources": [
+        "specs/validation/c1-readonly.json",
+        "specs/validation/zap-readonly-mapped.json",
+        "specs/validation/live-juice20.json"
+      ],
+      "exclusion_reasons": [
+        "Host port not published on internal Docker network; equivalent tool access unverified",
+        "No API-level gateway configuration or active-scan approval exists"
+      ],
+      "included": false,
+      "live_verification": {
+        "body_sha256": "9966f88d84b202e1f123059ba907678012b4c0f7eaeaeae7b14353ebcaa6edf5",
+        "content_type": "application/json; charset=utf-8",
+        "duration_seconds": 3.969000000040978,
+        "http_status": 200,
+        "method": "GET",
+        "path": "/rest/languages",
+        "request_path": "/rest/languages",
+        "response_shape": "list",
+        "verified": true
+      },
+      "method": "GET",
+      "operation_id": "getLanguages",
+      "parameters": [],
+      "path": "/rest/languages",
+      "penagent_ingestion": "accepted",
+      "penagent_spec_path_imported": true,
+      "potential_destructive_effects": "No intentional mutation for reviewed benign inputs; injected values can trigger challenges",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/languages'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/languages.ts",
+          "sha256": "5a995c3d9bf22d3bfcf8af275e63256ac6b2af812626d32f51a699bebe08f863"
+        }
+      ],
+      "spec_path": "/rest/languages",
+      "specification": "specs/prepared/juice-shop-20.0.0-readonly-host.json",
+      "stable_id": "juice20_64d1cc2f77500db19365",
+      "state_changing": false,
+      "target_version": "20.0.0",
+      "zap_import": "accepted; capture fixture only"
+    },
+    {
+      "anonymous": true,
+      "authentication_role": "anonymous",
+      "benchmark_id": "juice-shop-20.0.0",
+      "candidate_after_connectivity_and_scope_fix": true,
+      "evidence_sources": [
+        "specs/validation/c1-readonly.json",
+        "specs/validation/zap-readonly-mapped.json",
+        "specs/validation/live-juice20.json"
+      ],
+      "exclusion_reasons": [
+        "Host port not published on internal Docker network; equivalent tool access unverified",
+        "No API-level gateway configuration or active-scan approval exists"
+      ],
+      "included": false,
+      "live_verification": {
+        "body_sha256": "18f0cd831052af35503eafa7f6a2aa36c6351fd97fb7a5b23f2f76d9750e140d",
+        "content_type": "application/json; charset=utf-8",
+        "duration_seconds": 3.702999999979511,
+        "http_status": 200,
+        "method": "GET",
+        "path": "/rest/products/search",
+        "request_path": "/rest/products/search?q=apple",
+        "response_shape": "dict",
+        "verified": true
+      },
+      "method": "GET",
+      "operation_id": "searchProducts",
+      "parameters": [
+        {
+          "description": "Optional product-search string; benign validation uses apple. Source truncates at 200 characters.",
+          "example": "apple",
+          "in": "query",
+          "name": "q",
+          "required": false,
+          "schema": {
+            "maxLength": 200,
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/rest/products/search",
+      "penagent_ingestion": "accepted",
+      "penagent_spec_path_imported": true,
+      "potential_destructive_effects": "No intentional mutation for reviewed benign inputs; injected values can trigger challenges",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/products/search'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/search.ts",
+          "sha256": "0c23e746dfe31ec29aa6477e076a0a4d55d27afd90446e668b1dc10b88416967"
+        }
+      ],
+      "spec_path": "/rest/products/search",
+      "specification": "specs/prepared/juice-shop-20.0.0-readonly-host.json",
+      "stable_id": "juice20_4925e9b86c6c89429d9c",
+      "state_changing": false,
+      "target_version": "20.0.0",
+      "zap_import": "accepted; capture fixture only"
+    },
+    {
+      "anonymous": true,
+      "authentication_role": "anonymous",
+      "benchmark_id": "juice-shop-20.0.0",
+      "candidate_after_connectivity_and_scope_fix": true,
+      "evidence_sources": [
+        "specs/validation/c1-readonly.json",
+        "specs/validation/zap-readonly-mapped.json",
+        "specs/validation/live-juice20.json"
+      ],
+      "exclusion_reasons": [
+        "Host port not published on internal Docker network; equivalent tool access unverified",
+        "No API-level gateway configuration or active-scan approval exists"
+      ],
+      "included": false,
+      "live_verification": {
+        "body_sha256": "4b3bf055712a6118c9ef65e790d5ae6f8b2af621da62d88eefd06df64594fc53",
+        "content_type": "application/json; charset=utf-8",
+        "duration_seconds": 3.687000000034459,
+        "http_status": 200,
+        "method": "GET",
+        "path": "/rest/products/{id}/reviews",
+        "request_path": "/rest/products/1/reviews",
+        "response_shape": "dict",
+        "verified": true
+      },
+      "method": "GET",
+      "operation_id": "getProductReviews",
+      "parameters": [
+        {
+          "description": "Source route accepts a string and conditionally coerces it. Only benign numeric ID 1 was live-checked.",
+          "example": "1",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "maxLength": 40,
+            "type": "string"
+          }
+        }
+      ],
+      "path": "/rest/products/{id}/reviews",
+      "penagent_ingestion": "accepted",
+      "penagent_spec_path_imported": true,
+      "potential_destructive_effects": "No intentional mutation for reviewed benign inputs; injected values can trigger challenges",
+      "request_body": null,
+      "schema_assurance": "Parameters directly inspected in source; response schema partial/open, not complete",
+      "security": [],
+      "source_evidence": [
+        {
+          "path": "sources/juice-shop-20.0.0/server.ts",
+          "route_declaration": "app.get('/rest/products/:id/reviews'",
+          "sha256": "feef55977c80e40ec08707ca5443bcc8dad618036a42c70bbfd55b840e8196c2"
+        },
+        {
+          "path": "sources/juice-shop-20.0.0/routes/showProductReviews.ts",
+          "sha256": "a34940049e48624b8d47c99b80d55d3652bcaa22385fd969d7e7d21361a1d481"
+        }
+      ],
+      "spec_path": "/rest/products/{id}/reviews",
+      "specification": "specs/prepared/juice-shop-20.0.0-readonly-host.json",
+      "stable_id": "juice20_ada13ac6c6645589cb40",
+      "state_changing": false,
+      "target_version": "20.0.0",
+      "zap_import": "accepted; capture fixture only"
+    }
+  ],
+  "schema_version": 1
+}
