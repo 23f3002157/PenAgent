@@ -1,11 +1,12 @@
 # PenAgent Console
 
-A small, dependency-free operator dashboard for watching PenAgent work: audits,
-the live evidence timeline, Component 5's approval inbox, Component 6's report
-(with a one-click PDF download), and — for DVWS/SREBench-API/Juice Shop — a
-guided-run panel that actually drives probes against the target from the
-browser, plus a **Baselines & Results** view of the full paper evaluation.
-All of it reads from your running services over plain `fetch()`.
+A small, dependency-free website for PenAgent: a landing page explaining what
+it does and why, an operator dashboard for watching it work live (audits,
+evidence timeline, Component 5's approval inbox, Component 6's report with a
+one-click PDF download, and a guided-run panel that drives real probes from
+the browser), a full-surface exploration view, and a scored results/baselines
+comparison. All of it reads from your running services, or from static JSON
+exported by `demo/export_ui_data.py`, over plain `fetch()`.
 
 No build step, no npm, no framework. Just `index.html` + `styles.css` +
 `app.js`, consistent with the rest of this repository being Python-first.
@@ -36,9 +37,34 @@ those services if you're serving the console from somewhere else.
 
 ## What you can do here
 
-Three top-nav views: **Audits** (the operator console), **Exploration**
-(PenAgent run against every real route Juice Shop/DVWS expose, unscored), and
-**Baselines &amp; Results** (the paper's scored evaluation numbers).
+Four top-nav views: **Home** (the landing page), **Audits** (the operator
+console), **Exploration** (PenAgent run against every real route Juice
+Shop/DVWS expose, unscored), and **Results** (the paper's scored evaluation
+numbers and the baseline comparison).
+
+### Home view
+
+The entry point — what PenAgent is, the problem it solves, and the evidence
+that it works, before you touch a single form field:
+
+- An animated hero with the three ways to go deeper (watch it explore, see
+  the evidence, or open the operator console).
+- **The problem** — three cards on why this exists (APIs outpace manual
+  testing, scanners guess instead of verify, autonomy still needs a human
+  approval gate).
+- **How it works** — a clickable, animated pipeline diagram of all 6
+  components in their real request flow, including Component 5's branch and
+  the mutation/replanning loops. Click any node for what it actually does.
+- **What it's actually found** — live stat tiles (routes executed, precision,
+  F1 score, challenges solved, DVWS findings) that count up on scroll,
+  computed from the same exported JSON the Exploration and Results views
+  read — never hardcoded, never stale.
+- **Why execution beats guessing** — a teaser of the head-to-head comparison,
+  linking into the full version on the Results view.
+
+Every animation here is plain CSS keyframes/transitions plus vanilla JS
+(`IntersectionObserver` for scroll-reveal and count-up, no library), and
+respects `prefers-reduced-motion`.
 
 ### Audits view
 

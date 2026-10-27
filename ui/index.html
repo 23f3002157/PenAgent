@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PenAgent Console</title>
+<title>PenAgent — Autonomous API Security Testing</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,15 +18,16 @@
       </div>
     </div>
     <nav class="topnav">
-      <button class="topnav-btn active" data-view="audits">Audits</button>
+      <button class="topnav-btn active" data-view="home">Home</button>
+      <button class="topnav-btn" data-view="audits">Audits</button>
       <button class="topnav-btn" data-view="exploration">Exploration</button>
-      <button class="topnav-btn" data-view="baselines">Baselines &amp; Results</button>
+      <button class="topnav-btn" data-view="baselines">Results</button>
     </nav>
     <div class="topbar-status" id="connStatus"><span class="dot dot-unknown"></span>Not connected</div>
     <button class="theme-toggle" id="themeToggle" title="Toggle light/dark theme" aria-label="Toggle theme">&#9680;</button>
   </header>
 
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar" style="display:none">
     <section class="panel">
       <h2 class="panel-title">Connection</h2>
       <form id="connForm" class="stack-sm">
@@ -81,18 +82,7 @@
   </aside>
 
   <main class="main" id="main">
-    <div class="empty-state">
-      <h1>Welcome to the PenAgent Console</h1>
-      <p>Connect to your running services on the left, then pick an audit to watch it work, or create a new one
-         against <code>dvws</code>, <code>srebench-api</code> or <code>juice-shop</code> (if wired in — see
-         <code>docs/WALKTHROUGH.md</code>) to watch the agent actually explore a real target.</p>
-      <div class="quickstart">
-        <button class="btn btn-primary quickstart-btn" data-target="dvws">Quick-start: explore DVWS</button>
-        <button class="btn btn-primary quickstart-btn" data-target="juice-shop">Quick-start: explore Juice Shop</button>
-      </div>
-      <p class="muted">Or click <b>Exploration</b> above to see PenAgent let loose on every real route Juice Shop and
-         DVWS expose, or <b>Baselines &amp; Results</b> for the scored evaluation against local LLM baselines.</p>
-    </div>
+    <div class="home-loading">Loading PenAgent…</div>
   </main>
 </div>
 <script src="app.js"></script>

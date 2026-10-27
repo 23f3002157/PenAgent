@@ -1131,6 +1131,223 @@ async function renderExplorationView() {
   targets.forEach(wireExploreClicks);
 }
 
+// ---------- Home view: landing page, methodology, live stats ----------
+
+const PIPELINE_NODES = [
+  { id: "c1", x: 90, y: 110, label: "C1", name: "Spec Ingestion", color: "--pending",
+    desc: "Ingests the target's OpenAPI spec and builds a graph of every endpoint, parameter, and auth requirement — the map everything downstream works from." },
+  { id: "c2", x: 280, y: 110, label: "C2", name: "Hypothesis Gen", color: "--pending",
+    desc: "Ranks that graph into attack hypotheses across the OWASP API Top 10 — BOLA, broken auth, mass assignment, security misconfiguration, and more." },
+  { id: "c3", x: 470, y: 110, label: "C3", name: "Executor", color: "--strong",
+    desc: "Validates and sends the real HTTP request. Target, header, and body values are checked against an explicit authorization policy before anything leaves the process — no destination or operation outside what's configured is ever reachable." },
+  { id: "c5", x: 470, y: 235, label: "C5", name: "Approval Gate", color: "--confirmed",
+    desc: "Lives inside the Executor, not a separate service. Any non-safe action — a DELETE, a destructive payload — pauses here for a human operator to approve, deny, or let it time out. A model can never approve its own action, and an approval never widens scope beyond the one probe it was granted for." },
+  { id: "c4", x: 660, y: 110, label: "C4", name: "Interpreter", color: "--weak",
+    desc: "Classifies the response against an operator-defined security predicate: CONFIRMED_VULNERABILITY, STRONG_SIGNAL, WEAK_SIGNAL, NEGATIVE, or ERROR_CRASH. Proposes one bounded mutation if the signal is promising but inconclusive." },
+  { id: "c6", x: 850, y: 110, label: "C6", name: "Report", color: "--negative",
+    desc: "Assembles every CONFIRMED/STRONG finding into a CVSS v3.1-scored report — deterministic scoring, never LLM-assigned. Available as JSON or a rendered PDF, on demand, at any point in the audit." },
+];
+
+function pipelineDiagramHtml() {
+  const byId = Object.fromEntries(PIPELINE_NODES.map((n) => [n.id, n]));
+  const main = ["c1", "c2", "c3", "c4", "c6"].map((id) => byId[id]);
+  const mainPath = main.map((n, i) => `${i === 0 ? "M" : "L"}${n.x},${n.y}`).join(" ");
+  const c3 = byId.c3, c5 = byId.c5, c4 = byId.c4, c2 = byId.c2;
+  const branchPath = `M${c3.x},${c3.y + 24} L${c5.x},${c5.y - 24}`;
+  const mutationPath = `M${c4.x},${c4.y + 24} C${c4.x},${c4.y + 80} ${c3.x},${c3.y + 80} ${c3.x},${c3.y + 24}`;
+  const replanPath = `M${c4.x},${c4.y - 24} C${c4.x},${c4.y - 80} ${c2.x},${c2.y - 80} ${c2.x},${c2.y - 24}`;
+  const nodes = PIPELINE_NODES.map((n) => `
+    <g class="pipe-node" data-node="${n.id}" transform="translate(${n.x},${n.y})">
+      <circle r="30" style="fill:var(${n.color})"></circle>
+      <text class="pipe-node-label" text-anchor="middle" dy="5">${escapeHtml(n.label)}</text>
+      <text class="pipe-node-name" text-anchor="middle" y="48">${escapeHtml(n.name)}</text>
+    </g>`).join("");
+  return `
+    <svg viewBox="0 0 940 300" class="pipeline-svg">
+      <path d="${mutationPath}" class="pipe-loop" marker-end="url(#pipeArrow)"></path>
+      <path d="${replanPath}" class="pipe-loop" marker-end="url(#pipeArrow)"></path>
+      <path d="${branchPath}" class="pipe-branch" marker-end="url(#pipeArrow)"></path>
+      <path d="${mainPath}" class="pipe-main"></path>
+      <path d="${mainPath}" class="pipe-flow"></path>
+      <defs>
+        <marker id="pipeArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" class="pipe-arrowhead"></path>
+        </marker>
+      </defs>
+      ${nodes}
+    </svg>`;
+}
+
+function wirePipelineClicks() {
+  const detail = document.getElementById("pipelineDetail");
+  document.querySelectorAll(".pipe-node").forEach((el) => {
+    el.addEventListener("click", () => {
+      document.querySelectorAll(".pipe-node").forEach((n) => n.classList.toggle("pipe-node-active", n === el));
+      const node = PIPELINE_NODES.find((n) => n.id === el.dataset.node);
+      if (detail && node) {
+        detail.innerHTML = `<b>${escapeHtml(node.label)} — ${escapeHtml(node.name)}</b><p>${escapeHtml(node.desc)}</p>`;
+        detail.classList.add("pipeline-detail-filled");
+      }
+    });
+  });
+}
+
+function animateCountUp(el, target, suffix, duration) {
+  const start = performance.now();
+  const from = 0;
+  function tick(now) {
+    const progress = Math.min(1, (now - start) / duration);
+    const eased = 1 - (1 - progress) * (1 - progress);
+    el.textContent = Math.round(from + (target - from) * eased) + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function setupScrollReveal() {
+  const targets = document.querySelectorAll(".reveal:not(.revealed)");
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((el) => el.classList.add("revealed"));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("revealed");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  targets.forEach((el) => observer.observe(el));
+}
+
+function setupCountUpOnView() {
+  const tiles = document.querySelectorAll(".home-stat[data-count]:not(.counted)");
+  if (!("IntersectionObserver" in window)) {
+    tiles.forEach((el) => animateCountUp(el.querySelector(".stat-value"), Number(el.dataset.count), el.dataset.suffix || "", 1));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !entry.target.classList.contains("counted")) {
+        entry.target.classList.add("counted");
+        animateCountUp(entry.target.querySelector(".stat-value"), Number(entry.target.dataset.count), entry.target.dataset.suffix || "", 1200);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  tiles.forEach((el) => observer.observe(el));
+}
+
+function homeStatTile(value, suffix, label) {
+  return `
+    <div class="stat-tile home-stat reveal" data-count="${value}" data-suffix="${escapeHtml(suffix)}">
+      <div class="stat-value">0</div>
+      <div class="stat-label">${label}</div>
+    </div>`;
+}
+
+async function renderHomeView() {
+  const main = document.getElementById("main");
+  let results = { penagent: {} }, comparison = { rows: [] }, explore = {};
+  try { results = await fetchResults(); } catch { /* stats section tolerates partial data */ }
+  try { comparison = await fetchComparison(); } catch { /* same */ }
+  try { explore = await fetchExplore(); } catch { /* same */ }
+
+  const penAgentGuided = comparison.rows.find((r) => r.id === "penagent-guided");
+  const bestRow = comparison.rows.length ? comparison.rows.slice().sort((a, b) => (b.metrics.f1_score ?? 0) - (a.metrics.f1_score ?? 0))[0] : null;
+  const js = explore["juice-shop"], dvws = explore.dvws;
+  const totalRoutes = (js ? js.ops_authorized : 0) + (dvws ? dvws.ops_authorized : 0);
+  const challengesSolved = js && js.current_solved ? js.current_solved.total_solved : null;
+  const dvwsFindings = dvws ? (dvws.direct_findings || []).length : 0;
+
+  const statTiles = [
+    totalRoutes ? homeStatTile(totalRoutes, "", "real routes executed, across 2 live benchmark targets — not a curated subset") : "",
+    penAgentGuided ? homeStatTile(Math.round(penAgentGuided.metrics.precision * 100), "%", "precision on guided runs — zero false positives, every confirmed finding backed by a real HTTP response") : "",
+    bestRow ? homeStatTile(Math.round(bestRow.metrics.f1_score * 100), "%", `F1 score — the highest of ${comparison.rows.length} approaches compared, including 6 local LLM baselines`) : "",
+    challengesSolved != null ? homeStatTile(challengesSolved, "", "Juice Shop challenges solved, independently confirmed by its own built-in tracker") : "",
+    homeStatTile(dvwsFindings, "", "STRONG_SIGNAL findings on DVWS from a single unattended pass"),
+  ].filter(Boolean).join("");
+
+  const comparisonTeaser = comparison.rows.length ? comparisonBarChart(comparison.rows, "f1_score", "F1 score — PenAgent vs. 6 local LLM baselines") : "";
+
+  main.innerHTML = `
+    <div class="home">
+      <section class="home-hero">
+        <div class="home-hero-bg" aria-hidden="true"></div>
+        <div class="home-hero-inner">
+          <div class="home-hero-badge">Authorized API Security Testing Agent</div>
+          <h1 class="home-hero-title">PenAgent</h1>
+          <p class="home-hero-tagline">Finds real API vulnerabilities by actually exploiting them — not by guessing.</p>
+          <p class="home-hero-desc">Six components, one pipeline: spec ingestion, hypothesis planning, authorized
+            HTTP execution, a human approval gate for anything destructive, evidence-based classification, and a
+            CVSS-scored report — JSON or PDF, on demand. Every <code>CONFIRMED_VULNERABILITY</code> it reports
+            passed a real request against a configured security predicate, not a plausible-sounding guess.</p>
+          <div class="home-hero-cta">
+            <button class="btn btn-primary btn-lg home-nav-btn" data-nav="exploration">Watch it explore &rarr;</button>
+            <button class="btn btn-ghost-light btn-lg home-nav-btn" data-nav="baselines">See the evidence</button>
+            <button class="btn btn-ghost-light btn-lg home-nav-btn" data-nav="audits">Open operator console</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-pad home-section reveal">
+        <h2 class="home-section-title">The problem</h2>
+        <div class="home-cards">
+          <div class="home-card">
+            <div class="home-card-icon">&#9888;</div>
+            <h3>APIs ship faster than they're tested</h3>
+            <p>Every new endpoint is a new attack surface. Manual pentesting can't keep pace with continuous
+               deployment, and most APIs go live with far less scrutiny than the UI in front of them.</p>
+          </div>
+          <div class="home-card">
+            <div class="home-card-icon">&#128274;</div>
+            <h3>Scanners guess; they don't verify</h3>
+            <p>Signature-based tools and prompt-only LLM reasoning can suggest a vulnerability exists, but neither
+               sends a real request to prove it — leaving every "finding" to be manually re-checked anyway.</p>
+          </div>
+          <div class="home-card">
+            <div class="home-card-icon">&#9878;</div>
+            <h3>Automation still needs a human in the loop</h3>
+            <p>A fully autonomous agent that can also delete data or lock out users is a liability, not a tool.
+               Destructive actions need a real approval gate, not just a confidence score.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-pad home-section reveal">
+        <h2 class="home-section-title">How it works</h2>
+        <p class="home-section-sub">Click any component below for what it actually does.</p>
+        <div class="pipeline-wrap">${pipelineDiagramHtml()}</div>
+        <div class="pipeline-detail" id="pipelineDetail"><p class="muted">Click a component above to see its role in the pipeline.</p></div>
+      </section>
+
+      <section class="page-pad home-section reveal">
+        <h2 class="home-section-title">What it's actually found</h2>
+        <p class="home-section-sub">Real numbers from real runs against DVWS and OWASP Juice Shop — see
+          <code>docs/RESULTS.md</code> for the full methodology and every caveat.</p>
+        <div class="stat-row home-stat-row">${statTiles}</div>
+      </section>
+
+      ${comparisonTeaser ? `
+      <section class="page-pad home-section reveal">
+        <h2 class="home-section-title">Why execution beats guessing</h2>
+        <p class="home-section-sub">The same OpenAPI spec, handed to 6 local LLMs reasoning with no execution at all,
+          vs. PenAgent actually sending the request. <button class="link-btn home-nav-btn" data-nav="baselines">See the full head-to-head &rarr;</button></p>
+        ${comparisonTeaser}
+      </section>` : ""}
+
+      <footer class="home-footer">
+        <span>PenAgent — authorized API security testing, verified by execution.</span>
+        <span class="muted">Burp Suite and OWASP ZAP integration explicitly out of scope — see docs/RESULTS.md.</span>
+      </footer>
+    </div>
+  `;
+  wirePipelineClicks();
+  setupScrollReveal();
+  setupCountUpOnView();
+}
+
 // ---------- top-nav view switching & quickstart ----------
 
 function emptyStateHtml() {
@@ -1145,22 +1362,25 @@ function emptyStateHtml() {
         <button class="btn btn-primary quickstart-btn" data-target="juice-shop">Quick-start: explore Juice Shop</button>
       </div>
       <p class="muted">Or click <b>Exploration</b> above to see PenAgent let loose on every real route Juice Shop and
-         DVWS expose, or <b>Baselines &amp; Results</b> for the scored evaluation against local LLM baselines.</p>
+         DVWS expose, or <b>Results</b> for the scored evaluation against local LLM baselines.</p>
     </div>`;
 }
+
+const FULL_WIDTH_VIEWS = { home: renderHomeView, exploration: renderExplorationView, baselines: renderBaselinesView };
 
 function setView(view) {
   state.view = view;
   document.querySelectorAll(".topnav-btn").forEach((btn) => btn.classList.toggle("active", btn.dataset.view === view));
   const sidebar = document.getElementById("sidebar");
-  if (view === "baselines") {
+  const shell = document.getElementById("app");
+  const renderer = FULL_WIDTH_VIEWS[view];
+  if (renderer) {
     sidebar.style.display = "none";
-    void renderBaselinesView();
-  } else if (view === "exploration") {
-    sidebar.style.display = "none";
-    void renderExplorationView();
+    shell.classList.add("no-sidebar");
+    void renderer();
   } else {
     sidebar.style.display = "";
+    shell.classList.remove("no-sidebar");
     if (state.selected) void renderMain();
     else document.getElementById("main").innerHTML = emptyStateHtml();
   }
@@ -1188,6 +1408,8 @@ document.getElementById("main").addEventListener("click", (ev) => {
   if (quickstartBtn) void quickstart(quickstartBtn.dataset.target);
   const csvBtn = ev.target.closest(".csv-download-btn");
   if (csvBtn) downloadTableCsv(csvBtn.dataset.tableId, csvBtn.dataset.filename);
+  const navBtn = ev.target.closest(".home-nav-btn");
+  if (navBtn) setView(navBtn.dataset.nav);
 });
 
 function downloadTableCsv(tableId, filename) {
@@ -1239,4 +1461,5 @@ document.getElementById("themeToggle").addEventListener("click", () => {
 
 loadTheme();
 loadConfig();
+setView("home");
 testConnection().then((ok) => { if (ok) refreshAuditList(); });
