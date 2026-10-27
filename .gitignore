@@ -26,3 +26,4 @@ dist/
 reports/*.xml
 reports/*.json
 reports/*.pdf
+commands.txt
