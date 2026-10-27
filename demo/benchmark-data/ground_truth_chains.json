@@ -33,6 +33,54 @@
           "target_endpoint": "/rest/admin/application-configuration",
           "cvss_score": 6.5,
           "exploit_chain": ["GET /rest/admin/application-configuration"]
+        },
+        {
+          "vuln_id": "JS-04",
+          "name": "Database Schema Disclosure via SQL Injection",
+          "owasp_category": "API8:2023 - Security Misconfiguration",
+          "target_endpoint": "/rest/products/search",
+          "cvss_score": 7.5,
+          "exploit_chain": ["GET /rest/products/search?q=UNION-based SQLi payload"]
+        },
+        {
+          "vuln_id": "JS-05",
+          "name": "Confidential Document Disclosure",
+          "owasp_category": "API8:2023 - Security Misconfiguration",
+          "target_endpoint": "/ftp/acquisitions.md",
+          "cvss_score": 5.3,
+          "exploit_chain": ["GET /ftp/acquisitions.md"]
+        },
+        {
+          "vuln_id": "JS-06",
+          "name": "Forgotten Developer Backup via Null-Byte Filter Bypass",
+          "owasp_category": "API8:2023 - Security Misconfiguration",
+          "target_endpoint": "/ftp/package.json.bak",
+          "cvss_score": 5.3,
+          "exploit_chain": ["GET /ftp/package.json.bak with a double-decode null-byte suffix bypassing the extension filter"]
+        },
+        {
+          "vuln_id": "JS-07",
+          "name": "Exposed Observability Metrics",
+          "owasp_category": "API8:2023 - Security Misconfiguration",
+          "target_endpoint": "/metrics",
+          "cvss_score": 5.3,
+          "exploit_chain": ["GET /metrics"]
+        },
+        {
+          "vuln_id": "JS-08",
+          "name": "View Another User's Basket (BOLA)",
+          "owasp_category": "API1:2023 - Broken Object Level Authorization",
+          "target_endpoint": "/rest/basket/{id}",
+          "cvss_score": 4.3,
+          "exploit_chain": ["POST /api/Users", "POST /rest/user/login", "GET /rest/basket/1"]
+        },
+        {
+          "vuln_id": "JS-09",
+          "name": "Payback Time: Negative-Price Order via Unchecked Quantity",
+          "owasp_category": "API6:2023 - Unrestricted Access to Sensitive Business Flows",
+          "target_endpoint": "/rest/order-history",
+          "cvss_score": 6.5,
+          "exploit_chain": ["POST /api/Users", "POST /rest/user/login", "POST /api/BasketItems with quantity=-5", "POST /rest/basket/{bid}/checkout", "GET /rest/order-history"]
         }
       ]
     },

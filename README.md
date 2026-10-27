@@ -73,9 +73,10 @@ no framework — with three views:
   graphed: a clickable node map, a status-code breakdown (protected / exposed
   / crashed), a per-resource-area chart, and Juice Shop's own challenge
   tracker confirming what got solved.
-- **Baselines & Results** — the scored evaluation: PenAgent (autonomous and
-  guided) against three local Ollama models running a prompt-only baseline,
-  per target, with the full metrics table.
+- **Baselines & Results** — the scored evaluation: PenAgent (guided) against
+  all six local Ollama models, each run both as a single-shot prompt-only
+  baseline and as a more faithful multi-stage PentestGPT reproduction, per
+  target, with the full metrics table.
 
 ## Repository layout
 
@@ -168,8 +169,8 @@ Then, the full scored evaluation and the unscored full-surface exploration:
 .\.venv\Scripts\python.exe -B -m demo.export_ui_data
 ```
 
-`demo.run_evaluation` scores PenAgent (autonomous and ground-truth-guided)
-against DVWS, SREBench-API and Juice Shop's documented exploit chains — see
+`demo.run_evaluation` scores PenAgent (ground-truth-guided) against DVWS,
+SREBench-API and Juice Shop's documented exploit chains — see
 [docs/RESULTS.md](docs/RESULTS.md). `demo.explore_run` runs every real route
 each target exposes with no curation and no scoring — every DVWS route, and
 every Juice Shop route read directly off the live container — auto-approving
@@ -227,7 +228,8 @@ Other utilities:
 | `demo.juice_check --url <authorized-origin>` | Supplementary read-only C3/C4 root request to an explicitly authorized target |
 | `demo.docker_verify --restart-check --output reports/docker-gemini.json` | Compare saved state/evidence after restarting C3/C4/C6 |
 | `demo.testenv_verify --output reports/testenv-verify.json` | C3→C5→C4→C6 smoke check against the real `monisha117/penagent-target-env` container (see [images/README.md](images/README.md)) |
-| `demo.run_evaluation --output reports/eval-final` | Scored evaluation: autonomous + ground-truth-guided, all 3 real targets |
+| `demo.run_evaluation --output reports/eval-final` | Scored evaluation: ground-truth-guided, all 3 real targets |
+| `demo.pentestgpt --model <name> --output reports/pentestgpt-final` | Multi-stage PentestGPT reproduction baseline, same scoring as above |
 | `demo.explore_run --output reports/explore` | Unscored full-surface run: every real route on DVWS and Juice Shop |
 | `demo.export_ui_data` | Exports evaluation, exploration and baseline results to `ui/data/` |
 

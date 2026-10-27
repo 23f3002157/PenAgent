@@ -77,10 +77,18 @@ def _matches(finding: dict, ground_truth_entry: dict) -> bool:
     # ("/accounts/2", as SREBench's curated exploit_chain always is -- it has
     # no separate target_endpoint field). For the latter, the finding's title
     # keeps the node's own {param} placeholder, so compare the static
-    # directory prefix (up to the final "/") instead of the exact string.
+    # directory prefix (up to the final "/") instead of the exact string --
+    # but only when the final segment looks like a resolved ID (no "."), not
+    # a static filename. Two different static files in the same directory
+    # ("/ftp/acquisitions.md" vs "/ftp/package.json.bak") would otherwise
+    # both reduce to the same "/ftp/" prefix and wrongly credit one finding
+    # against both ground-truth entries.
     for token in tokens:
         if token in title:
             return True
+        last_segment = token.rsplit("/", 1)[-1]
+        if "." in last_segment:
+            continue
         prefix = token.rsplit("/", 1)[0] + "/"
         if len(prefix) > 1 and prefix in title:
             return True

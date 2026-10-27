@@ -39,6 +39,23 @@ def test_match_findings_category_keyword_matches_dropped_numeric_prefix():
     assert match_findings(findings, GROUND_TRUTH)["X-1"] == findings
 
 
+def test_match_findings_static_files_in_same_directory_do_not_cross_match():
+    # Two distinct static-file disclosures in the same /ftp/ directory --
+    # the directory-prefix fallback (for resolved-ID paths like
+    # "/accounts/2") must not treat them as interchangeable just because
+    # they share a parent directory.
+    ground_truth = [
+        {"vuln_id": "JS-05", "owasp_category": "API8:2023 - Security Misconfiguration",
+         "target_endpoint": "/ftp/acquisitions.md", "cvss_score": 5.3, "exploit_chain": ["GET /ftp/acquisitions.md"]},
+        {"vuln_id": "JS-06", "owasp_category": "API8:2023 - Security Misconfiguration",
+         "target_endpoint": "/ftp/package.json.bak", "cvss_score": 5.3, "exploit_chain": ["GET /ftp/package.json.bak"]},
+    ]
+    findings = [finding("f1", "API8:2023 - Security Misconfiguration", "API8:2023 - Security Misconfiguration on GET /ftp/acquisitions.md", 5.3)]
+    matches = match_findings(findings, ground_truth)
+    assert matches["JS-05"] == findings
+    assert matches["JS-06"] == []
+
+
 def test_match_findings_requires_same_owasp_prefix():
     findings = [finding("f1", "API3:2023 - Broken Object Property Level Authorization", "... /api/v1/accounts/{account_id}", 7.5)]
     assert match_findings(findings, GROUND_TRUTH)["X-1"] == []

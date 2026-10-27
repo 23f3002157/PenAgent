@@ -2,6 +2,7 @@ import pytest
 from executor.service import Executor
 from interpreter.evidence import interpret
 from interpreter.service import Interpreter
+from penagent_common.config import Expectation, OperationPolicy
 from penagent_common.models import Category, ExecutionResult, Parsed, Probe
 from penagent_common.policy import Rejected
 from test_executor import transport
@@ -23,6 +24,39 @@ def test_five_classifications(settings, hypothesis, probe, code, data, expected)
     assert output.evidence_refs == ["p", "hash"]
     if code >= 500:
         assert output.next_action == "stop" and "unproven" in output.reasoning_summary
+
+
+def _text_rule(forbidden_substrings):
+    return OperationPolicy(method="GET", path="/ftp/leaked.md",
+        expectation=Expectation(expected_behavior="A static file disclosure must never expose configured secret markers",
+            forbidden_substrings=forbidden_substrings))
+
+
+@pytest.mark.parametrize("body,forbidden,expected", [
+    # forbidden_values/protected_fields/signal_fields all walk JSON paths via
+    # lookup() and have no way to address a flat string -- before
+    # forbidden_substrings, a text-body disclosure like this could never
+    # reach CONFIRMED/STRONG no matter what it leaked.
+    ("# Confidential\nDB_PASSWORD=hunter2\nAWS_SECRET=abc123", ["DB_PASSWORD=hunter2", "AWS_SECRET=abc123"], Category.CONFIRMED_VULNERABILITY),
+    ("# Confidential\nDB_PASSWORD=hunter2\n", ["DB_PASSWORD=hunter2", "AWS_SECRET=abc123"], Category.STRONG_SIGNAL),
+    ("# Public changelog\nv1.0.0 released", ["DB_PASSWORD=hunter2", "AWS_SECRET=abc123"], Category.WEAK_SIGNAL),
+])
+def test_text_body_forbidden_substrings(hypothesis, probe, body, forbidden, expected):
+    rule = _text_rule(forbidden)
+    result = ExecutionResult(audit_id="audit", hypothesis_id="h1", probe_id="p", correlation_id="c", op="op_read",
+        status="executed", status_code=200, parsed=Parsed(kind="text", data=body, body_sha256="hash"))
+    output = interpret(result, hypothesis, probe, rule)
+    assert output.classification == expected
+
+
+def test_text_body_json_response_not_matched_as_text(hypothesis, probe):
+    # A JSON body's parsed `data` is a dict, not a string -- forbidden_substrings
+    # must not match against its repr() or any other stringified form.
+    rule = _text_rule(["DB_PASSWORD=hunter2"])
+    result = ExecutionResult(audit_id="audit", hypothesis_id="h1", probe_id="p", correlation_id="c", op="op_read",
+        status="executed", status_code=200, parsed=Parsed(kind="json", data={"note": "DB_PASSWORD=hunter2"}, body_sha256="hash"))
+    output = interpret(result, hypothesis, probe, rule)
+    assert output.classification == Category.WEAK_SIGNAL
 
 
 def test_timeout_not_crash(settings, hypothesis, probe):

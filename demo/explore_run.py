@@ -44,7 +44,6 @@ from report.synth import build_report
 
 from demo import eval_targets
 from demo.evaluate import juice_shop_challenge_delta
-from demo.run_evaluation import autonomous_run
 
 BENCHMARK_DATA = Path(__file__).resolve().parent / "benchmark-data"
 
@@ -296,7 +295,7 @@ async def run_juice_shop_session(directory: Path) -> dict:
 
 
 def dvws_full_operations() -> dict:
-    ops = eval_targets.dvws_operations("autonomous")
+    ops = eval_targets.dvws_operations()
     ops["op_js_export_data_api_v1_export_data_get"] = {
         "method": "GET", "path": "/api/v1/export/data", "risk": "safe",
         "expectation": {"expected_behavior": "Data export must not be callable without an authenticated, owning session"},
@@ -332,23 +331,17 @@ async def juice_shop_challenges() -> list[dict]:
 async def run_juice_shop(directory: Path) -> dict:
     before = await juice_shop_challenges()
     ops = juice_shop_full_operations()
-    spec_info = {"base_url": eval_targets.JUICE_SHOP, "spec_url": str(BENCHMARK_DATA / "specs" / "juice_shop_full.json")}
-    autonomous = await autonomous_run("juice-shop", spec_info, ops, directory,
-                                       max_hypotheses=100, max_probes=150, approve_all=True, max_iterations=150)
     direct = await direct_run("juice-shop", ops, directory)
     session = await run_juice_shop_session(directory)
     after = await juice_shop_challenges()
-    return {"target": "juice-shop", "ops_authorized": len(ops["operations"]), "autonomous": autonomous, "direct": direct,
+    return {"target": "juice-shop", "ops_authorized": len(ops["operations"]), "direct": direct,
             "session": session, "challenge_delta": juice_shop_challenge_delta(before, after)}
 
 
 async def run_dvws(directory: Path) -> dict:
     ops = dvws_full_operations()
-    spec_info = {"base_url": eval_targets.DVWS, "spec_url": eval_targets.DVWS + "/openapi.json"}
-    autonomous = await autonomous_run("dvws", spec_info, ops, directory,
-                                       max_hypotheses=30, max_probes=60, approve_all=True, max_iterations=60)
     direct = await direct_run("dvws", ops, directory)
-    return {"target": "dvws", "ops_authorized": len(ops["operations"]), "autonomous": autonomous, "direct": direct}
+    return {"target": "dvws", "ops_authorized": len(ops["operations"]), "direct": direct}
 
 
 def _findings_lines(report: dict) -> list[str]:
@@ -365,9 +358,6 @@ def _findings_lines(report: dict) -> list[str]:
 
 def summarize(result: dict) -> str:
     lines = [f"== {result['target']} (ops authorized: {result['ops_authorized']}) =="]
-    auto = result["autonomous"]
-    lines.append(f"  -- fully autonomous (real C1/C2 discovery, zero hints, {len(auto.get('probe_statuses', []))} probes) --")
-    lines.extend(_findings_lines(auto["report"]))
     direct = result["direct"]
     lines.append(f"  -- direct run (every authorized op, plain generic inputs, {len(direct['probe_statuses'])} probes) --")
     lines.extend(_findings_lines(direct["report"]))

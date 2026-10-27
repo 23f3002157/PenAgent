@@ -46,7 +46,7 @@ def main():
         raise SystemExit(f"{CONFIG_PATH} not found -- run `python -m demo.prepare_docker` first.")
     config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     gateway_ip = container_gateway_ip()
-    live_targets = eval_targets.all_targets("guided")
+    live_targets = eval_targets.all_targets()
     for target_id, target in live_targets.items():
         config["targets"][target_id] = rewrite_base_url(target, gateway_ip)
     CONFIG_PATH.write_text(json.dumps(config, indent=2), encoding="utf-8")

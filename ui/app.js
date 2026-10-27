@@ -652,7 +652,6 @@ async function fetchResults() {
 function resultsTableRows(target, results) {
   const pa = results.penagent[target] || {};
   const rows = [];
-  if (pa.autonomous) rows.push(["PenAgent (autonomous)", pa.autonomous]);
   if (pa.guided) rows.push(["PenAgent (guided)", pa.guided]);
   for (const [model, byTarget] of Object.entries(results.baseline)) {
     const entry = byTarget[target];
@@ -685,7 +684,6 @@ function renderResultsTable(target, results) {
 function renderTargetCard(target, results) {
   const pa = results.penagent[target] || {};
   const bars = [];
-  if (pa.autonomous) bars.push(["PenAgent (autonomous)", pa.autonomous.true_positive_rate, true]);
   if (pa.guided) bars.push(["PenAgent (guided)", pa.guided.true_positive_rate, true]);
   for (const [model, byTarget] of Object.entries(results.baseline)) {
     const entry = byTarget[target];
@@ -794,10 +792,9 @@ async function renderBaselinesView() {
   main.innerHTML = `
     <div class="view-header">
       <h1>Baselines &amp; Results</h1>
-      <p class="muted">PenAgent (autonomous discovery vs. ground-truth-guided execution) against six local-model
-        PentestGPT-style baselines (Ollama, 1B–4.3B parameters, prompt-only reasoning, no execution), on DVWS,
-        SREBench-API and Juice Shop. "Autonomous" and "guided" are never the same number — see
-        <code>docs/RESULTS.md</code> for the full methodology.</p>
+      <p class="muted">PenAgent (ground-truth-guided execution through the real C3→C5→C4→C6 pipeline) against six
+        local-model PentestGPT-style baselines (Ollama, 1B–4.3B parameters, prompt-only reasoning, no execution), on
+        DVWS, SREBench-API and Juice Shop — see <code>docs/RESULTS.md</code> for the full methodology.</p>
     </div>
     ${comparisonSection}
     ${cards}
@@ -1046,22 +1043,20 @@ function selectExploreOp(targetId, opId) {
 function renderExploreTargetCard(targetId, data) {
   const total = data.op_outcomes.length;
   const directFindings = data.direct_findings || [];
-  const autoFindings = data.autonomous_findings || [];
   const findingsHtml = directFindings.length
     ? directFindings.map(findingCard).join("")
-    : '<p class="empty-tab">PenAgent\'s own classifier called every probe WEAK_SIGNAL here — deliberately generic, non-curated expectations (no "this exact field is the violation" hints), so it has no basis to confirm anything on its own. See the challenge tracker above for an independent signal.</p>';
+    : '<p class="empty-tab">PenAgent\'s own classifier called every probe WEAK_SIGNAL here — this run uses deliberately generic, non-curated expectations (no "this exact field is the violation" hints), so it has no basis to confirm anything on its own. See the challenge tracker above for an independent signal, or the Results view for scored findings against curated ground truth.</p>';
   const selectedOp = (state.exploreSelected || {})[targetId];
   return `
     <div class="explore-target-card">
       <div class="explore-target-head">
         <h2>${escapeHtml(EXPLORE_TARGET_LABELS[targetId] || targetId)}</h2>
-        <span class="muted">${data.ops_authorized} real routes authorized · ${data.direct_probes} executed directly · ${data.autonomous_probes} reached by zero-hint autonomous discovery</span>
+        <span class="muted">${data.ops_authorized} real routes authorized · ${data.direct_probes} executed directly</span>
       </div>
       <div class="stat-row">
         <div class="stat-tile"><div class="stat-value">${data.ops_authorized}</div><div class="stat-label">real routes authorized</div></div>
         <div class="stat-tile"><div class="stat-value">${data.direct_probes}</div><div class="stat-label">probes executed</div></div>
         <div class="stat-tile"><div class="stat-value">${directFindings.length}</div><div class="stat-label">STRONG/CONFIRMED findings</div></div>
-        <div class="stat-tile"><div class="stat-value">${autoFindings.length}</div><div class="stat-label">found with zero hints (C1→C2→C3)</div></div>
       </div>
       ${statusChartHtml(data.status_buckets, total)}
       ${methodChipsHtml(data.method_breakdown)}
@@ -1119,12 +1114,11 @@ async function renderExplorationView() {
     <div class="view-header">
       <h1>Exploration</h1>
       <p class="muted">PenAgent let loose on every real route each target actually exposes — not a curated
-        benchmark subset, and nothing here is scored against hidden ground truth. "Direct run" means every
-        authorized op was executed once with a plain, generic input (a guessed ID, a classic SQLi probe on
-        login, an extra <code>role</code> field on registration) — standard first-pass pentest technique,
-        not inside knowledge of the target. "Zero-hint autonomous" is real C1 spec ingestion → C2 hypothesis
-        generation → C3 execution with no human-supplied input at all — the honest ceiling of unaided discovery
-        today (see <code>docs/RESULTS.md</code>).</p>
+        benchmark subset, and nothing here is scored against hidden ground truth. Every authorized op was
+        executed once with a plain, generic input (a guessed ID, a classic SQLi probe on login, an extra
+        <code>role</code> field on registration) — standard first-pass pentest technique, not inside knowledge
+        of the target (see <code>docs/RESULTS.md</code> for the scored, ground-truth-guided numbers these
+        same techniques feed into once chained into a real login session).</p>
     </div>
     ${targets.map((t) => renderExploreTargetCard(t, explore[t])).join("")}
   `;

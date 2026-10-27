@@ -58,15 +58,29 @@ def main():
     call(args.c3, "POST", "/v1/audits", operator_token,
          {"audit_id": audit, "target_id": args.target, "acknowledged_authorization": True})
 
-    operations = all_targets("guided")[args.target]["operations"]
-    for i, (op_id, binding) in enumerate(GUIDED_CHAINS[args.target]):
-        if isinstance(binding.get("body"), dict) and binding["body"].get("email") == "__DYNAMIC__":
-            binding = dict(binding, body=dict(binding["body"], email=f"live-{secrets.token_hex(6)}@test.local"))
-        categories = operations[op_id]["expectation"].get("owasp_categories") or []
+    operations = all_targets()[args.target]["operations"]
+    chain = GUIDED_CHAINS[args.target]
+    # No live Python state to capture into here -- this script replays each
+    # step through the real, already-running C3 over plain HTTP, and the
+    # public probe-result endpoint never returns raw response bodies (by
+    # design: see penagent_common.policy.redact). A step whose binding needs
+    # an earlier step's captured value (Juice Shop's basket id) has nothing
+    # to resolve it with and is skipped, cleanly, with an explanation --
+    # not guessed, not silently sent with a placeholder.
+    ctx = {"email": f"live-{secrets.token_hex(6)}@test.local", "password": "Test1234!"}
+    for i, step in enumerate(chain):
+        op_id = step["op"]
+        try:
+            binding = step["binding"](ctx) if callable(step["binding"]) else step["binding"]
+        except KeyError:
+            print(f"\n[{i + 1}/{len(chain)}] {op_id} -- skipped (needs a value from an earlier step this "
+                  f"HTTP-only demo can't observe; the public probe result never returns a raw response body)")
+            continue
+        categories = operations.get(op_id, {}).get("expectation", {}).get("owasp_categories") or []
         category = categories[0] if categories else "guided-demo"
         hypothesis = {"id": f"{audit}-h{i}", "target_endpoints": [op_id], "owasp_category": category,
                       "attack_sequence": [{"step": 1, "op": op_id}]}
-        print(f"\n[{i + 1}/{len(GUIDED_CHAINS[args.target])}] {op_id} ...")
+        print(f"\n[{i + 1}/{len(chain)}] {op_id} ...")
         result = call(args.c3, "POST", f"/v1/audits/{audit}/probes", operator_token,
                       {"hypothesis": hypothesis, "probe": {"hypothesis_id": hypothesis["id"], "op": op_id, "binding": binding}})
         print(f"    -> {result['status']} (HTTP {result.get('status_code')})")

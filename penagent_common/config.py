@@ -13,8 +13,15 @@ class Expectation(StrictModel):
     denied_statuses: list[int] = Field(default_factory=lambda: [401, 403])
     protected_fields: list[str] = Field(default_factory=list)
     # Paths into JSON, configured by an authorized operator, never a target/LLM.
-    forbidden_values: dict[str, str | int | bool] = Field(default_factory=dict)
+    forbidden_values: dict[str, str | int | float | bool] = Field(default_factory=dict)
     signal_fields: list[str] = Field(default_factory=list)
+    # Literal substrings, operator-configured, checked against a plain-text (not
+    # JSON) response body -- forbidden_values/protected_fields walk JSON paths
+    # and can't address a flat string, which previously meant text-body
+    # disclosures (a leaked file's contents, a plaintext secret) could never
+    # reach CONFIRMED/STRONG regardless of how sensitive the body was. All of
+    # these present confirms; any one present is a strong signal.
+    forbidden_substrings: list[str] = Field(default_factory=list)
     requires_anonymous: bool = True
     owasp_categories: list[str] = Field(default_factory=list)
 

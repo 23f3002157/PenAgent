@@ -9,23 +9,35 @@ from pathlib import Path
 
 from demo.eval_targets import all_targets
 from demo.evaluate import compute_metrics
-from demo.run_evaluation import GUIDED_CHAINS, TARGET_SPECS, ground_truth_entries
+from demo.run_evaluation import GUIDED_CHAINS, TARGET_SPECS, _JUICE_SHOP_PLUMBING_OPS, ground_truth_entries
 
 UI_DATA = Path(__file__).resolve().parent.parent / "ui" / "data"
 
 
 def export_guided_chains():
-    operations_by_target = {t: all_targets("guided")[t]["operations"] for t in GUIDED_CHAINS}
+    operations_by_target = {t: all_targets()[t]["operations"] for t in GUIDED_CHAINS}
+    operations_by_target["juice-shop"] = {**operations_by_target["juice-shop"], **_JUICE_SHOP_PLUMBING_OPS}
+    # A dummy context so callable bindings (Juice Shop's register -> login ->
+    # reuse-the-token chain) resolve to *something* exportable -- the UI's
+    # guided-run panel drives independent single-shot probes and doesn't
+    # (yet) thread a captured token across clicks, so a session-dependent
+    # step exports with placeholder values and a flag the UI can show.
+    dummy_ctx = {"email": "__DYNAMIC__", "password": "Test1234!", "token": "__NEEDS_LIVE_SESSION__", "bid": "__NEEDS_LIVE_SESSION__"}
     chains = {}
     for target_id, steps in GUIDED_CHAINS.items():
         ops = operations_by_target[target_id]
         chains[target_id] = []
-        for op_id, binding in steps:
+        for step in steps:
+            op_id = step["op"]
             categories = ops[op_id]["expectation"].get("owasp_categories") or []
+            try:
+                binding = step["binding"](dummy_ctx) if callable(step["binding"]) else step["binding"]
+            except (KeyError, TypeError):
+                binding = {}
             chains[target_id].append({
                 "op": op_id, "method": ops[op_id]["method"], "path": ops[op_id]["path"],
                 "owasp_category": categories[0] if categories else "guided-demo",
-                "binding": binding,
+                "binding": binding, "needs_live_session": bool(step.get("needs_auth")),
             })
     return chains
 
@@ -54,17 +66,18 @@ def _average_metrics(metrics_list: list[dict]) -> dict:
 
 
 def export_comparison(results: dict) -> dict:
-    """Aggregate, across all 3 targets, PenAgent (guided + autonomous) against
-    every local Ollama baseline model -- the head-to-head the paper's Section
-    6.3 asks for, computed from the same per-target metrics already in
-    results.json, not re-derived by hand."""
+    """Aggregate, across all 3 targets, PenAgent (guided) against every local
+    Ollama baseline model -- the head-to-head the paper's Section 6.3 asks
+    for, computed from the same per-target metrics already in results.json,
+    not re-derived by hand. Fully-autonomous zero-hint discovery is no
+    longer run or reported -- see demo/run_evaluation.py's module docstring
+    for why repeating it added no new information."""
     targets = list(results["penagent"].keys())
     rows = []
-    for mode, label in [("guided", "PenAgent (guided)"), ("autonomous", "PenAgent (autonomous)")]:
-        per_target = [results["penagent"][t][mode] for t in targets if mode in results["penagent"][t]]
-        if per_target:
-            rows.append({"id": f"penagent-{mode}", "label": label, "is_penagent": True,
-                         "metrics": _average_metrics(per_target), "params_b": None, "quant": None})
+    per_target = [results["penagent"][t]["guided"] for t in targets if "guided" in results["penagent"][t]]
+    if per_target:
+        rows.append({"id": "penagent-guided", "label": "PenAgent (guided)", "is_penagent": True,
+                     "metrics": _average_metrics(per_target), "params_b": None, "quant": None})
     for model, per_target_map in results["baseline"].items():
         per_target = [per_target_map[t]["metrics"] for t in targets if t in per_target_map]
         if not per_target:
@@ -80,13 +93,11 @@ def export_comparison(results: dict) -> dict:
 def export_results():
     repo = Path(__file__).resolve().parent.parent
     result = {"penagent": {}, "baseline": {}}
-    for mode, filename in [("autonomous", "eval-final-autonomous.json"), ("guided", "eval-final-guided.json")]:
-        path = repo / "reports" / filename
-        if not path.exists():
-            continue
+    path = repo / "reports" / "eval-final-guided.json"
+    if path.exists():
         for run in json.loads(path.read_text()):
             gt = ground_truth_entries(TARGET_SPECS[run["target"]]["ground_truth_key"])
-            result["penagent"].setdefault(run["target"], {})[mode] = compute_metrics(run, gt)
+            result["penagent"].setdefault(run["target"], {})["guided"] = compute_metrics(run, gt)
     for path in sorted((repo / "reports").glob("baseline-final-*.json")):
         model = path.stem.split("baseline-final-")[1]
         for run in json.loads(path.read_text()):
@@ -155,7 +166,7 @@ def _categorize(target_id, path):
 
 
 def _explore_target(target_id: str, run: dict, operations: dict) -> dict:
-    direct, autonomous = run["direct"], run["autonomous"]
+    direct = run["direct"]
     buckets = {"protected": 0, "exposed": 0, "crash": 0, "other": 0}
     category_breakdown = {}
     method_breakdown = {}
@@ -176,8 +187,6 @@ def _explore_target(target_id: str, run: dict, operations: dict) -> dict:
         "method_breakdown": method_breakdown,
         "op_outcomes": outcomes,
         "direct_findings": direct["report"]["findings"],
-        "autonomous_findings": autonomous["report"]["findings"],
-        "autonomous_probes": len(autonomous.get("probe_statuses", [])),
         "direct_probes": len(direct["probe_statuses"]),
         "challenge_delta": run.get("challenge_delta"),
     }

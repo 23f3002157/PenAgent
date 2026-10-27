@@ -10,27 +10,12 @@
       "label": "PenAgent (guided)",
       "is_penagent": true,
       "metrics": {
-        "true_positive_rate": 0.711,
+        "true_positive_rate": 0.859,
         "false_positive_rate": 0.0,
         "precision": 1.0,
-        "recall": 0.711,
-        "f1_score": 0.796,
-        "cvss_score_accuracy": 0.827
-      },
-      "params_b": null,
-      "quant": null
-    },
-    {
-      "id": "penagent-autonomous",
-      "label": "PenAgent (autonomous)",
-      "is_penagent": true,
-      "metrics": {
-        "true_positive_rate": 0.0,
-        "false_positive_rate": 0.0,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1_score": 0.0,
-        "cvss_score_accuracy": null
+        "recall": 0.859,
+        "f1_score": 0.921,
+        "cvss_score_accuracy": 0.793
       },
       "params_b": null,
       "quant": null
@@ -40,80 +25,80 @@
       "label": "Gemma 2 2B",
       "is_penagent": false,
       "metrics": {
-        "true_positive_rate": 0.578,
-        "false_positive_rate": 0.444,
-        "precision": 0.556,
-        "recall": 0.578,
+        "true_positive_rate": 0.541,
+        "false_positive_rate": 0.333,
+        "precision": 0.667,
+        "recall": 0.541,
         "f1_score": 0.544,
-        "cvss_score_accuracy": 0.162
+        "cvss_score_accuracy": 0.188
       },
       "params_b": 2.6,
       "quant": "Q4_0",
-      "avg_wall_clock_seconds": 8.01
+      "avg_wall_clock_seconds": 4.13
     },
     {
       "id": "gemma3-1b-it-qat",
       "label": "Gemma 3 1B",
       "is_penagent": false,
       "metrics": {
-        "true_positive_rate": 0.711,
+        "true_positive_rate": 0.674,
         "false_positive_rate": 0.394,
-        "precision": 0.456,
-        "recall": 0.711,
-        "f1_score": 0.548,
-        "cvss_score_accuracy": 0.188
+        "precision": 0.522,
+        "recall": 0.674,
+        "f1_score": 0.56,
+        "cvss_score_accuracy": 0.242
       },
       "params_b": 1.0,
       "quant": "Q4_0",
-      "avg_wall_clock_seconds": 8.33
+      "avg_wall_clock_seconds": 4.51
     },
     {
       "id": "gemma3-4b",
       "label": "Gemma 3 4B",
       "is_penagent": false,
       "metrics": {
-        "true_positive_rate": 0.756,
-        "false_positive_rate": 0.328,
-        "precision": 0.467,
-        "recall": 0.756,
-        "f1_score": 0.571,
-        "cvss_score_accuracy": 0.179
+        "true_positive_rate": 0.681,
+        "false_positive_rate": 0.261,
+        "precision": 0.6,
+        "recall": 0.681,
+        "f1_score": 0.594,
+        "cvss_score_accuracy": 0.219
       },
       "params_b": 4.3,
       "quant": "Q4_K_M",
-      "avg_wall_clock_seconds": 9.94
+      "avg_wall_clock_seconds": 9.95
     },
     {
       "id": "llama3.2-3b",
       "label": "Llama 3.2 3B",
       "is_penagent": false,
       "metrics": {
-        "true_positive_rate": 0.689,
-        "false_positive_rate": 0.333,
-        "precision": 0.667,
-        "recall": 0.689,
+        "true_positive_rate": 0.615,
+        "false_positive_rate": 0.222,
+        "precision": 0.889,
+        "recall": 0.615,
         "f1_score": 0.656,
-        "cvss_score_accuracy": 0.223
+        "cvss_score_accuracy": 0.25
       },
       "params_b": 3.2,
       "quant": "Q4_K_M",
-      "avg_wall_clock_seconds": 4.26
+      "avg_wall_clock_seconds": 4.29
     },
     {
       "id": "phi3-latest",
       "label": "Phi-3 3.8B",
       "is_penagent": false,
       "metrics": {
-        "true_positive_rate": 0.8,
-        "false_positive_rate": 0.378,
-        "precision": 0.556,
-        "recall": 0.8,
-        "f1_score": 0.65,
-        "cvss_score_accuracy": 0.204
+        "true_positive_rate": 0.652,
+        "false_positive_rate": 0.311,
+        "precision": 0.689,
+        "recall": 0.652,
+        "f1_score": 0.638,
+        "cvss_score_accuracy": 0.231
       },
       "params_b": 3.8,
       "quant": "Q4_0",
-      "avg_wall_clock_seconds": 8.21
+      "avg_wall_clock_seconds": 8.16
     },
     {
       "id": "qwen-latest",
@@ -129,7 +114,7 @@
       },
       "params_b": 4.0,
       "quant": "Q4_0",
-      "avg_wall_clock_seconds": 2.57
+      "avg_wall_clock_seconds": 2.4
     }
   ]
 }

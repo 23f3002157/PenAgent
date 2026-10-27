@@ -486,18 +486,42 @@
       }
     ],
     "direct_findings": [],
-    "autonomous_findings": [],
-    "autonomous_probes": 6,
     "direct_probes": 46,
     "challenge_delta": {
-      "newly_solved_count": 0,
-      "newly_solved": [],
+      "newly_solved_count": 5,
+      "newly_solved": [
+        {
+          "id": 23,
+          "name": "Easter Egg",
+          "category": "Broken Access Control"
+        },
+        {
+          "id": 36,
+          "name": "Forgotten Sales Backup",
+          "category": "Sensitive Data Exposure"
+        },
+        {
+          "id": 45,
+          "name": "Login Admin",
+          "category": "Injection"
+        },
+        {
+          "id": 53,
+          "name": "Misplaced Signature File",
+          "category": "Observability Failures"
+        },
+        {
+          "id": 76,
+          "name": "Security Policy",
+          "category": "Miscellaneous"
+        }
+      ],
       "total_challenges": 112,
-      "total_solved_before": 4,
-      "total_solved_after": 4
+      "total_solved_before": 10,
+      "total_solved_after": 15
     },
     "current_solved": {
-      "total_solved": 4,
+      "total_solved": 15,
       "total_challenges": 112,
       "solved": [
         {
@@ -506,9 +530,34 @@
           "difficulty": 3
         },
         {
+          "name": "Confidential Document",
+          "category": "Sensitive Data Exposure",
+          "difficulty": 1
+        },
+        {
+          "name": "Database Schema",
+          "category": "Injection",
+          "difficulty": 3
+        },
+        {
+          "name": "Easter Egg",
+          "category": "Broken Access Control",
+          "difficulty": 4
+        },
+        {
           "name": "Error Handling",
           "category": "Security Misconfiguration",
           "difficulty": 1
+        },
+        {
+          "name": "Forgotten Developer Backup",
+          "category": "Sensitive Data Exposure",
+          "difficulty": 4
+        },
+        {
+          "name": "Forgotten Sales Backup",
+          "category": "Sensitive Data Exposure",
+          "difficulty": 4
         },
         {
           "name": "Login Admin",
@@ -516,9 +565,39 @@
           "difficulty": 2
         },
         {
+          "name": "Misplaced Signature File",
+          "category": "Observability Failures",
+          "difficulty": 4
+        },
+        {
+          "name": "Payback Time",
+          "category": "Improper Input Validation",
+          "difficulty": 3
+        },
+        {
           "name": "Repetitive Registration",
           "category": "Improper Input Validation",
           "difficulty": 1
+        },
+        {
+          "name": "Security Policy",
+          "category": "Miscellaneous",
+          "difficulty": 2
+        },
+        {
+          "name": "View Basket",
+          "category": "Broken Access Control",
+          "difficulty": 2
+        },
+        {
+          "name": "Exposed Metrics",
+          "category": "Observability Failures",
+          "difficulty": 1
+        },
+        {
+          "name": "Poison Null Byte",
+          "category": "Improper Input Validation",
+          "difficulty": 4
         }
       ]
     }
@@ -615,22 +694,22 @@
     ],
     "direct_findings": [
       {
-        "finding_id": "6d1d2f5377ce9d55",
-        "title": "exploration on GET /api/v1/accounts/{account_id}",
-        "owasp_category": "exploration",
-        "classification": "STRONG_SIGNAL",
-        "confidence": 0.75,
+        "finding_id": "279ce24da89d5497",
+        "title": "API1:2023 - Broken Object Level Authorization on GET /api/v1/accounts/{account_id}",
+        "owasp_category": "API1:2023 - Broken Object Level Authorization",
+        "classification": "CONFIRMED_VULNERABILITY",
+        "confidence": 0.98,
         "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
         "cvss_score": 7.5,
         "severity": "high",
         "probe_chain": [
-          "218d1521516548f5b2424cfccf03780d"
+          "fcaf0e3e920e40558b4657e81dea8b16"
         ],
         "request_summary": [
           {
-            "audit_id": "dvws-explore-0-010445",
+            "audit_id": "dvws-explore-0-8fa4eb",
             "hypothesis_id": "dvws-explore-0",
-            "probe_id": "218d1521516548f5b2424cfccf03780d",
+            "probe_id": "fcaf0e3e920e40558b4657e81dea8b16",
             "correlation_id": "explore-0",
             "op": "op_get_account_api_v1_accounts__account_id__get",
             "status": "executed",
@@ -638,21 +717,21 @@
             "response_headers": {
               "date": "[REDACTED]",
               "server": "[REDACTED]",
-              "content-length": "101",
+              "content-length": "99",
               "content-type": "application/json"
             },
             "parsed": {
               "kind": "json",
               "data": {
                 "evidence_available": true,
-                "body_sha256": "3cfb9702d05cd118fadb725000368628d42a27a12117f6962a258e103e4cdf64"
+                "body_sha256": "cad946f54ad06fdaa3472695abb468e49cdbf3ce632f53b5610af4da75583143"
               },
               "parse_error": null,
               "artifacts": {},
               "credential_fields": [],
-              "body_sha256": "3cfb9702d05cd118fadb725000368628d42a27a12117f6962a258e103e4cdf64"
+              "body_sha256": "cad946f54ad06fdaa3472695abb468e49cdbf3ce632f53b5610af4da75583143"
             },
-            "latency_ms": 29.62070799912908,
+            "latency_ms": 20.5012499991426,
             "attempts": 1,
             "error": null,
             "approval_required": false,
@@ -661,26 +740,26 @@
             "request_fingerprint": "1c0491fed90196f012471f4ed0d62d208532b4e30e41f31b8d36668bf1d5a86a"
           }
         ],
-        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: An account holder must not be able to read another account's balance or API key.",
-        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+        "explanation": "Configured forbidden object/context values and protected fields were observed in the tested authentication context. Observed: HTTP 200; json; hypothesis API1:2023 - Broken Object Level Authorization. Expected: An account holder must not be able to read another account's balance or API key.",
+        "remediation": "Enforce object-level authorization server-side using the authenticated subject's own identifier; never trust a client-supplied object ID without an ownership check."
       },
       {
-        "finding_id": "d0db64115d9afbfa",
-        "title": "exploration on POST /api/v1/auth/login",
-        "owasp_category": "exploration",
-        "classification": "STRONG_SIGNAL",
-        "confidence": 0.75,
+        "finding_id": "cf006c76ec397013",
+        "title": "API2:2023 - Broken Authentication on POST /api/v1/auth/login",
+        "owasp_category": "API2:2023 - Broken Authentication",
+        "classification": "CONFIRMED_VULNERABILITY",
+        "confidence": 0.98,
         "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
         "cvss_score": 5.3,
         "severity": "medium",
         "probe_chain": [
-          "c58ad4ebe4a44483a238284c4de1e87f"
+          "b73e4c2ab4b04c4687f999e20a18b9af"
         ],
         "request_summary": [
           {
-            "audit_id": "dvws-explore-1-bd019a",
+            "audit_id": "dvws-explore-1-4c1b37",
             "hypothesis_id": "dvws-explore-1",
-            "probe_id": "c58ad4ebe4a44483a238284c4de1e87f",
+            "probe_id": "b73e4c2ab4b04c4687f999e20a18b9af",
             "correlation_id": "explore-1",
             "op": "op_login_api_v1_auth_login_post",
             "status": "executed",
@@ -702,7 +781,7 @@
               "credential_fields": [],
               "body_sha256": "ee70972d338e1ffe7104e2e59f64100eac43d960153ddcb9892d4b7fd83cd93c"
             },
-            "latency_ms": 493.167208000159,
+            "latency_ms": 502.1247080003377,
             "attempts": 1,
             "error": null,
             "approval_required": false,
@@ -711,26 +790,26 @@
             "request_fingerprint": "8b517d6946213f848ee91be8ac68f104a04abed4170f2406804f72143b720ff1"
           }
         ],
-        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: No credential-less request should ever receive an admin-role token.",
-        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+        "explanation": "Configured forbidden object/context values and protected fields were observed in the tested authentication context. Observed: HTTP 200; json; hypothesis API2:2023 - Broken Authentication. Expected: No credential-less request should ever receive an admin-role token.",
+        "remediation": "Strengthen authentication: rotate/revoke any leaked credential, enforce strong token validation, and remove fallbacks that accept a missing or malformed credential."
       },
       {
-        "finding_id": "19afbaf29388fb4a",
-        "title": "exploration on PUT /api/v1/accounts/{account_id}/profile",
-        "owasp_category": "exploration",
-        "classification": "STRONG_SIGNAL",
-        "confidence": 0.75,
+        "finding_id": "9d4557a8338d2b48",
+        "title": "API3:2023 - Broken Object Property Level Authorization on PUT /api/v1/accounts/{account_id}/profile",
+        "owasp_category": "API3:2023 - Broken Object Property Level Authorization",
+        "classification": "CONFIRMED_VULNERABILITY",
+        "confidence": 0.98,
         "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:N",
         "cvss_score": 8.2,
         "severity": "high",
         "probe_chain": [
-          "69ac6d1a7f644342b526d2187c67ebdb"
+          "249b2b627eff4b8a8998da0d3b90e43f"
         ],
         "request_summary": [
           {
-            "audit_id": "dvws-explore-2-3c1e46",
+            "audit_id": "dvws-explore-2-b6ffd9",
             "hypothesis_id": "dvws-explore-2",
-            "probe_id": "69ac6d1a7f644342b526d2187c67ebdb",
+            "probe_id": "249b2b627eff4b8a8998da0d3b90e43f",
             "correlation_id": "explore-2-approved",
             "op": "op_update_profile_api_v1_accounts__account_id__profile_put",
             "status": "executed",
@@ -752,7 +831,7 @@
               "credential_fields": [],
               "body_sha256": "4f3cfbc6bbed6ce78591d828b50f3b0cd50d52cd6f8e727f708aa880209b8806"
             },
-            "latency_ms": 491.3429999996879,
+            "latency_ms": 482.3185419991205,
             "attempts": 1,
             "error": null,
             "approval_required": false,
@@ -761,26 +840,26 @@
             "request_fingerprint": "06451da771458effd9e30556f4e96e41fcad6a3b6c183d7fa3d34f3caa0c2ce5"
           }
         ],
-        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: A profile update must not be able to grant itself an elevated role.",
-        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+        "explanation": "Configured forbidden object/context values and protected fields were observed in the tested authentication context. Observed: HTTP 200; json; hypothesis API3:2023 - Broken Object Property Level Authorization. Expected: A profile update must not be able to grant itself an elevated role.",
+        "remediation": "Apply allow-listed, per-property authorization filters on request/response bodies so clients cannot read or write properties beyond what their role permits."
       },
       {
-        "finding_id": "bcb9df77c7c60b9c",
-        "title": "exploration on DELETE /api/v1/admin/maintenance/purge-cache",
-        "owasp_category": "exploration",
+        "finding_id": "7407bde50ab628e4",
+        "title": "API5:2023 - Broken Function Level Authorization on DELETE /api/v1/admin/maintenance/purge-cache",
+        "owasp_category": "API5:2023 - Broken Function Level Authorization",
         "classification": "STRONG_SIGNAL",
         "confidence": 0.75,
         "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
         "cvss_score": 7.5,
         "severity": "high",
         "probe_chain": [
-          "2d42f7dc6cf0410293b65add023704a8"
+          "d38b080ec979463687e53b87e7f12680"
         ],
         "request_summary": [
           {
-            "audit_id": "dvws-explore-3-e33f91",
+            "audit_id": "dvws-explore-3-3c7900",
             "hypothesis_id": "dvws-explore-3",
-            "probe_id": "2d42f7dc6cf0410293b65add023704a8",
+            "probe_id": "d38b080ec979463687e53b87e7f12680",
             "correlation_id": "explore-3-approved",
             "op": "op_purge_cache_api_v1_admin_maintenance_purge_cache_delete",
             "status": "executed",
@@ -802,7 +881,7 @@
               "credential_fields": [],
               "body_sha256": "c366b6d328d5d0bf1b73a9f96c73d50f1afae1dbb3453e45ef4b97369fb3b0d1"
             },
-            "latency_ms": 474.12858300049265,
+            "latency_ms": 472.37991700058046,
             "attempts": 1,
             "error": null,
             "approval_required": false,
@@ -811,26 +890,26 @@
             "request_fingerprint": "dc01b728d86add4f72e6c4adf32b1887d13b939f676fe1639fcbb6cce5ad0401"
           }
         ],
-        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: A cache purge must never execute without explicit human approval.",
-        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis API5:2023 - Broken Function Level Authorization. Expected: A cache purge must never execute without explicit human approval.",
+        "remediation": "Enforce function-level authorization checks server-side for every administrative or privileged operation, independent of client/UI-level hiding."
       },
       {
-        "finding_id": "451efc3c66dcc67a",
-        "title": "exploration on GET /api/v1/debug/env",
-        "owasp_category": "exploration",
-        "classification": "STRONG_SIGNAL",
-        "confidence": 0.75,
+        "finding_id": "c9ab9f28583bb614",
+        "title": "API8:2023 - Security Misconfiguration on GET /api/v1/debug/env",
+        "owasp_category": "API8:2023 - Security Misconfiguration",
+        "classification": "CONFIRMED_VULNERABILITY",
+        "confidence": 0.98,
         "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
         "cvss_score": 7.5,
         "severity": "high",
         "probe_chain": [
-          "98b052065e004c96b42cc32fdec210ef"
+          "e182db556ebf407793dd9a3e2f60184a"
         ],
         "request_summary": [
           {
-            "audit_id": "dvws-explore-4-d40d8a",
+            "audit_id": "dvws-explore-4-34c279",
             "hypothesis_id": "dvws-explore-4",
-            "probe_id": "98b052065e004c96b42cc32fdec210ef",
+            "probe_id": "e182db556ebf407793dd9a3e2f60184a",
             "correlation_id": "explore-4",
             "op": "op_get_debug_env_api_v1_debug_env_get",
             "status": "executed",
@@ -852,7 +931,7 @@
               "credential_fields": [],
               "body_sha256": "a568e4d285e6851ef11c3066f18da3e5a53530d3da1a21ef58735dfae71996ca"
             },
-            "latency_ms": 482.11937499945634,
+            "latency_ms": 479.75658300129,
             "attempts": 1,
             "error": null,
             "approval_required": false,
@@ -861,63 +940,10 @@
             "request_fingerprint": "d723bfb06066f7bdb5ccee85aa866f8b908492ac2f24c56af715f5c5c31c95d1"
           }
         ],
-        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis exploration. Expected: Anonymous clients must not receive internal credentials or signing secrets.",
-        "remediation": "Review the endpoint's authorization and input-validation logic against the observed evidence and the operator's configured security expectation."
+        "explanation": "Configured forbidden object/context values and protected fields were observed in the tested authentication context. Observed: HTTP 200; json; hypothesis API8:2023 - Security Misconfiguration. Expected: Anonymous clients must not receive internal credentials or signing secrets.",
+        "remediation": "Review configuration for verbose errors, default credentials, unnecessary HTTP methods and permissive CORS; apply hardened security headers."
       }
     ],
-    "autonomous_findings": [
-      {
-        "finding_id": "c4e0dfbb5e09afc7",
-        "title": "API5:BFLA on GET /api/v1/debug/env",
-        "owasp_category": "API5:BFLA",
-        "classification": "STRONG_SIGNAL",
-        "confidence": 0.75,
-        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
-        "cvss_score": 7.5,
-        "severity": "high",
-        "probe_chain": [
-          "cf32829f8f1c4ad5af8d033ad28a7c41"
-        ],
-        "request_summary": [
-          {
-            "audit_id": "dvws-auto-74a0e4",
-            "hypothesis_id": "hyp_36b5f9",
-            "probe_id": "cf32829f8f1c4ad5af8d033ad28a7c41",
-            "correlation_id": "225fda0b1e8344ad8b350e49e9339432",
-            "op": "op_get_debug_env_api_v1_debug_env_get",
-            "status": "executed",
-            "status_code": 200,
-            "response_headers": {
-              "date": "[REDACTED]",
-              "server": "[REDACTED]",
-              "content-length": "146",
-              "content-type": "application/json"
-            },
-            "parsed": {
-              "kind": "json",
-              "data": {
-                "evidence_available": true,
-                "body_sha256": "a568e4d285e6851ef11c3066f18da3e5a53530d3da1a21ef58735dfae71996ca"
-              },
-              "parse_error": null,
-              "artifacts": {},
-              "credential_fields": [],
-              "body_sha256": "a568e4d285e6851ef11c3066f18da3e5a53530d3da1a21ef58735dfae71996ca"
-            },
-            "latency_ms": 228.85425000094983,
-            "attempts": 1,
-            "error": null,
-            "approval_required": false,
-            "risk_classification": "safe",
-            "state_changes": [],
-            "request_fingerprint": "d723bfb06066f7bdb5ccee85aa866f8b908492ac2f24c56af715f5c5c31c95d1"
-          }
-        ],
-        "explanation": "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established. Observed: HTTP 200; json; hypothesis API5:BFLA. Expected: Anonymous clients must not receive internal credentials or signing secrets.",
-        "remediation": "Enforce function-level authorization checks server-side for every administrative or privileged operation, independent of client/UI-level hiding."
-      }
-    ],
-    "autonomous_probes": 3,
     "direct_probes": 6,
     "challenge_delta": null
   }

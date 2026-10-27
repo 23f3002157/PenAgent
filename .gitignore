@@ -27,3 +27,6 @@ reports/*.xml
 reports/*.json
 reports/*.pdf
 commands.txt
+paper-stuff.ipynb
+.ipynb_checkpoints/
+paper-figures/

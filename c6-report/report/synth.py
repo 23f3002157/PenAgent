@@ -60,6 +60,12 @@ def _impact_metrics(rule) -> tuple[str, str, str]:
     operator's own configured policy fields -- never from response content."""
     expectation = getattr(rule, "expectation", None) if rule else None
     protected = len(expectation.protected_fields) if expectation else 0
+    # A text-body disclosure (forbidden_substrings, penagent_common/config.py)
+    # is a real confidentiality signal too -- it just can't be counted via
+    # protected_fields, which only walks JSON paths. Treated as one "protected
+    # field" worth of impact, same tier as a single JSON path match.
+    if expectation and expectation.forbidden_substrings:
+        protected = max(protected, 1)
     c = "H" if protected >= 2 else ("L" if protected == 1 else "N")
     risk = rule.risk if rule else "safe"
     i = {"destructive": "H", "reversible": "L", "safe": "N"}.get(risk, "N")

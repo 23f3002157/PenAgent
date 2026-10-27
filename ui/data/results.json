@@ -1,30 +1,6 @@
 {
   "penagent": {
     "dvws": {
-      "autonomous": {
-        "true_positive_rate": 0.0,
-        "false_positive_rate": 0.0,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1_score": 0.0,
-        "avg_exploit_chain_depth": 1.0,
-        "cvss_score_accuracy": null,
-        "time_to_first_finding_seconds": 0.8089179992675781,
-        "unnecessary_action_rate": 0.333,
-        "replanning_frequency": 0.0,
-        "total_ground_truth": 5,
-        "true_positives": 0,
-        "confirmed_findings": 0,
-        "total_probes": 3,
-        "matched_ground_truth_ids": [],
-        "unmatched_ground_truth_ids": [
-          "DVWS-API1",
-          "DVWS-API2",
-          "DVWS-API3",
-          "DVWS-API5",
-          "DVWS-API8"
-        ]
-      },
       "guided": {
         "true_positive_rate": 0.8,
         "false_positive_rate": 0.0,
@@ -33,7 +9,7 @@
         "f1_score": 0.889,
         "avg_exploit_chain_depth": 1.0,
         "cvss_score_accuracy": 0.86,
-        "time_to_first_finding_seconds": 0.048516273498535156,
+        "time_to_first_finding_seconds": 0.08538413047790527,
         "unnecessary_action_rate": 0.0,
         "replanning_frequency": 0.0,
         "total_ground_truth": 5,
@@ -52,27 +28,6 @@
       }
     },
     "srebench-api": {
-      "autonomous": {
-        "true_positive_rate": 0.0,
-        "false_positive_rate": 0.0,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1_score": 0.0,
-        "avg_exploit_chain_depth": 0.0,
-        "cvss_score_accuracy": null,
-        "time_to_first_finding_seconds": null,
-        "unnecessary_action_rate": 0.0,
-        "replanning_frequency": 0.0,
-        "total_ground_truth": 2,
-        "true_positives": 0,
-        "confirmed_findings": 0,
-        "total_probes": 0,
-        "matched_ground_truth_ids": [],
-        "unmatched_ground_truth_ids": [
-          "SRE-01",
-          "SRE-02"
-        ]
-      },
       "guided": {
         "true_positive_rate": 1.0,
         "false_positive_rate": 0.0,
@@ -81,7 +36,7 @@
         "f1_score": 1.0,
         "avg_exploit_chain_depth": 1.0,
         "cvss_score_accuracy": 0.63,
-        "time_to_first_finding_seconds": 0.03778886795043945,
+        "time_to_first_finding_seconds": 0.04298114776611328,
         "unnecessary_action_rate": 0.0,
         "replanning_frequency": 0.0,
         "total_ground_truth": 2,
@@ -96,49 +51,33 @@
       }
     },
     "juice-shop": {
-      "autonomous": {
-        "true_positive_rate": 0.0,
-        "false_positive_rate": 0.0,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1_score": 0.0,
-        "avg_exploit_chain_depth": 1.0,
-        "cvss_score_accuracy": null,
-        "time_to_first_finding_seconds": 0.4808158874511719,
-        "unnecessary_action_rate": 0.5,
-        "replanning_frequency": 0.0,
-        "total_ground_truth": 3,
-        "true_positives": 0,
-        "confirmed_findings": 0,
-        "total_probes": 2,
-        "matched_ground_truth_ids": [],
-        "unmatched_ground_truth_ids": [
-          "JS-01",
-          "JS-02",
-          "JS-03"
-        ]
-      },
       "guided": {
-        "true_positive_rate": 0.333,
+        "true_positive_rate": 0.778,
         "false_positive_rate": 0.0,
         "precision": 1.0,
-        "recall": 0.333,
-        "f1_score": 0.5,
+        "recall": 0.778,
+        "f1_score": 0.875,
         "avg_exploit_chain_depth": 1.0,
-        "cvss_score_accuracy": 0.99,
-        "time_to_first_finding_seconds": 0.0997769832611084,
+        "cvss_score_accuracy": 0.89,
+        "time_to_first_finding_seconds": 0.08724093437194824,
         "unnecessary_action_rate": 0.0,
         "replanning_frequency": 0.0,
-        "total_ground_truth": 3,
-        "true_positives": 1,
-        "confirmed_findings": 1,
-        "total_probes": 2,
+        "total_ground_truth": 9,
+        "true_positives": 7,
+        "confirmed_findings": 7,
+        "total_probes": 12,
         "matched_ground_truth_ids": [
-          "JS-01"
+          "JS-01",
+          "JS-02",
+          "JS-04",
+          "JS-05",
+          "JS-07",
+          "JS-08",
+          "JS-09"
         ],
         "unmatched_ground_truth_ids": [
-          "JS-02",
-          "JS-03"
+          "JS-03",
+          "JS-06"
         ]
       }
     }
@@ -154,7 +93,7 @@
           "f1_score": 0.5,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.195,
-          "time_to_first_finding_seconds": 16.380770921707153,
+          "time_to_first_finding_seconds": 4.931343078613281,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 5,
@@ -171,7 +110,7 @@
             "DVWS-API8"
           ]
         },
-        "wall_clock": 16.38,
+        "wall_clock": 4.93,
         "n_findings": 3
       },
       "srebench-api": {
@@ -183,7 +122,7 @@
           "f1_score": 0.8,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.1,
-          "time_to_first_finding_seconds": 3.9763588905334473,
+          "time_to_first_finding_seconds": 3.832702159881592,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 2,
@@ -196,34 +135,40 @@
           ],
           "unmatched_ground_truth_ids": []
         },
-        "wall_clock": 3.98,
+        "wall_clock": 3.83,
         "n_findings": 3
       },
       "juice-shop": {
         "metrics": {
-          "true_positive_rate": 0.333,
-          "false_positive_rate": 0.667,
-          "precision": 0.333,
-          "recall": 0.333,
+          "true_positive_rate": 0.222,
+          "false_positive_rate": 0.333,
+          "precision": 0.667,
+          "recall": 0.222,
           "f1_score": 0.333,
           "avg_exploit_chain_depth": 1.0,
-          "cvss_score_accuracy": 0.19,
-          "time_to_first_finding_seconds": 3.683229923248291,
+          "cvss_score_accuracy": 0.27,
+          "time_to_first_finding_seconds": 3.6400530338287354,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
-          "total_ground_truth": 3,
-          "true_positives": 1,
+          "total_ground_truth": 9,
+          "true_positives": 2,
           "confirmed_findings": 3,
           "total_probes": 0,
           "matched_ground_truth_ids": [
-            "JS-01"
+            "JS-01",
+            "JS-09"
           ],
           "unmatched_ground_truth_ids": [
             "JS-02",
-            "JS-03"
+            "JS-03",
+            "JS-04",
+            "JS-05",
+            "JS-06",
+            "JS-07",
+            "JS-08"
           ]
         },
-        "wall_clock": 3.68,
+        "wall_clock": 3.64,
         "n_findings": 3
       }
     },
@@ -237,7 +182,7 @@
           "f1_score": 0.727,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.215,
-          "time_to_first_finding_seconds": 18.31344699859619,
+          "time_to_first_finding_seconds": 6.333150863647461,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 5,
@@ -254,7 +199,7 @@
             "DVWS-API8"
           ]
         },
-        "wall_clock": 18.31,
+        "wall_clock": 6.33,
         "n_findings": 6
       },
       "srebench-api": {
@@ -266,7 +211,7 @@
           "f1_score": 0.667,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.1,
-          "time_to_first_finding_seconds": 3.2966511249542236,
+          "time_to_first_finding_seconds": 3.697805881500244,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 2,
@@ -279,34 +224,40 @@
           ],
           "unmatched_ground_truth_ids": []
         },
-        "wall_clock": 3.3,
+        "wall_clock": 3.7,
         "n_findings": 4
       },
       "juice-shop": {
         "metrics": {
-          "true_positive_rate": 0.333,
+          "true_positive_rate": 0.222,
           "false_positive_rate": 0.6,
-          "precision": 0.2,
-          "recall": 0.333,
-          "f1_score": 0.25,
+          "precision": 0.4,
+          "recall": 0.222,
+          "f1_score": 0.286,
           "avg_exploit_chain_depth": 1.0,
-          "cvss_score_accuracy": 0.25,
-          "time_to_first_finding_seconds": 3.3872461318969727,
+          "cvss_score_accuracy": 0.41,
+          "time_to_first_finding_seconds": 3.496490955352783,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
-          "total_ground_truth": 3,
-          "true_positives": 1,
+          "total_ground_truth": 9,
+          "true_positives": 2,
           "confirmed_findings": 5,
           "total_probes": 0,
           "matched_ground_truth_ids": [
-            "JS-02"
+            "JS-02",
+            "JS-08"
           ],
           "unmatched_ground_truth_ids": [
             "JS-01",
-            "JS-03"
+            "JS-03",
+            "JS-04",
+            "JS-05",
+            "JS-06",
+            "JS-07",
+            "JS-09"
           ]
         },
-        "wall_clock": 3.39,
+        "wall_clock": 3.5,
         "n_findings": 5
       }
     },
@@ -320,7 +271,7 @@
           "f1_score": 0.545,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.217,
-          "time_to_first_finding_seconds": 13.825070142745972,
+          "time_to_first_finding_seconds": 13.546403884887695,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 5,
@@ -337,7 +288,7 @@
             "DVWS-API5"
           ]
         },
-        "wall_clock": 13.83,
+        "wall_clock": 13.55,
         "n_findings": 6
       },
       "srebench-api": {
@@ -349,7 +300,7 @@
           "f1_score": 0.667,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.1,
-          "time_to_first_finding_seconds": 7.333348035812378,
+          "time_to_first_finding_seconds": 7.394781112670898,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 2,
@@ -362,34 +313,40 @@
           ],
           "unmatched_ground_truth_ids": []
         },
-        "wall_clock": 7.33,
+        "wall_clock": 7.39,
         "n_findings": 4
       },
       "juice-shop": {
         "metrics": {
-          "true_positive_rate": 0.667,
-          "false_positive_rate": 0.4,
-          "precision": 0.4,
-          "recall": 0.667,
-          "f1_score": 0.5,
+          "true_positive_rate": 0.444,
+          "false_positive_rate": 0.2,
+          "precision": 0.8,
+          "recall": 0.444,
+          "f1_score": 0.571,
           "avg_exploit_chain_depth": 1.0,
-          "cvss_score_accuracy": 0.22,
-          "time_to_first_finding_seconds": 8.646245241165161,
+          "cvss_score_accuracy": 0.34,
+          "time_to_first_finding_seconds": 8.906262874603271,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
-          "total_ground_truth": 3,
-          "true_positives": 2,
+          "total_ground_truth": 9,
+          "true_positives": 4,
           "confirmed_findings": 5,
           "total_probes": 0,
           "matched_ground_truth_ids": [
             "JS-01",
-            "JS-02"
+            "JS-02",
+            "JS-08",
+            "JS-09"
           ],
           "unmatched_ground_truth_ids": [
-            "JS-03"
+            "JS-03",
+            "JS-04",
+            "JS-05",
+            "JS-06",
+            "JS-07"
           ]
         },
-        "wall_clock": 8.65,
+        "wall_clock": 8.91,
         "n_findings": 5
       }
     },
@@ -403,7 +360,7 @@
           "f1_score": 0.5,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.27,
-          "time_to_first_finding_seconds": 5.638295888900757,
+          "time_to_first_finding_seconds": 5.517593860626221,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 5,
@@ -420,7 +377,7 @@
             "DVWS-API5"
           ]
         },
-        "wall_clock": 5.64,
+        "wall_clock": 5.52,
         "n_findings": 3
       },
       "srebench-api": {
@@ -432,7 +389,7 @@
           "f1_score": 0.8,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.1,
-          "time_to_first_finding_seconds": 3.6707661151885986,
+          "time_to_first_finding_seconds": 3.787328004837036,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 2,
@@ -445,34 +402,40 @@
           ],
           "unmatched_ground_truth_ids": []
         },
-        "wall_clock": 3.67,
+        "wall_clock": 3.79,
         "n_findings": 3
       },
       "juice-shop": {
         "metrics": {
-          "true_positive_rate": 0.667,
-          "false_positive_rate": 0.333,
-          "precision": 0.667,
-          "recall": 0.667,
+          "true_positive_rate": 0.444,
+          "false_positive_rate": 0.0,
+          "precision": 1.333,
+          "recall": 0.444,
           "f1_score": 0.667,
           "avg_exploit_chain_depth": 1.0,
-          "cvss_score_accuracy": 0.3,
-          "time_to_first_finding_seconds": 3.460228204727173,
+          "cvss_score_accuracy": 0.38,
+          "time_to_first_finding_seconds": 3.5553650856018066,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
-          "total_ground_truth": 3,
-          "true_positives": 2,
+          "total_ground_truth": 9,
+          "true_positives": 4,
           "confirmed_findings": 3,
           "total_probes": 0,
           "matched_ground_truth_ids": [
             "JS-02",
-            "JS-03"
+            "JS-03",
+            "JS-08",
+            "JS-09"
           ],
           "unmatched_ground_truth_ids": [
-            "JS-01"
+            "JS-01",
+            "JS-04",
+            "JS-05",
+            "JS-06",
+            "JS-07"
           ]
         },
-        "wall_clock": 3.46,
+        "wall_clock": 3.56,
         "n_findings": 3
       }
     },
@@ -486,7 +449,7 @@
           "f1_score": 0.4,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.25,
-          "time_to_first_finding_seconds": 10.937829971313477,
+          "time_to_first_finding_seconds": 10.777267932891846,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 5,
@@ -503,7 +466,7 @@
             "DVWS-API8"
           ]
         },
-        "wall_clock": 10.94,
+        "wall_clock": 10.78,
         "n_findings": 5
       },
       "srebench-api": {
@@ -515,7 +478,7 @@
           "f1_score": 0.8,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": 0.1,
-          "time_to_first_finding_seconds": 5.356490135192871,
+          "time_to_first_finding_seconds": 5.357919931411743,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 2,
@@ -533,28 +496,35 @@
       },
       "juice-shop": {
         "metrics": {
-          "true_positive_rate": 1.0,
-          "false_positive_rate": 0.2,
-          "precision": 0.6,
-          "recall": 1.0,
-          "f1_score": 0.75,
+          "true_positive_rate": 0.556,
+          "false_positive_rate": 0.0,
+          "precision": 1.0,
+          "recall": 0.556,
+          "f1_score": 0.714,
           "avg_exploit_chain_depth": 1.0,
-          "cvss_score_accuracy": 0.263,
-          "time_to_first_finding_seconds": 8.326823234558105,
+          "cvss_score_accuracy": 0.342,
+          "time_to_first_finding_seconds": 8.340994119644165,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
-          "total_ground_truth": 3,
-          "true_positives": 3,
+          "total_ground_truth": 9,
+          "true_positives": 5,
           "confirmed_findings": 5,
           "total_probes": 0,
           "matched_ground_truth_ids": [
             "JS-01",
             "JS-02",
-            "JS-03"
+            "JS-03",
+            "JS-08",
+            "JS-09"
           ],
-          "unmatched_ground_truth_ids": []
+          "unmatched_ground_truth_ids": [
+            "JS-04",
+            "JS-05",
+            "JS-06",
+            "JS-07"
+          ]
         },
-        "wall_clock": 8.33,
+        "wall_clock": 8.34,
         "n_findings": 5
       }
     },
@@ -568,7 +538,7 @@
           "f1_score": 0.0,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": null,
-          "time_to_first_finding_seconds": 4.449859142303467,
+          "time_to_first_finding_seconds": 3.90529203414917,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 5,
@@ -584,7 +554,7 @@
             "DVWS-API8"
           ]
         },
-        "wall_clock": 4.45,
+        "wall_clock": 3.91,
         "n_findings": 1
       },
       "srebench-api": {
@@ -596,7 +566,7 @@
           "f1_score": 0.0,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": null,
-          "time_to_first_finding_seconds": 1.6985688209533691,
+          "time_to_first_finding_seconds": 1.7641692161560059,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
           "total_ground_truth": 2,
@@ -609,7 +579,7 @@
             "SRE-02"
           ]
         },
-        "wall_clock": 1.7,
+        "wall_clock": 1.76,
         "n_findings": 1
       },
       "juice-shop": {
@@ -621,10 +591,10 @@
           "f1_score": 0.0,
           "avg_exploit_chain_depth": 1.0,
           "cvss_score_accuracy": null,
-          "time_to_first_finding_seconds": 1.548084020614624,
+          "time_to_first_finding_seconds": 1.5365922451019287,
           "unnecessary_action_rate": 0.0,
           "replanning_frequency": 0.0,
-          "total_ground_truth": 3,
+          "total_ground_truth": 9,
           "true_positives": 0,
           "confirmed_findings": 1,
           "total_probes": 0,
@@ -632,10 +602,16 @@
           "unmatched_ground_truth_ids": [
             "JS-01",
             "JS-02",
-            "JS-03"
+            "JS-03",
+            "JS-04",
+            "JS-05",
+            "JS-06",
+            "JS-07",
+            "JS-08",
+            "JS-09"
           ]
         },
-        "wall_clock": 1.55,
+        "wall_clock": 1.54,
         "n_findings": 1
       }
     }

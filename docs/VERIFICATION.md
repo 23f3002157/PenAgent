@@ -233,3 +233,42 @@ limitations: [docs/RESULTS.md](RESULTS.md). Summary:
   fixture), verified live end-to-end including a Component 5 approval
   pause-and-resume captured mid-run through the real HTTP API.
 - 135 tests pass (one new evaluator regression test).
+
+## Juice Shop ground-truth expansion, multi-stage PentestGPT, autonomous mode dropped (2026-10-27)
+
+- Benchmarked PenAgent and both baselines against all six Ollama models
+  present locally (`ollama list`), not a curated subset.
+- Added a new `Expectation.forbidden_substrings` mechanism
+  (`penagent_common/config.py`, `c4-interpreter/interpreter/evidence.py`) so
+  C4 can classify text-body (non-JSON) disclosures as CONFIRMED/STRONG, not
+  just JSON-field-path matches; `c6-report/report/synth.py`'s CVSS scoring
+  updated to score these as real confidentiality impact. New tests in
+  `tests/test_interpreter.py`.
+- Expanded Juice Shop's ground truth from 3 to 9 live-verified
+  vulnerabilities (`demo/benchmark-data/ground_truth_chains.json`), each
+  exercised through a real session-chained attack (register -> login ->
+  reuse token) in `demo/run_evaluation.py`'s `GUIDED_CHAINS`. Juice Shop
+  guided TPR improved from 33% (1/3) to 77.8% (7/9), 0% FPR maintained.
+  Overall guided aggregate across all 3 targets: TPR 85.9%, Precision 100%,
+  F1 92.1% (up from a prior TPR 71.1%/F1 79.6%).
+- Found and fixed a real evaluator bug while expanding ground truth:
+  `demo/evaluate.py`'s directory-prefix fallback let two different static
+  files in the same directory cross-match the same finding, which would
+  have double-credited one real finding as two. Fixed with a targeted guard
+  and a new regression test.
+- Implemented `demo/pentestgpt.py`, a more faithful multi-stage PentestGPT
+  reproduction (Reasoning stage builds a Pentesting Task Tree, Generation
+  stage drills into each sub-task), benchmarked across all six models
+  alongside the existing single-shot baseline. Honest finding: structuring
+  the reasoning into a task tree does not uniformly beat a single prompt --
+  it helps some models (Gemma 2, Gemma 3 4B) and hurts others (Llama 3.2,
+  Phi-3, Gemma 3 1B). Full comparison: docs/RESULTS.md.
+- Per instruction, dropped fully-autonomous zero-hint discovery mode
+  entirely from `demo/run_evaluation.py`, `demo/explore_run.py`,
+  `demo/export_ui_data.py`, `demo/live_demo.py`, `demo/configure_live_targets.py`
+  and the operator console -- it had consistently scored 0% TPR for the
+  specific, already-documented reasons above, and repeating that result on
+  every further run added no new information. The finding itself remains
+  recorded in this document's 2026-10-26 entries above, not erased.
+- 144 tests pass (four new interpreter tests for `forbidden_substrings`, one
+  new evaluator regression test).

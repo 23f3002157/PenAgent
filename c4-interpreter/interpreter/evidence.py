@@ -23,28 +23,38 @@ def interpret(result, hypothesis, probe, rule, prior=None) -> Interpretation:
     replan = False
     protected = [p for p in expectation.protected_fields if lookup(data, p) not in (None, "", [], {})] if expectation else []
     signals = [p for p in expectation.signal_fields if lookup(data, p) not in (None, "", [], {})] if expectation else []
+    # forbidden_values/protected_fields/signal_fields all walk JSON paths via
+    # lookup() and can't address a flat string -- a text-kind response (a
+    # leaked file's contents, a plaintext secret) has no path to check, so it
+    # could never reach CONFIRMED/STRONG regardless of what it exposed.
+    # forbidden_substrings is the text-body equivalent: literal, operator-
+    # configured strings checked by containment, not a path lookup.
+    text_body = data if isinstance(data, str) else None
+    text_substrings_present = [s for s in (expectation.forbidden_substrings if expectation else []) if text_body is not None and s in text_body]
+    text_all_present = bool(expectation and expectation.forbidden_substrings) and len(text_substrings_present) == len(expectation.forbidden_substrings or [])
+    text_any_present = bool(text_substrings_present)
     if result.status != "executed":
         kind, confidence, action = Category.ERROR_CRASH, .95, "stop"
         reason = "Execution did not complete. Transport or policy error is not evidence of a crash or vulnerability."
     elif code is not None and code >= 500:
         kind, confidence, action = Category.ERROR_CRASH, .95, "stop"
         reason = "Server returned 5xx. Record a potential logic/availability issue and halt; exploit success is unproven."
-    elif expectation and code in expectation.denied_statuses and not protected and not signals:
+    elif expectation and code in expectation.denied_statuses and not protected and not signals and not text_any_present:
         kind, confidence, action = Category.NEGATIVE, .9, "next_hypothesis"
         reason = "The configured security rejection occurred; no successful access was demonstrated."
-    elif code in {401, 403, 404} and not protected and not signals:
+    elif code in {401, 403, 404} and not protected and not signals and not text_any_present:
         kind, confidence, action = Category.NEGATIVE, .8, "next_hypothesis"
         reason = "The request was rejected or the resource was absent, without evidence of a security violation."
     elif result.parsed and result.parsed.parse_error:
         reason = "Response parsing failed independently of HTTP success; preserve the bounded body hash."
     elif expectation and code is not None and 200 <= code < 500:
-        matches = bool(expectation.forbidden_values) and all(lookup(data, p) == v for p, v in expectation.forbidden_values.items())
+        matches = (bool(expectation.forbidden_values) and all(lookup(data, p) == v for p, v in expectation.forbidden_values.items())) or text_all_present
         auth_context_matches = (not expectation.requires_anonymous or probe.binding.session_ref is None) and (not expectation.owasp_categories or hypothesis.owasp_category in expectation.owasp_categories)
-        if matches and protected and auth_context_matches:
+        if matches and (protected or text_all_present) and auth_context_matches:
             kind, confidence, action = Category.CONFIRMED_VULNERABILITY, .98, "replan"
             replan = True
             reason = "Configured forbidden object/context values and protected fields were observed in the tested authentication context."
-        elif (protected or signals) and auth_context_matches:
+        elif (protected or signals or text_any_present) and auth_context_matches:
             kind, confidence, action = Category.STRONG_SIGNAL, .75, "mutate"
             reason = "Response includes fields relevant to the hypothesis and conflicts with expected rejection; the full violation is not yet established."
         else:

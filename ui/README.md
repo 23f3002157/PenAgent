@@ -109,9 +109,8 @@ route each target exposes — 46 for Juice Shop, pulled directly off the
 running container's `build/server.js`, not a curated subset — with plain
 generic inputs, no scoring against hidden ground truth). Per target:
 
-- **Stat tiles** — routes authorized, probes executed, STRONG/CONFIRMED
-  findings, and how many of those same routes a zero-hint autonomous run
-  (real C1→C2→C3, no human input at all) could even reach on its own.
+- **Stat tiles** — routes authorized, probes executed, and how many came back
+  STRONG_SIGNAL/CONFIRMED.
 - **Status-code bar** — protected (401/403) vs. exposed-to-anonymous (2xx)
   vs. target-crashed (5xx), legend + direct-labeled counts, colorblind-safe
   (validated with the dataviz skill's palette checker against this exact
@@ -141,19 +140,20 @@ generic inputs, no scoring against hidden ground truth). Per target:
 Needs no connection/token — it reads static JSON files exported by
 `python -m demo.export_ui_data` (`data/guided-chains.json`,
 `data/results.json`, `data/comparison.json`), regenerate them after a fresh
-`demo/run_evaluation.py` / `demo/baseline_pentestgpt.py` run. Per target
-(DVWS, SREBench-API, Juice Shop): a true-positive-rate bar chart comparing
-PenAgent (autonomous vs. ground-truth-guided) against **six** local Ollama
+`demo/run_evaluation.py` / `demo/baseline_pentestgpt.py` / `demo/pentestgpt.py`
+run. Per target (DVWS, SREBench-API, Juice Shop): a true-positive-rate bar
+chart comparing PenAgent (ground-truth-guided) against **six** local Ollama
 PentestGPT-style baselines (1.0B–4.3B parameters, real sizes from
 `ollama show`), plus a full metrics table (TPR, FPR, CVSS accuracy, chain
 depth, time to first finding).
 
-Above the per-target cards, a **head-to-head comparison** aggregates all
-eight approaches (PenAgent guided + autonomous, six baselines) across all
-three targets at once: ranked precision and F1 bar charts, a sortable,
-downloadable table (precision/recall/F1/CVSS-accuracy/model size/wall
-clock), and an evidence-based explanation of why PenAgent's F1 and precision
-come out ahead of every baseline — because every `CONFIRMED_VULNERABILITY`
-it reports passed a real HTTP request against a configured predicate, not a
-language-model guess. The methodology caveats (n=1, no Burp/ZAP,
-autonomous ≠ guided) are stated inline and in `docs/RESULTS.md`.
+Above the per-target cards, a **head-to-head comparison** aggregates PenAgent
+(guided) plus the six baseline models across all three targets at once:
+ranked precision and F1 bar charts, a sortable, downloadable table
+(precision/recall/F1/CVSS-accuracy/model size/wall clock), and an
+evidence-based explanation of why PenAgent's F1 and precision come out ahead
+of every baseline — because every `CONFIRMED_VULNERABILITY` it reports
+passed a real HTTP request against a configured predicate, not a
+language-model guess. The methodology caveats (n=1, no Burp/ZAP, guided mode
+measures pipeline correctness rather than discovery) are stated inline and
+in `docs/RESULTS.md`.
